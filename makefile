@@ -18,7 +18,7 @@ all: samil
 
 samil: $(OBJFILES)
 
-	$(CC) -o saiml $(OBJFILES) $(LDFLAGS)
+	$(CC) -o samil $(OBJFILES) $(LDFLAGS)
 
 
 
