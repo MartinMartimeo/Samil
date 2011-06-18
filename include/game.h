@@ -1,3 +1,7 @@
+#pragma_once
+#ifndef __game_h
+#define __game_h
+
 /*
  * Klasse Game,
  * führt das update der Welt durch,
@@ -11,3 +15,5 @@ public:
 private:
 
 }
+
+#endif
