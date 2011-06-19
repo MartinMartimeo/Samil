@@ -37,20 +37,3 @@ void renderScene(void) {
 
 	glutSwapBuffers();
 }
-
-void main(int argc, char **argv) {
-
-        // init GLUT and create window
-        glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(100,100);
-	glutInitWindowSize(320,320);
-	glutCreateWindow("Lighthouse3D- GLUT Tutorial");
-
-	// register callbacks
-        glutDisplayFunc(renderScene);
-	glutReshapeFunc(changeSize);
-
-        // enter GLUT event processing loop
-	glutMainLoop();
-}
