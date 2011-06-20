@@ -6,7 +6,8 @@ int main(int argc, char **argv)
 {	
 	/* Initialize Glut and Create Window */
 	
-	std::cout<<"blub"<<std::endl;
+	std::cout<<"samil gestartet"<<std::endl;
+	std::cout<<"zum beenden ESC drücken"<<std::endl;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100,100);
