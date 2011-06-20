@@ -26,3 +26,6 @@ samil: $(OBJFILES)
 
 	$(COMPILE) -o $@ $<
 
+clean:
+	rm src/*.o
+
