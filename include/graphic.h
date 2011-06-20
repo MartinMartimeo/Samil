@@ -9,7 +9,7 @@ void render(void);
 
 void idle(void); // if idle, do this
 
-void Resize(int w, int h);
+void resize(int w, int h);
 
 void processNormalKeys(unsigned char key, int x, int y);
 
