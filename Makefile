@@ -8,7 +8,7 @@ LDFLAGS += -lglut -lGLU
 
 COMPILE = $(CC) $(CFLAGS) -c
 
-OBJFILES := $(patsubst %.cpp,%.o,$(wildcard /src/*.cpp))
+OBJFILES := $(patsubst %.cpp,%.o,$(wildcard ./src/*.cpp))
  
 
 
