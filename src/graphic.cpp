@@ -1,5 +1,5 @@
 #include <GL/glut.h>
-#include "../include/graphic.h"
+#include "graphic.h"
 
 void resize(int w, int h) {
 
