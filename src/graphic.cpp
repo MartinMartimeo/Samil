@@ -39,6 +39,11 @@ void render(void) {
 	glutSwapBuffers();
 }
 
+void idle(void)
+{
+	render(); // verursacht 100% load, sollte man sich also überlegen.
+}
+
 void processNormalKeys(unsigned char key, int x, int y) {
 
 	if (key == 27) 
