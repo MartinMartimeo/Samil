@@ -1,4 +1,4 @@
-#pragma_once
+#pragma once
 #ifndef __data_h
 
 //Source here

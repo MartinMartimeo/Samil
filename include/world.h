@@ -1,4 +1,4 @@
-#pragma_once
+#pragma once
 #ifndef __world_h
 #define __world_h
 

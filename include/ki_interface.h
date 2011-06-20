@@ -1,4 +1,4 @@
-#pragma_once
+#pragma once
 #ifndef __ki_interface_h
 #define __ki_interface_h
 
