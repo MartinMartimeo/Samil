@@ -1,6 +1,7 @@
 #include <GL/glut.h>
+#include "../include/graphic.h"
 
-void changeSize(int w, int h) {
+void resize(int w, int h) {
 
 	// Prevent a divide by zero, when window is too short
 	// (you cant make a window of zero width).
@@ -25,7 +26,7 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void renderScene(void) {
+void render(void) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -36,4 +37,10 @@ void renderScene(void) {
 	glEnd();
 
 	glutSwapBuffers();
+}
+
+void processNormalKeys(unsigned char key, int x, int y) {
+
+	if (key == 27) 
+		exit(0);
 }
