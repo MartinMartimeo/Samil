@@ -1,6 +1,8 @@
 #include <GL/glut.h>
 #include "graphic.h"
 
+float afCamOrient[3][3];
+
 void init_gui(int argc, char **argv){
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
