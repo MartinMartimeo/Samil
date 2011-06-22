@@ -4,7 +4,7 @@
  *
  * Created on 22. Juni 2011, 19:12
  */
-
+#pragma once
 #ifndef WORLD_MAP_H
 #define	WORLD_MAP_H
 
