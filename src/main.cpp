@@ -9,6 +9,9 @@ int main(int argc, char **argv)
 	
 	std::cout<<"samil gestartet"<<std::endl;
 	std::cout<<"zum beenden ESC drücken"<<std::endl;
+<<<<<<< HEAD
+	init_gui(argc, argv);
+=======
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100,100);
@@ -18,6 +21,7 @@ int main(int argc, char **argv)
 	glutFullScreen();				// Fulllscreenmode if wanted...
 	glEnable(GL_DEPTH_TEST);
 
+	Game game = Game();
 
 	glutDisplayFunc(render);
 	glutIdleFunc(idle);
@@ -26,5 +30,6 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(processNormalKeys);	// Exit(0) when ESC is pressed
 	
 	glutMainLoop();
+>>>>>>> 79ccb186636a0bf768e0ddb0b75da95f73b9032a
 	return -1; 
 }
