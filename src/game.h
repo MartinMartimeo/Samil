@@ -10,13 +10,24 @@
  * Author: bastinat0r
  *
  */
+
+#include<vector>
+#include"ki_interface.h"
+
 class Game
 {
 public:
-	int LoadAI();
-	int InitWorld();
-private:
+	Game();
+	~Game();
+
+	int LoadKI();
 	
+	int InitWorld();
+	
+	int ProcessRound();
+
+private:
+	std::vector<KI_Interface>* m_vKIs;
 };
 
 #endif
