@@ -26,4 +26,3 @@ typedef vector<WorldMapField>::iterator              WorldMapRowIterator;
 typedef vector< vector<WorldMapField> >              WorldMap;
 
 #endif	/* WORLD_MAP_H */
-
