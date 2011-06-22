@@ -16,7 +16,8 @@ typedef enum {
     FieldTree = 'T',
     FieldStone = 'S',
     FieldSea = '~',
-    FieldMountain = 'M'
+    FieldMountain = 'M',
+    FieldUnkown = '?'
 } WorldMapField;
 typedef vector< vector<WorldMapField> >::iterator    WorldMapIterator;
 typedef vector<WorldMapField>                        WorldMapRow;

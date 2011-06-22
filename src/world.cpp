@@ -61,8 +61,6 @@ World::~World()
 void World::DoInitalisation()
 {
     //Reset stuff
-
-  
     m_viiMap.assign(m_iWidth, WorldMapRow(m_iHeight));
 
     for (WorldMapIterator x = m_viiMap.begin(); x != m_viiMap.end(); ++x)
@@ -74,7 +72,8 @@ void World::DoInitalisation()
         }
     }
 
-    
+    //Create Step Points
+
 
 }
 
@@ -96,6 +95,28 @@ unsigned int World::GetWidth()
     return m_iWidth;
 }
 
+WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
+{
+
+    if ((iPosX < 0) || (iPosX > m_iWidth))
+    {
+        return FieldUnkown;
+    }
+
+    if ((iPosY < 0) || (iPosY > m_iHeight))
+    {
+        return FieldUnkown;
+    }
+
+    return m_viiMap.at(iPosX).at(iPosY);
+}
+
+/**********************************************************************/
+
+void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField)
+{
+    m_viiMap.at(iPosX).at(iPosY) = iField;
+}
 
 
 
