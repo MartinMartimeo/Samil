@@ -27,7 +27,7 @@ public:
 	int ProcessRound();
 
 private:
-	std::vector<KI_Interface> m_vKIs;
+	std::vector<KI_Interface>* m_vKIs;
 };
 
 #endif

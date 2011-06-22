@@ -18,6 +18,7 @@ int main(int argc, char **argv)
 	glutFullScreen();				// Fulllscreenmode if wanted...
 	glEnable(GL_DEPTH_TEST);
 
+	Game game = Game();
 
 	glutDisplayFunc(render);
 	glutIdleFunc(idle);
