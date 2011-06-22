@@ -41,6 +41,12 @@ public:
 
 private:
 
+    WorldMapField GetCell(unsigned int x, unsigned int y);
+
+    /**********************************************************************/
+    
+    void SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField);
+
 
 protected:
 
