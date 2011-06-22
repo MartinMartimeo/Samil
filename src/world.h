@@ -9,8 +9,10 @@
 #ifndef __world_h
 #define __world_h
 
-#include <map>
-using std::map;
+#include <vector>
+using std::vector;
+
+#include "world_map.h"
 
 // Source here
 class World
@@ -42,11 +44,11 @@ private:
 
 protected:
 
-    unsigned int                        m_iPlayer;
-    unsigned int                        m_iHeight;
-    unsigned int                        m_iWidth;
+    unsigned int                                m_iPlayer;
+    unsigned int                                m_iHeight;
+    unsigned int                                m_iWidth;
 
-    map<unsigned int, unsigned int>     m_miiMap;
+    WorldMap                                   m_viiMap;
 
 };
 

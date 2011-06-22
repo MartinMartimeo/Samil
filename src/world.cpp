@@ -5,6 +5,7 @@
  *
  */
 #include "world.h"
+#include "world_map.h"
 
 #ifdef __world_h
 
@@ -45,7 +46,11 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth)
 /*
  * Destruktor
  */
-World::~World() {}
+World::~World()
+{
+    
+
+}
 
 /**********************************************************************/
 
@@ -56,7 +61,21 @@ World::~World() {}
 void World::DoInitalisation()
 {
     //Reset stuff
-    m_miiMap.clear();
+
+  
+    m_viiMap.assign(m_iWidth, WorldMapRow(m_iHeight));
+
+    for (WorldMapIterator x = m_viiMap.begin(); x != m_viiMap.end(); ++x)
+    {
+        WorldMapRow viRow = *x;
+        for (WorldMapRowIterator y = viRow.begin(); y != viRow.end(); ++y)
+        {
+            *y = FieldEmpty;
+        }
+    }
+
+    
+
 }
 
 /**********************************************************************/
