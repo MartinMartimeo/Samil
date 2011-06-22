@@ -5,15 +5,18 @@
 /*
  * Klasse Game,
  * führt das update der Welt durch,
- * verwaltet und lädt spielerkis.
+ * verwaltet und lädt Spielerkis.
+ *
+ * Author: bastinat0r
  *
  */
 class Game
 {
 public:
-
+	int LoadAI();
+	int InitWorld();
 private:
-
-}
+	
+};
 
 #endif
