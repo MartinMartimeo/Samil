@@ -2,6 +2,9 @@
 #ifndef __ki_interface_h
 #define __ki_interface_h
 
-//Source here
+class KI_Interface
+{
+
+};
 
 #endif
