@@ -1,4 +1,9 @@
+*.mk
 *.o
 *.so
-samil
 *.exe
+
+samil
+
+test/
+nbproject/
