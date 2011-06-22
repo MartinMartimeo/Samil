@@ -1,6 +1,7 @@
 #include <iostream>
 #include <GL/glut.h>
 #include "graphic.h"
+#include "game.h"
 
 int main(int argc, char **argv) 
 {	
