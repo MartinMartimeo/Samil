@@ -1,9 +1,10 @@
 #include <GL/glut.h>
 #include "graphic.h"
+#include "world.h"
 
 float afCamOrient[3][3];
 
-void init_gui(int argc, char **argv/*, World oWorld = NULL*/){
+void init_gui(int argc, char **argv, World *pWorld){
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100,100);
