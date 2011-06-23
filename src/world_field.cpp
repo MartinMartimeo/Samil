@@ -14,27 +14,36 @@
 /*
  * Konstrukts a Field, default value is Empty
  */
-WorldField::WorldField() {
-
+WorldField::WorldField()
+{
     m_iType = FieldEmpty;
-
+    m_iWeight = 0;
 }
 
-WorldField::~WorldField() {
-}
+WorldField::~WorldField() {}
 
 /**********************************************************************/
 
-WorldMapField WorldField::GetType() {
-
+WorldMapField WorldField::GetType()
+{
     return m_iType;
+}
 
+int WorldField::GetWeight()
+{
+    return m_iWeight;
 }
 
 /**********************************************************************/
 
-void WorldField::SetType(WorldMapField iValue) {
+void WorldField::SetType(WorldMapField iValue)
+{
     m_iType = iValue;
+}
+
+void WorldField::SetWeight(int iValue)
+{
+    m_iWeight = iValue;
 }
 
 #endif

@@ -70,6 +70,7 @@ void World::DoInitalisation()
         for (WorldMapRowIterator y = viRow.begin(); y != viRow.end(); ++y)
         {
             y->SetType(FieldEmpty);
+            y->SetWeight(0);
         }
     }
 

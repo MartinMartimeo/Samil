@@ -31,7 +31,8 @@ public:
     /**********************************************************************/
     // Getter
 
-    WorldMapField GetType();    
+    WorldMapField GetType();
+    int GetWeight();  
 
 
 private:
@@ -40,10 +41,13 @@ private:
     // private Setter
 
     void SetType(WorldMapField iValue);
+    void SetWeight(int iValue);
 
 protected:
 
     WorldMapField       m_iType;
+
+    int                 m_iWeight;
 
 };
 
