@@ -12,17 +12,11 @@
 #include <vector>
 using std::vector;
 
-typedef enum {
-    FieldEmpty = '0',
-    FieldTree = 'T',
-    FieldStone = 'S',
-    FieldSea = '~',
-    FieldMountain = 'M',
-    FieldUnkown = '?'
-} WorldMapField;
-typedef vector< vector<WorldMapField> >::iterator    WorldMapIterator;
-typedef vector<WorldMapField>                        WorldMapRow;
-typedef vector<WorldMapField>::iterator              WorldMapRowIterator;
-typedef vector< vector<WorldMapField> >              WorldMap;
+#include "world_field.h"
+
+typedef vector< vector<WorldField> >::iterator    WorldMapIterator;
+typedef vector<WorldField>                        WorldMapRow;
+typedef vector<WorldField>::iterator              WorldMapRowIterator;
+typedef vector< vector<WorldField> >              WorldMap;
 
 #endif	/* WORLD_MAP_H */

@@ -12,7 +12,13 @@
 #include <vector>
 using std::vector;
 
+#include <string>
+using std::string;
+
+class World;
+
 #include "world_map.h"
+#include "world_field.h"
 
 // Source here
 class World
@@ -27,11 +33,11 @@ public:
     ~World();
 
     /**********************************************************************/
-    //Functions
+    // Functions
     void DoInitalisation();
 
     /**********************************************************************/
-    //Getter
+    // Getter
 
     unsigned int GetPlayer();
     unsigned int GetHeight();
@@ -41,10 +47,20 @@ public:
 
 private:
 
-    WorldMapField GetCell(unsigned int x, unsigned int y);
+    /**********************************************************************/
+    // functions
+    void DoLog(string sStr);
+    void DoLog(int iValue);
 
     /**********************************************************************/
-    
+    // private Getter
+
+    WorldMapField GetCell(unsigned int x, unsigned int y);
+    WorldField GetField(unsigned int x, unsigned int y);
+
+    /**********************************************************************/
+    // private Sette
+
     void SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField);
 
 
@@ -54,7 +70,7 @@ protected:
     unsigned int                                m_iHeight;
     unsigned int                                m_iWidth;
 
-    WorldMap                                   m_viiMap;
+    WorldMap                                    m_viiMap;
 
 };
 

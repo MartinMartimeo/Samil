@@ -4,8 +4,20 @@
  * Severin Orth
  *
  */
+
+#include <iostream>
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#include <string>
+using std::string;
+
 #include "world.h"
 #include "world_map.h"
+#include "world_field.h"
 
 #ifdef __world_h
 
@@ -55,12 +67,25 @@ World::~World()
 /**********************************************************************/
 
 /*
+ * Log Stuff
+ */
+void World::DoLog(string sStr)
+{
+    std::cout<<sStr<<std::endl;
+}
+void World::DoLog(int iValue)
+{
+    std::cout<<iValue<<std::endl;
+}
+
+/*
  * Run all the stuff that should be done to create the World
  *
  */
 void World::DoInitalisation()
 {
     //Reset stuff
+    DoLog("Assigning Memory for World");
     m_viiMap.assign(m_iWidth, WorldMapRow(m_iHeight));
 
     for (WorldMapIterator x = m_viiMap.begin(); x != m_viiMap.end(); ++x)
@@ -68,11 +93,31 @@ void World::DoInitalisation()
         WorldMapRow viRow = *x;
         for (WorldMapRowIterator y = viRow.begin(); y != viRow.end(); ++y)
         {
-            *y = FieldEmpty;
+            y->SetType(FieldEmpty);
+            y->SetWeight(0);
         }
     }
 
+    //Random
+    DoLog("Create Random Generator");
+    srand ( time(NULL) );
+
     //Create Step Points
+    DoLog("Initalisate some points");
+    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+    {
+        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+        {
+            int iRand = rand() % 20;
+            DoLog(iRand);
+            GetField(iPosX, iPosY).SetWeight( iRand );
+            DoLog(GetField(iPosX, iPosY).GetWeight());
+        }
+    }
+
+    DoLog("Field 0,0 got: ");
+    DoLog(GetField(0, 0).GetWeight());
+
 
 
 }
@@ -108,6 +153,11 @@ WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
         return FieldUnkown;
     }
 
+    return m_viiMap.at(iPosX).at(iPosY).GetType();
+}
+
+WorldField World::GetField(unsigned int iPosX, unsigned int iPosY)
+{
     return m_viiMap.at(iPosX).at(iPosY);
 }
 
@@ -115,7 +165,7 @@ WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
 
 void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField)
 {
-    m_viiMap.at(iPosX).at(iPosY) = iField;
+    m_viiMap.at(iPosX).at(iPosY).SetType(iField);
 }
 
 
