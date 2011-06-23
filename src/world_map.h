@@ -5,6 +5,7 @@
  * Created on 22. Juni 2011, 19:12
  */
 
+#pragma once
 #ifndef WORLD_MAP_H
 #define	WORLD_MAP_H
 
@@ -25,4 +26,3 @@ typedef vector<WorldMapField>::iterator              WorldMapRowIterator;
 typedef vector< vector<WorldMapField> >              WorldMap;
 
 #endif	/* WORLD_MAP_H */
-
