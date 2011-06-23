@@ -153,10 +153,10 @@ WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
         return FieldUnkown;
     }
 
-    return m_viiMap.at(iPosX).at(iPosY).GetType();
+    return GetField(iPosX, iPosY).GetType();
 }
 
-WorldField World::GetField(unsigned int iPosX, unsigned int iPosY)
+WorldField& World::GetField(unsigned int iPosX, unsigned int iPosY)
 {
     return m_viiMap.at(iPosX).at(iPosY);
 }
@@ -165,7 +165,7 @@ WorldField World::GetField(unsigned int iPosX, unsigned int iPosY)
 
 void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField)
 {
-    m_viiMap.at(iPosX).at(iPosY).SetType(iField);
+    GetField(iPosX, iPosY).SetType(iField);
 }
 
 

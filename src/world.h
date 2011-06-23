@@ -56,7 +56,7 @@ private:
     // private Getter
 
     WorldMapField GetCell(unsigned int x, unsigned int y);
-    WorldField GetField(unsigned int x, unsigned int y);
+    WorldField& GetField(unsigned int x, unsigned int y);
 
     /**********************************************************************/
     // private Sette
