@@ -5,8 +5,9 @@
 #include <iostream>
 #include <GL/glut.h>
 #include <vector>
+#include "world.h"
 
-void init_gui(int argc, char **argv, World oWorld = Null);
+void init_gui(int argc, char **argv, World *pWorld = NULL);
 
 void render(void);
 
