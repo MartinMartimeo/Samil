@@ -4,6 +4,17 @@
  * Severin Orth
  *
  */
+
+#include <iostream>
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#include <string>
+using std::string;
+
 #include "world.h"
 #include "world_map.h"
 #include "world_field.h"
@@ -56,12 +67,25 @@ World::~World()
 /**********************************************************************/
 
 /*
+ * Log Stuff
+ */
+void World::DoLog(string sStr)
+{
+    std::cout<<sStr<<std::endl;
+}
+void World::DoLog(int iValue)
+{
+    std::cout<<iValue<<std::endl;
+}
+
+/*
  * Run all the stuff that should be done to create the World
  *
  */
 void World::DoInitalisation()
 {
     //Reset stuff
+    DoLog("Assigning Memory for World");
     m_viiMap.assign(m_iWidth, WorldMapRow(m_iHeight));
 
     for (WorldMapIterator x = m_viiMap.begin(); x != m_viiMap.end(); ++x)
@@ -74,7 +98,26 @@ void World::DoInitalisation()
         }
     }
 
+    //Random
+    DoLog("Create Random Generator");
+    srand ( time(NULL) );
+
     //Create Step Points
+    DoLog("Initalisate some points");
+    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+    {
+        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+        {
+            int iRand = rand() % 20;
+            DoLog(iRand);
+            GetField(iPosX, iPosY).SetWeight( iRand );
+            DoLog(GetField(iPosX, iPosY).GetWeight());
+        }
+    }
+
+    DoLog("Field 0,0 got: ");
+    DoLog(GetField(0, 0).GetWeight());
+
 
 
 }

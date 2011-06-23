@@ -12,6 +12,9 @@
 #include <vector>
 using std::vector;
 
+#include <string>
+using std::string;
+
 class World;
 
 #include "world_map.h"
@@ -43,6 +46,11 @@ public:
     /**********************************************************************/
 
 private:
+
+    /**********************************************************************/
+    // functions
+    void DoLog(string sStr);
+    void DoLog(int iValue);
 
     /**********************************************************************/
     // private Getter

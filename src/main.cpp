@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 #include "graphic.h"
 #include "game.h"
+#include "world.h"
 
 int main(int argc, char **argv) 
 {	
@@ -9,6 +10,8 @@ int main(int argc, char **argv)
 	
 	std::cout<<"samil gestartet"<<std::endl;
 	std::cout<<"zum beenden ESC drücken"<<std::endl;
-	init_gui(argc, argv);
+
+        World *pWorld = new World(16, 16);
+        init_gui(argc, argv, pWorld);
 	return -1; 
 }
