@@ -3,7 +3,7 @@
 #include "world.h"
 
 float afCamOrient[3][3];
-
+CameraOrientation stCamOrient;
 void init_gui(int argc, char **argv, World *pWorld){
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -21,15 +21,19 @@ void init_gui(int argc, char **argv, World *pWorld){
 
 	glutKeyboardFunc(processNormalKeys);	// Exit(0) when ESC is pressed
 	
-	afCamOrient[0][0] = 0.0f;
-	afCamOrient[0][1] = 0.0f;
-	afCamOrient[0][2] = -10.0f;
-	afCamOrient[1][0] = 0.0f;
-	afCamOrient[1][1] = 0.0f;
-	afCamOrient[1][2] = 0.0f;
-	afCamOrient[2][0] = 0.0f;
-	afCamOrient[2][1] = 1.0f;
-	afCamOrient[2][2] = 0.0f;
+	
+	
+	stCamOrient.afVectEye[0] = 0.0f;
+	stCamOrient.afVectEye[1] = 0.0f;
+	stCamOrient.afVectEye[2] = -10.0f;
+	stCamOrient.afVectDest[0] = 0.0f;
+	stCamOrient.afVectDest[1] = 0.0f;
+	stCamOrient.afVectDest[2] = 0.0f;
+	stCamOrient.afVectUp[0] = 0.0f;
+	stCamOrient.afVectUp[1] = 1.0f;
+	stCamOrient.afVectUp[2] = 0.0f;
+	
+	//glutTimerFunc(40,Timer,0);
 	
 	glutMainLoop();
 	
@@ -67,9 +71,9 @@ void render(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();	// rendering shall not influence the scene.
 	//glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-	gluLookAt(afCamOrient[0][0], afCamOrient[0][1], afCamOrient[0][2],
-				afCamOrient[1][0], afCamOrient[1][1], afCamOrient[1][2],
-				afCamOrient[2][0], afCamOrient[2][1], afCamOrient[2][2]);
+	gluLookAt(stCamOrient.afVectEye[0], stCamOrient.afVectEye[1], stCamOrient.afVectEye[2],
+				stCamOrient.afVectDest[0], stCamOrient.afVectDest[1], stCamOrient.afVectDest[2],
+				stCamOrient.afVectUp[0], stCamOrient.afVectUp[1], stCamOrient.afVectUp[2]);
 				
 	glBegin(GL_QUADS);
 		glColor3f(1, 0, 0);		glVertex3f(-2.0f,-2.0f, -5.0f);
@@ -90,7 +94,7 @@ void idle(void)
 	
 	sleep(0.5);
 	//afCamOrient[0][2]+=0.1;
-	afCamOrient[0][0]-=0.1;
+	stCamOrient.afVectEye[0]-=0.1;
 	render(); // verursacht 100% load, sollte man sich also überlegen.
 }
 
