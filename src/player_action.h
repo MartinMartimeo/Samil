@@ -29,7 +29,7 @@ typedef enum {
 		Move_SE = 8,
 		Move_S = 7,
 		Move_SW = 6,
-		Move_W = 4
+		Move_W = 4,
 
 		Hit_NW = 11,
 		Hit_N = 12,
@@ -43,5 +43,4 @@ typedef enum {
 
 typedef int PlayerAction;
 
-#endif	/* WORLD_MAP_H */
-
+#endif	/* __PLAYER_ACTION_H */

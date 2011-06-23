@@ -2,10 +2,13 @@
 #ifndef __ki_interface_h
 #define __ki_interface_h
 
+#include "world_map.h"
+#include "player_action.h"
+
 class KI_Interface
 {
 public:
-	int Think(std::vector<std::vector<int> > const &view); // ich denke, also bin ich
+	PlayerAction Think(std::vector<std::vector<WorldMap> > const &view); // ich denke, also bin ich
 };
 
 #endif
