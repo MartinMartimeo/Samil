@@ -6,6 +6,7 @@
  */
 #include "world.h"
 #include "world_map.h"
+#include "world_field.h"
 
 #ifdef __world_h
 
@@ -68,7 +69,7 @@ void World::DoInitalisation()
         WorldMapRow viRow = *x;
         for (WorldMapRowIterator y = viRow.begin(); y != viRow.end(); ++y)
         {
-            *y = FieldEmpty;
+            y->SetType(FieldEmpty);
         }
     }
 
@@ -108,6 +109,11 @@ WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
         return FieldUnkown;
     }
 
+    return m_viiMap.at(iPosX).at(iPosY).GetType();
+}
+
+WorldField World::GetField(unsigned int iPosX, unsigned int iPosY)
+{
     return m_viiMap.at(iPosX).at(iPosY);
 }
 
@@ -115,7 +121,7 @@ WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
 
 void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField)
 {
-    m_viiMap.at(iPosX).at(iPosY) = iField;
+    m_viiMap.at(iPosX).at(iPosY).SetType(iField);
 }
 
 
