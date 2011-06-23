@@ -5,7 +5,6 @@
 #include <iostream>
 #include <GL/glut.h>
 #include <vector>
-#include <time.h>
 #include "world.h"
 
 
