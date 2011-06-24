@@ -15,8 +15,8 @@ using std::vector;
 #include "world_field.h"
 
 typedef vector< vector<WorldField> >::iterator    WorldMapIterator;
-typedef vector<WorldField>                        WorldMapRow;
-typedef vector<WorldField>::iterator              WorldMapRowIterator;
+typedef vector<WorldField>                        WorldMapFields;
+typedef vector<WorldField>::iterator              WorldMapFieldsIterator;
 typedef vector< vector<WorldField> >              WorldMap;
 
 #endif	/* WORLD_MAP_H */
