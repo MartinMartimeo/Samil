@@ -1,8 +1,8 @@
 #include <iostream>
 #include <GL/glut.h>
-#include "graphic.h"
 #include "game.h"
 #include "world.h"
+#include "gui.h"
 
 int main(int argc, char **argv) 
 {	
@@ -12,6 +12,6 @@ int main(int argc, char **argv)
 	std::cout<<"zum beenden ESC drücken"<<std::endl;
 
         World *pWorld = new World(16, 16);
-        init_gui(argc, argv, pWorld);
+        Gui *pGui = new Gui(argc, argv, pWorld);
 	return -1; 
 }

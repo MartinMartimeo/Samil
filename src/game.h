@@ -11,8 +11,10 @@
  *
  */
 
-#include<vector>
-#include"ki_interface.h"
+#include <vector>
+#include "ki_interface.h"
+#include "world.h"
+#include "ki_handle.h"
 
 class Game
 {
@@ -20,14 +22,16 @@ public:
 	Game();
 	~Game();
 
-	int LoadKI();
+	int LoadKI();	// Lädt eine KI in den KI-Vektor
 	
-	int InitWorld();
+	int InitWorld();	// Initialisierung der Welt
 	
-	int ProcessRound();
+	int ProcessRound();		// Abarbeitung einer Spielrunde
 
 private:
-	std::vector<KI_Interface>* m_vKIs;
+	//World m_world;	// Spielwelt
+	
+	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
 };
 
 #endif
