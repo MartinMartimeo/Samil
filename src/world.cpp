@@ -29,8 +29,8 @@ World::World(unsigned int iWorldPlayer, unsigned int iWorldHeight, unsigned int 
 {
     //Setting Values
     m_iPlayer = iWorldPlayer;
-    m_iHeight = floor(pow(2,floor(log(iWorldHeight)/log(2))));
-    m_iWidth = floor(pow(2,floor(log(iWorldWidth)/log(2))));
+    m_iHeight = floor(powf(2,floor(logf(iWorldHeight)/logf(2))));
+    m_iWidth = floor(powf(2,floor(logf(iWorldWidth)/logf(2))));
 
     DoInitalisation();
 
@@ -46,8 +46,8 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth)
 {
     //Setting Values
     m_iPlayer = 2;
-    m_iHeight = floor(pow(2,floor(log(iWorldHeight)/log(2))));
-    m_iWidth = floor(pow(2,floor(log(iWorldWidth)/log(2))));
+    m_iHeight = floor(powf(2,floor(logf(iWorldHeight)/logf(2))));
+    m_iWidth = floor(powf(2,floor(logf(iWorldWidth)/logf(2))));
 
     DoInitalisation();
 
@@ -147,9 +147,9 @@ void World::DoInitalisation()
                 int iValue = GetField(iPosLeftX, iPosY).GetWeight();
                 if (iPosRightX < m_iWidth)
                 {
-                    iValue = floor((iValue + GetField(iPosRightX, iPosY).GetWeight()) / 2);
+                    iValue = ((iValue + GetField(iPosRightX, iPosY).GetWeight()) / 2);
                 }
-                iValue += (rand() % iStepX) - floor(iStepX/2);
+                iValue += (rand() % iStepX) - (iStepX/2);
                 GetField(iPosX, iPosY).SetWeight( iValue );
             }
 
@@ -163,7 +163,7 @@ void World::DoInitalisation()
         }
         iPosLeftY = 0;
         iPosRightY = 0;
-        iPosY = floor(iStepX / 2);
+        iPosY = (iStepX / 2);
         for (; iPosY < m_iHeight;)
         {
             iPosRightY += iStepY;
@@ -173,9 +173,9 @@ void World::DoInitalisation()
                 int iValue = GetField(iPosX, iPosLeftY).GetWeight();
                 if (iPosRightY < m_iHeight)
                 {
-                    iValue = floor((iValue + GetField(iPosX, iPosRightY).GetWeight()));
+                    iValue = ((iValue + GetField(iPosX, iPosRightY).GetWeight()));
                 }
-                iValue += (rand() % iStepY) - floor(iStepY / 2);
+                iValue += (rand() % iStepY) - (iStepY / 2);
                 GetField(iPosX, iPosY).SetWeight( iValue );
             }
 
