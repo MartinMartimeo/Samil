@@ -30,7 +30,7 @@ public:
     
     World(unsigned int iWorldPlayer, unsigned int iWorldHeight, unsigned int iWorldWidth);
     World(unsigned int iWorldHeight, unsigned int iWorldWidth);
-    ~World();
+    virtual ~World();
 
     /**********************************************************************/
     // Functions
