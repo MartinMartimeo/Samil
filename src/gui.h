@@ -41,7 +41,7 @@ public:
 
     /**********************************************************************/
     // Getter
-
+    static Gui *m_this;
 
 
     /**********************************************************************/
@@ -58,13 +58,12 @@ private:
 
 
     /**********************************************************************/
-    // private Sette
+    // private Setter
 
     void SetHeight(unsigned int i);
     unsigned int GetHeight();
     void SetWidth(unsigned int i);
     unsigned int GetWidth();
-
     CameraOrientation stCamOrient;
     unsigned int m_iWidth, m_iHeight;
 
