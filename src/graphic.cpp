@@ -2,7 +2,6 @@
 #include "graphic.h"
 #include "world.h"
 
-float afCamOrient[3][3];
 CameraOrientation stCamOrient;
 void init_gui(int argc, char **argv, World *pWorld){
 	glutInit(&argc, argv);
@@ -87,13 +86,10 @@ void render(void) {
 	glutSwapBuffers();
 }
 
-
-
 void idle(void)
 {
 	
 	sleep(0.5);
-	//afCamOrient[0][2]+=0.1;
 	stCamOrient.afVectEye[0]-=0.1;
 	render(); // verursacht 100% load, sollte man sich also überlegen.
 }

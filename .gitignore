@@ -3,6 +3,7 @@
 *.so
 *.exe
 *.swp
+*.anjuta*
 
 samil
 
