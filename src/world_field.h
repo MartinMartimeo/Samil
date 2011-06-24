@@ -17,6 +17,8 @@ typedef enum {
     FieldUnkown = '?'
 } WorldMapField;
 
+class WorldField;
+
 class WorldField {
     friend class World;
 
@@ -32,7 +34,9 @@ public:
     // Getter
 
     WorldMapField GetType();
-    int GetWeight();  
+    int GetWeight();
+    unsigned int GetDistance();
+    WorldField& GetPreCursor();
 
 
 private:
@@ -41,13 +45,19 @@ private:
     // private Setter
 
     void SetType(WorldMapField iValue);
+    void SetDistance(unsigned int iValue);
     void SetWeight(int iValue);
+    void SetPreCursor(WorldField& oPreCursor);
 
 protected:
 
     WorldMapField       m_iType;
 
+    WorldField*         m_pPreCursor;
+    unsigned int        m_iDistance;
     int                 m_iWeight;
+
+
 
 };
 

@@ -1,0 +1,4 @@
+[core]
+    whitespace = tab-in-indent,tabwidth=4
+[apply]
+    whitespace = fix

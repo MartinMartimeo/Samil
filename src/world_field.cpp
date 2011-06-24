@@ -29,10 +29,23 @@ WorldMapField WorldField::GetType()
     return m_iType;
 }
 
+unsigned int WorldField::GetDistance()
+{
+    return m_iDistance;
+}
+
 int WorldField::GetWeight()
 {
     return m_iWeight;
 }
+
+WorldField& WorldField::GetPreCursor()
+{
+    return *m_pPreCursor;
+}
+
+
+
 
 /**********************************************************************/
 
@@ -41,9 +54,19 @@ void WorldField::SetType(WorldMapField iValue)
     m_iType = iValue;
 }
 
+void WorldField::SetDistance(unsigned int iValue)
+{
+    m_iDistance = iValue;
+}
+
 void WorldField::SetWeight(int iValue)
 {
     m_iWeight = iValue;
+}
+
+void WorldField::SetPreCursor(WorldField& oPreCursor)
+{
+    m_pPreCursor = &oPreCursor;
 }
 
 #endif
