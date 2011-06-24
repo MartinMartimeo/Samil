@@ -13,5 +13,9 @@ int main(int argc, char **argv)
 
         World *pWorld = new World(16, 16);
         Gui *pGui = new Gui(argc, argv, pWorld);
+
+        delete pWorld;
+        delete pGui;
+
 	return -1; 
 }

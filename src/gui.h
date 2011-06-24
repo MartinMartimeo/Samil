@@ -28,7 +28,7 @@ public:
     // Konstruktor, Destruktor
 
     Gui(int argc, char **argv, World *pWorld = NULL);
-    ~Gui();
+    virtual ~Gui();
 
     /**********************************************************************/
     // Functions

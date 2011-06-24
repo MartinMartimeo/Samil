@@ -4,6 +4,11 @@
 
 Gui *Gui::m_this;
 
+Gui::~Gui()
+{
+    
+}
+
 Gui::Gui(int argc, char **argv, World *pWorld) {
     SetWidth(pWorld->GetWidth());
     SetHeight(pWorld->GetHeight());
