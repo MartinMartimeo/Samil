@@ -18,6 +18,11 @@
 #include "world_map.h"
 #include "world_field.h"
 
+#ifdef _WIN32
+#define pow powf
+#define log logf
+#endif
+
 #ifdef __world_h
 
 /**********************************************************************/
@@ -25,34 +30,19 @@
 /*
  * Konstrukts the World
  */
-World::World(unsigned int iWorldPlayer, unsigned int iWorldHeight, unsigned int iWorldWidth)
+World::World(unsigned int iWorldHeight, unsigned int iWorldWidth, unsigned int iWorldPlayer, unsigned int iWorldEntities)
 {
     //Setting Values
     m_iPlayer = iWorldPlayer;
-    m_iHeight = floor(powf(2,floor(logf(iWorldHeight)/logf(2))));
-    m_iWidth = floor(powf(2,floor(logf(iWorldWidth)/logf(2))));
+    m_iHeight = floor(pow(2,floor(log(iWorldHeight)/log(2))));
+    m_iWidth = floor(pow(2,floor(log(iWorldWidth)/log(2))));
+    m_iWorldEntinies = iWorldEntities;
 
     DoInitalisation();
 
 
 
 }
-
-/*
- * Konstruks the World
- * iPlayer = 2
- */
-World::World(unsigned int iWorldHeight, unsigned int iWorldWidth)
-{
-    //Setting Values
-    m_iPlayer = 2;
-    m_iHeight = floor(powf(2,floor(logf(iWorldHeight)/logf(2))));
-    m_iWidth = floor(powf(2,floor(logf(iWorldWidth)/logf(2))));
-
-    DoInitalisation();
-
-}
-
 
 /*
  * Destruktor

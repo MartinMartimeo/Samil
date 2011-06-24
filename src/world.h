@@ -28,8 +28,7 @@ public:
     /**********************************************************************/
     // Konstruktor, Destruktor
     
-    World(unsigned int iWorldPlayer, unsigned int iWorldHeight, unsigned int iWorldWidth);
-    World(unsigned int iWorldHeight, unsigned int iWorldWidth);
+    World(unsigned int iWorldHeight, unsigned int iWorldWidth, unsigned int iWorldPlayer=2, unsigned int iWorldEntities=10);
     virtual ~World();
 
     /**********************************************************************/
@@ -69,6 +68,7 @@ protected:
     unsigned int                                m_iPlayer;
     unsigned int                                m_iHeight;
     unsigned int                                m_iWidth;
+    unsigned int                                m_iWorldEntinies;
 
     WorldMap                                    m_viiMap;
 
