@@ -2,6 +2,10 @@
 #include "graphic.h"
 #include "world.h"
 
+#ifdef WINDOWS
+#include <Windows.h>
+#endif
+
 CameraOrientation stCamOrient;
 void init_gui(int argc, char **argv, World *pWorld){
 	glutInit(&argc, argv);
@@ -88,8 +92,11 @@ void render(void) {
 
 void idle(void)
 {
-	
+#ifdef WINDOWS
+	Sleep(500);
+#else
 	sleep(0.5);
+#endif
 	stCamOrient.afVectEye[0]-=0.1;
 	render(); // verursacht 100% load, sollte man sich also überlegen.
 }
