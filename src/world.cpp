@@ -5,19 +5,20 @@
  *
  */
 
+#include <algorithm>
 #include <iostream>
+#include <string>
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include <string>
-using std::string;
-
 #include "world.h"
 #include "world_map.h"
 #include "world_field.h"
+
+using namespace std;
 
 #ifdef __world_h
 
@@ -30,8 +31,8 @@ World::World(unsigned int iWorldPlayer, unsigned int iWorldHeight, unsigned int 
 {
     //Setting Values
     m_iPlayer = iWorldPlayer;
-    m_iHeight = iWorldHeight;
-    m_iWidth = iWorldWidth;
+    m_iHeight = floor(pow(2,floor(log(iWorldHeight)/log(2))));
+    m_iWidth = floor(pow(2,floor(log(iWorldWidth)/log(2))));
 
     DoInitalisation();
 
@@ -47,8 +48,8 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth)
 {
     //Setting Values
     m_iPlayer = 2;
-    m_iHeight = iWorldHeight;
-    m_iWidth = iWorldWidth;
+    m_iHeight = floor(pow(2,floor(log(iWorldHeight)/log(2))));
+    m_iWidth = floor(pow(2,floor(log(iWorldWidth)/log(2))));
 
     DoInitalisation();
 
@@ -108,17 +109,93 @@ void World::DoInitalisation()
     {
         for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
         {
-            int iRand = rand() % 20;
-            DoLog(iRand);
+            int iRand = rand() % 100;
             GetField(iPosX, iPosY).SetWeight( iRand );
-            DoLog(GetField(iPosX, iPosY).GetWeight());
         }
     }
 
-    DoLog("Field 0,0 got: ");
-    DoLog(GetField(0, 0).GetWeight());
+    //Gehe die Reihen aus
+    DoLog("Run the Magic");
 
+    unsigned int iPosX, iPosY;
+    unsigned int iPosLeftX, iPosRightX, iPosLeftY, iPosRightY;
+    unsigned int iStepX, iStepY;
 
+    iStepX = floor(pow(m_iWidth, 0.5));
+    iStepY = floor(pow(m_iHeight, 0.5));
+
+    while (iStepX + iStepY > 1)
+    {
+        if (iStepY < 1)
+        {
+            iStepY = 1;
+        }
+        iPosLeftX = 0;
+        iPosRightX = 0;
+        iPosX = floor(iStepX / 2);
+        for (; iPosX < m_iWidth;)
+        {
+            iPosRightX += iStepX;
+
+            for (iPosY = 0; iPosY < m_iHeight; iPosY += max(1.0, floor(iStepY/2)))
+            {
+                int iValue = GetField(iPosLeftX, iPosY).GetWeight();
+                if (iPosRightX < m_iWidth)
+                {
+                    iValue = floor((iValue + GetField(iPosRightX, iPosY).GetWeight()) / 2);
+                }
+                iValue += (rand() % iStepX) - floor(iStepX/2);
+                GetField(iPosX, iPosY).SetWeight( iValue );
+            }
+
+            iPosX += iStepX;
+            iPosLeftX += iStepX;
+        }
+        iStepX /= 2;
+        if (iStepX < 1)
+        {
+            iStepX = 1;
+        }
+        iPosLeftY = 0;
+        iPosRightY = 0;
+        iPosY = floor(iStepX / 2);
+        for (; iPosY < m_iHeight;)
+        {
+            iPosRightY += iStepY;
+
+            for (iPosX = 0; iPosX < m_iWidth; iPosX += max(1.0,floor(iStepX/2)))
+            {
+                int iValue = GetField(iPosX, iPosLeftY).GetWeight();
+                if (iPosRightY < m_iHeight)
+                {
+                    iValue = floor((iValue + GetField(iPosX, iPosRightY).GetWeight()));
+                }
+                iValue += (rand() % iStepY) - floor(iStepY / 2);
+                GetField(iPosX, iPosY).SetWeight( iValue );
+            }
+
+            iPosY += iStepY;
+            iPosLeftY += iStepY;
+        }
+        iStepY /= 2;
+    }
+
+    DoLog("Check for Maximum/Minimum");
+
+    int iMin = 1000;
+    int iMax = 0;
+
+    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+    {
+        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+        {
+            iMin = min(iMin, GetField(iPosX, iPosY).GetWeight());
+            iMax = max(iMax, GetField(iPosX, iPosY).GetWeight());
+        }
+    }
+
+    cout<<"Minimum Weight: "<<iMin<<endl;
+    cout<<"Maximum Weight: "<<iMax<<endl;
 
 }
 
@@ -153,10 +230,10 @@ WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
         return FieldUnkown;
     }
 
-    return m_viiMap.at(iPosX).at(iPosY).GetType();
+    return GetField(iPosX, iPosY).GetType();
 }
 
-WorldField World::GetField(unsigned int iPosX, unsigned int iPosY)
+WorldField& World::GetField(unsigned int iPosX, unsigned int iPosY)
 {
     return m_viiMap.at(iPosX).at(iPosY);
 }
@@ -165,7 +242,7 @@ WorldField World::GetField(unsigned int iPosX, unsigned int iPosY)
 
 void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField)
 {
-    m_viiMap.at(iPosX).at(iPosY).SetType(iField);
+    GetField(iPosX, iPosY).SetType(iField);
 }
 
 

@@ -30,7 +30,7 @@ public:
     
     World(unsigned int iWorldPlayer, unsigned int iWorldHeight, unsigned int iWorldWidth);
     World(unsigned int iWorldHeight, unsigned int iWorldWidth);
-    ~World();
+    virtual ~World();
 
     /**********************************************************************/
     // Functions
@@ -56,7 +56,7 @@ private:
     // private Getter
 
     WorldMapField GetCell(unsigned int x, unsigned int y);
-    WorldField GetField(unsigned int x, unsigned int y);
+    WorldField& GetField(unsigned int x, unsigned int y);
 
     /**********************************************************************/
     // private Sette
