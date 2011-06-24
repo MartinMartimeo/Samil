@@ -12,6 +12,8 @@
  */
 
 #include <vector>
+#include <string>
+
 #include "ki_interface.h"
 #include "world.h"
 #include "ki_handle.h"
@@ -22,7 +24,7 @@ public:
 	Game();
 	~Game();
 
-	int LoadKI();	// Lädt eine KI in den KI-Vektor
+	KIHandle LoadKI(std::string sKIPath);	// Lädt eine KI in den KI-Vektor
 	
 	int InitWorld();	// Initialisierung der Welt
 	
