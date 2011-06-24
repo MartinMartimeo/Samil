@@ -5,19 +5,20 @@
  *
  */
 
+#include <algorithm>
 #include <iostream>
+#include <string>
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include <string>
-using std::string;
-
 #include "world.h"
 #include "world_map.h"
 #include "world_field.h"
+
+using namespace std;
 
 #ifdef __world_h
 
@@ -125,8 +126,6 @@ void World::DoInitalisation()
 
     while (iStepX + iStepY > 1)
     {
-        DoLog(iStepX);
-        DoLog(iStepY);
         if (iStepY < 1)
         {
             iStepY = 1;
@@ -138,12 +137,12 @@ void World::DoInitalisation()
         {
             iPosRightX += iStepX;
 
-            for (iPosY = 0; iPosY < m_iHeight; iPosY += floor(iStepY/2))
+            for (iPosY = 0; iPosY < m_iHeight; iPosY += max(1.0, floor(iStepY/2)))
             {
                 int iValue = GetField(iPosLeftX, iPosY).GetWeight();
                 if (iPosRightX < m_iWidth)
                 {
-                    iValue = floor(iValue + GetField(iPosRightX, iPosY).GetWeight());
+                    iValue = floor((iValue + GetField(iPosRightX, iPosY).GetWeight()) / 2);
                 }
                 iValue += (rand() % 9) - 4;
                 GetField(iPosX, iPosY).SetWeight( iValue );
@@ -164,12 +163,12 @@ void World::DoInitalisation()
         {
             iPosRightY += iStepY;
 
-            for (iPosX = 0; iPosX < m_iWidth; iPosX += floor(iStepX/2))
+            for (iPosX = 0; iPosX < m_iWidth; iPosX += max(1.0,floor(iStepX/2)))
             {
                 int iValue = GetField(iPosX, iPosLeftY).GetWeight();
                 if (iPosRightY < m_iHeight)
                 {
-                    iValue = floor(iValue + GetField(iPosX, iPosRightY).GetWeight());
+                    iValue = floor((iValue + GetField(iPosX, iPosRightY).GetWeight()));
                 }
                 iValue += (rand() % 9) - 4;
                 GetField(iPosX, iPosY).SetWeight( iValue );
