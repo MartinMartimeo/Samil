@@ -30,7 +30,7 @@ KIHandle Game::LoadKI(std::string sKIPath)
         return k;
     }
 
-    std::cout<<"dlopen returned NULL-Handle"<<std::endl;
+    std::cout<<"dlopen returned NULL-Handle while loading ["<<sKIPath<<"] with error ["<<"dlerror()"<<"]"<<std::endl;
     return 0;
 }
 
