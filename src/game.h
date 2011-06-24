@@ -14,6 +14,7 @@
 #include <vector>
 #include "ki_interface.h"
 #include "world.h"
+#include "ki_handle.h"
 
 class Game
 {
@@ -30,7 +31,7 @@ public:
 private:
 	//World m_world;	// Spielwelt
 	
-	std::vector<KI_Interface>* m_vKIs; // Liste mit SpielerKIs
+	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
 };
 
 #endif

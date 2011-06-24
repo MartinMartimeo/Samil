@@ -2,13 +2,13 @@
 
 Game::Game() 
 {
-	m_vKIs = new(std::vector<KI_Interface>);
+	m_pvKIs = new(std::vector<KIHandle>);
 	//InitWorld();
 }
 
 Game::~Game()
 {
-	delete(m_vKIs);
+	delete(m_pvKIs);
 }
 
 int Game::InitWorld()
