@@ -2,7 +2,7 @@
 
 CC = g++
 
-CFLAGS = -Wall -O2
+CFLAGS = -Wall -pedantic -O2
 LDFLAGS += -lglut -lGLU
 
 
