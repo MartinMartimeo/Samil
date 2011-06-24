@@ -144,7 +144,7 @@ void World::DoInitalisation()
                 {
                     iValue = floor((iValue + GetField(iPosRightX, iPosY).GetWeight()) / 2);
                 }
-                iValue += (rand() % 9) - 4;
+                iValue += (rand() % iStepX) - floor(iStepX/2);
                 GetField(iPosX, iPosY).SetWeight( iValue );
             }
 
@@ -170,7 +170,7 @@ void World::DoInitalisation()
                 {
                     iValue = floor((iValue + GetField(iPosX, iPosRightY).GetWeight()));
                 }
-                iValue += (rand() % 9) - 4;
+                iValue += (rand() % iStepY) - floor(iStepY / 2);
                 GetField(iPosX, iPosY).SetWeight( iValue );
             }
 
@@ -180,12 +180,22 @@ void World::DoInitalisation()
         iStepY /= 2;
     }
 
+    DoLog("Check for Maximum/Minimum");
 
-    DoLog("Field 0,0 got: ");
-    DoLog(GetField(0, 0).GetWeight());
-    DoLog("Field 0,1 got: ");
-    DoLog(GetField(0, 1).GetWeight());
+    int iMin = 1000;
+    int iMax = 0;
 
+    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+    {
+        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+        {
+            iMin = min(iMin, GetField(iPosX, iPosY).GetWeight());
+            iMax = max(iMax, GetField(iPosX, iPosY).GetWeight());
+        }
+    }
+
+    cout<<"Minimum Weight: "<<iMin<<endl;
+    cout<<"Maximum Weight: "<<iMax<<endl;
 
 }
 
