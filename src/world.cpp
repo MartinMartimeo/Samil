@@ -5,20 +5,18 @@
  *
  */
 
-#include <algorithm>
-#include <iostream>
-#include <string>
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
+#include <algorithm>
+#include <iostream>
+#include <string>
+
 #include "world.h"
 #include "world_map.h"
 #include "world_field.h"
-
-using namespace std;
 
 #ifdef __world_h
 
@@ -87,16 +85,24 @@ void World::DoInitalisation()
 {
     //Reset stuff
     DoLog("Assigning Memory for World");
-    m_viiMap.assign(m_iWidth, WorldMapRow(m_iHeight));
+    m_viiMap.assign(m_iWidth, WorldMapFields(m_iHeight));
 
+    unsigned int iPosX, iPosY;
+
+    iPosX = 0;
     for (WorldMapIterator x = m_viiMap.begin(); x != m_viiMap.end(); ++x)
     {
-        WorldMapRow viRow = *x;
-        for (WorldMapRowIterator y = viRow.begin(); y != viRow.end(); ++y)
+        iPosY = 0;
+        WorldMapFields viRow = *x;
+        for (WorldMapFieldsIterator y = viRow.begin(); y != viRow.end(); ++y)
         {
             y->SetType(FieldEmpty);
             y->SetWeight(0);
+            y->SetPosX(iPosX);
+            y->SetPosY(iPosY);
+            iPosY++;
         }
+        iPosX++;
     }
 
     //Random
@@ -116,8 +122,7 @@ void World::DoInitalisation()
 
     //Gehe die Reihen aus
     DoLog("Run the Magic");
-
-    unsigned int iPosX, iPosY;
+    
     unsigned int iPosLeftX, iPosRightX, iPosLeftY, iPosRightY;
     unsigned int iStepX, iStepY;
 
@@ -132,12 +137,12 @@ void World::DoInitalisation()
         }
         iPosLeftX = 0;
         iPosRightX = 0;
-        iPosX = floor(iStepX / 2);
+        iPosX = iStepX / 2;
         for (; iPosX < m_iWidth;)
         {
             iPosRightX += iStepX;
 
-            for (iPosY = 0; iPosY < m_iHeight; iPosY += max(1.0, floor(iStepY/2)))
+            for (iPosY = 0; iPosY < m_iHeight; iPosY += std::max((unsigned int) 1, iStepY/2))
             {
                 int iValue = GetField(iPosLeftX, iPosY).GetWeight();
                 if (iPosRightX < m_iWidth)
@@ -163,7 +168,7 @@ void World::DoInitalisation()
         {
             iPosRightY += iStepY;
 
-            for (iPosX = 0; iPosX < m_iWidth; iPosX += max(1.0,floor(iStepX/2)))
+            for (iPosX = 0; iPosX < m_iWidth; iPosX += std::max((unsigned int) 1,iStepX/2))
             {
                 int iValue = GetField(iPosX, iPosLeftY).GetWeight();
                 if (iPosRightY < m_iHeight)
@@ -180,6 +185,7 @@ void World::DoInitalisation()
         iStepY /= 2;
     }
 
+    //Checking for Minimum, Maximum (just for interest)
     DoLog("Check for Maximum/Minimum");
 
     int iMin = 1000;
@@ -189,13 +195,30 @@ void World::DoInitalisation()
     {
         for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
         {
-            iMin = min(iMin, GetField(iPosX, iPosY).GetWeight());
-            iMax = max(iMax, GetField(iPosX, iPosY).GetWeight());
+            iMin = std::min(iMin, GetField(iPosX, iPosY).GetWeight());
+            iMax = std::max(iMax, GetField(iPosX, iPosY).GetWeight());
         }
     }
 
-    cout<<"Minimum Weight: "<<iMin<<endl;
-    cout<<"Maximum Weight: "<<iMax<<endl;
+    std::cout<<"Minimum Weight: "<<iMin<<std::endl;
+    std::cout<<"Maximum Weight: "<<iMax<<std::endl;
+
+    //Setting Starting Flags
+    std::cout<<"Generating Starting Flags for "<<m_iPlayer<<" Player "<<std::endl;
+    WorldMapFields viStartingFields(m_iPlayer);
+    viStartingFields.clear();
+
+    unsigned int iMiddleX = m_iWidth / 2;
+    unsigned int iMiddleY = m_iHeight / 2;
+    for (double dAngel = 0; dAngel < M_PI * 2; dAngel += 2 * M_PI / m_iPlayer)
+    {
+        iPosX = sin(dAngel) * (m_iWidth * 3 / 8) + iMiddleX;
+        iPosY = cos(dAngel) * (m_iHeight * 3 / 8) + iMiddleY;
+        viStartingFields.push_back(GetField(iPosX, iPosY));
+    }
+
+
+
 
 }
 

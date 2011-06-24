@@ -38,6 +38,9 @@ public:
     unsigned int GetDistance();
     WorldField& GetPreCursor();
 
+    unsigned int GetPosX();
+    unsigned int GetPosY();
+
 
 private:
 
@@ -49,6 +52,9 @@ private:
     void SetWeight(int iValue);
     void SetPreCursor(WorldField& oPreCursor);
 
+    void SetPosX(unsigned int iPosX);
+    void SetPosY(unsigned int iPosY);
+
 protected:
 
     WorldMapField       m_iType;
@@ -56,6 +62,9 @@ protected:
     WorldField*         m_pPreCursor;
     unsigned int        m_iDistance;
     int                 m_iWeight;
+
+    unsigned int        m_iPosX;
+    unsigned int        m_iPosY;
 
 
 
