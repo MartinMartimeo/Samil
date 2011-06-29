@@ -39,6 +39,11 @@ public:
     static void resize(int w, int h);
     static void processNormalKeys(unsigned char key, int x, int y);
     static void updatePerspective();
+    void renderWater();
+    void renderTree();
+    void renderMountain(float x, float y);
+    void renderEmpty();
+    //void transformArraytoCoordinates(int x, y);
 
     /**********************************************************************/
     // Getter

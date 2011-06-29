@@ -376,6 +376,7 @@ void World::DoInitalisation()
                 }
             }
 
+            // Finde Weg zurück und punsih die Felder
             if (oEndField.HasInformation(FieldBlack))
             {
                 DoLog("Found Final Field");
@@ -384,8 +385,9 @@ void World::DoInitalisation()
 
                 WorldField& oWayField = oEndField;
                 while (oWayField.GetPosX() != oWayField.GetPreCursor().GetPosX() && oWayField.GetPosY() != oWayField.GetPreCursor().GetPosY()) {
-                    PunishField(oWayField.GetPosX(), oWayField.GetPosY(), 5);
+                    PunishField(oWayField.GetPosX(), oWayField.GetPosY(), 7);
                     oWayField = oWayField.GetPreCursor();
+                    oWayField.SetInformation(FieldWay);
                 }
 
 
@@ -393,6 +395,51 @@ void World::DoInitalisation()
                 break;
             }
         }
+
+        //Male
+        DoLog("Betätige dich als Weltenkünstler");
+        for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+        {
+            for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+            {
+                if (GetField(iPosX, iPosY).HasInformation(FieldWay))
+                {
+                    GetField(iPosX, iPosY).SetType(FieldEmpty);
+                    continue;
+                }
+
+                if (GetField(iPosX, iPosY).GetWeight() > iMin * 3)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldMountain);
+                    continue;
+                }
+
+                if (GetField(iPosX, iPosY).GetWeight() < iMax / 3)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldSea);
+                    continue;
+                }
+
+                unsigned int iValue;
+
+                iValue = rand() % 20;
+                if (iValue < 2)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldStone);
+                    continue;
+                }
+
+                iValue = rand() % 30;
+                if (iValue < 3)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldTree);
+                    continue;
+                }
+
+                GetField(iPosX, iPosY).SetType(FieldEmpty);
+            }
+        }
+
     }
 
 
