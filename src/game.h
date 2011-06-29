@@ -31,7 +31,7 @@ public:
 	int ProcessRound();		// Abarbeitung einer Spielrunde
 
 private:
-	//World m_world;	// Spielwelt
+//	World m_world;	// Spielwelt
 	
 	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
 };

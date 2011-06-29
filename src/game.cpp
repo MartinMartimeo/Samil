@@ -8,18 +8,23 @@
 
 #ifndef RTLD_LOCAL
 # define RTLD_LOCAL 0
-# warning "your crap box doesnt define RTLD_LOCAL !?"
+# warning "RTLD_LOCAL nicht definiert"
 #endif
 
 Game::Game() 
 {
 	m_pvKIs = new(std::vector<KIHandle>);
-	//InitWorld();
+	InitWorld();
 }
 
 Game::~Game()
 {
-	delete(m_pvKIs);
+	for(vector<KIHandle>::iterator it = m_pvKIs->begin(); it != m_pvKIs->end(); it++)
+    {
+        dlclose(*it);
+    }
+
+    delete(m_pvKIs);
 }
 
 KIHandle Game::LoadKI(std::string sKIPath)
