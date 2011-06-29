@@ -22,7 +22,7 @@ hit = +10
 */
 
 typedef enum {
-    DoNothing = 0;
+    DoNothing = 0,
 
     Move_NW = 1,
     Move_N = 2,
