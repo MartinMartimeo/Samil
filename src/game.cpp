@@ -8,18 +8,23 @@
 
 #ifndef RTLD_LOCAL
 # define RTLD_LOCAL 0
-# warning "your crap box doesnt define RTLD_LOCAL !?"
+# warning "RTLD_LOCAL nicht definiert"
 #endif
 
 Game::Game() 
 {
 	m_pvKIs = new(std::vector<KIHandle>);
-	//InitWorld();
+	InitWorld();
 }
 
 Game::~Game()
 {
-	delete(m_pvKIs);
+	for(vector<KIHandle>::iterator it = m_pvKIs->begin(); it != m_pvKIs->end(); it++)
+    {
+        dlclose(*it);
+    }
+
+    delete(m_pvKIs);
 }
 
 KIHandle Game::LoadKI(std::string sKIPath)
@@ -32,6 +37,11 @@ KIHandle Game::LoadKI(std::string sKIPath)
 
     std::cout<<"dlopen returned NULL-Handle while loading ["<<sKIPath<<"] with error ["<<"dlerror()"<<"]"<<std::endl;
     return 0;
+}
+
+PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMap const & view)
+{
+    return ((KI_Interface*) kiHandle) -> Think(view);
 }
 
 int Game::InitWorld()
