@@ -8,7 +8,7 @@
 #ifndef WORLD_FIELD_H
 #define	WORLD_FIELD_H
 
-typedef enum {
+typedef enum WorldMapField {
     FieldEmpty = '0',
     FieldTree = 'T',
     FieldStone = 'S',
@@ -16,6 +16,12 @@ typedef enum {
     FieldMountain = 'M',
     FieldUnkown = '?'
 } WorldMapField;
+
+typedef enum WorldFieldInformation {
+    FieldBlocked = 0x1,
+    FieldWay = 0x2,
+    FieldFlag = 0x4
+} WorldFieldInformation;
 
 class WorldField;
 
@@ -41,6 +47,8 @@ public:
     unsigned int GetPosX();
     unsigned int GetPosY();
 
+    bool HasInformation(WorldFieldInformation fInformation);
+
 
 private:
 
@@ -55,16 +63,20 @@ private:
     void SetPosX(unsigned int iPosX);
     void SetPosY(unsigned int iPosY);
 
+    void SetInformation(WorldFieldInformation fInformation);
+
 protected:
 
-    WorldMapField       m_iType;
+    WorldMapField           m_iType;
 
-    WorldField*         m_pPreCursor;
-    unsigned int        m_iDistance;
-    int                 m_iWeight;
+    WorldField*             m_pPreCursor;
+    unsigned int            m_iDistance;
+    int                     m_iWeight;
 
-    unsigned int        m_iPosX;
-    unsigned int        m_iPosY;
+    WorldFieldInformation   m_fInformation;
+
+    unsigned int            m_iPosX;
+    unsigned int            m_iPosY;
 
 
 

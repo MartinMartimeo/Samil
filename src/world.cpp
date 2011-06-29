@@ -118,6 +118,7 @@ void World::DoInitalisation()
 
     iStepX = floor(pow(m_iWidth, 0.5));
     iStepY = floor(pow(m_iHeight, 0.5));
+    unsigned int iDynamicChange = log(m_iWidth * m_iHeight) / log(2);
 
     while (iStepX + iStepY > 1)
     {
@@ -139,7 +140,7 @@ void World::DoInitalisation()
                 {
                     iValue = ((iValue + GetField(iPosRightX, iPosY).GetWeight()) / 2);
                 }
-                iValue += (rand() % iStepX) - (iStepX/2);
+                iValue += (rand() % iDynamicChange) - (iDynamicChange/2);
                 GetField(iPosX, iPosY).SetWeight( iValue );
             }
 
@@ -165,7 +166,7 @@ void World::DoInitalisation()
                 {
                     iValue = ((iValue + GetField(iPosX, iPosRightY).GetWeight()));
                 }
-                iValue += (rand() % iStepY) - (iStepY / 2);
+                iValue += (rand() % iDynamicChange) - (iDynamicChange / 2);
                 GetField(iPosX, iPosY).SetWeight( iValue );
             }
 
@@ -173,6 +174,7 @@ void World::DoInitalisation()
             iPosLeftY += iStepY;
         }
         iStepY /= 2;
+        iDynamicChange--;
     }
 
     //Checking for Minimum, Maximum (just for interest)
@@ -205,7 +207,10 @@ void World::DoInitalisation()
         iPosX = sin(dAngel) * (m_iWidth * 3 / 8) + iMiddleX;
         iPosY = cos(dAngel) * (m_iHeight * 3 / 8) + iMiddleY;
         viStartingFields.push_back(GetField(iPosX, iPosY));
+        GetField(iPosX, iPosY).SetInformation(FieldFlag);
+        std::cout<<"Starting Flag "<<viStartingFields.size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
     }
+
 
 
 

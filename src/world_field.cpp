@@ -54,6 +54,11 @@ unsigned int WorldField::GetPosY()
     return m_iPosY;
 }
 
+bool WorldField::HasInformation(WorldFieldInformation fInformation)
+{
+    return m_fInformation & fInformation;
+}
+
 
 /**********************************************************************/
 
@@ -85,6 +90,11 @@ void WorldField::SetPosX(unsigned int iPosX)
 void WorldField::SetPosY(unsigned int iPosY)
 {
     m_iPosY = iPosY;
+}
+
+void WorldField::SetInformation(WorldFieldInformation fInformation)
+{
+    m_fInformation = (WorldFieldInformation) (m_fInformation | fInformation);
 }
 
 #endif
