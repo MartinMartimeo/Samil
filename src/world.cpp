@@ -79,21 +79,19 @@ void World::DoInitalisation()
 
     unsigned int iPosX, iPosY;
 
-    iPosX = 0;
-    for (WorldMapIterator x = m_viiMap.begin(); x != m_viiMap.end(); ++x)
+    for (iPosX = 0; iPosX < m_iWidth; iPosX++)
     {
-        iPosY = 0;
-        WorldMapFields viRow = *x;
-        for (WorldMapFieldsIterator y = viRow.begin(); y != viRow.end(); ++y)
+        for (iPosY = 0; iPosY < m_iHeight; iPosY++)
         {
-            y->SetType(FieldEmpty);
-            y->SetWeight(0);
-            y->SetPosX(iPosX);
-            y->SetPosY(iPosY);
-            iPosY++;
+            GetField(iPosX, iPosY).SetType(FieldEmpty);
+            GetField(iPosX, iPosY).SetWeight(0);
+            GetField(iPosX, iPosY).SetPosX(iPosX);
+            GetField(iPosX, iPosY).SetPosY(iPosY);
         }
-        iPosX++;
     }
+
+    DoLog("Test whether setting has been successfull");
+    std::cout<<"2:5=="<<GetField(2, 5).GetPosX()<<":"<<GetField(2, 5).GetPosY()<<std::endl;
 
     //Random
     DoLog("Create Random Generator");
@@ -211,6 +209,240 @@ void World::DoInitalisation()
         std::cout<<"Starting Flag "<<viStartingFields.size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
     }
 
+    //Dijkstra the first one
+    bool bBreak = false;
+    unsigned int iFlagPos = 0;
+    while (!bBreak)
+    {
+        DoLog("Run Dijkstra");
+
+        DoLog("Resetting Map Information for Dijkstra");
+        for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+        {
+            for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+            {
+                GetField(iPosX, iPosY).UnSetInformation(FieldBlack);
+                GetField(iPosX, iPosY).UnSetInformation(FieldGrey);
+                GetField(iPosX, iPosY).SetInformation(FieldWhite);
+            }
+        }
+
+        DoLog("Create Fieldlist");
+        WorldFieldList viFieldList(400);
+        viFieldList.clear();
+
+        DoLog("Get the Start and End");
+        WorldField& oFirstField = viStartingFields.at(iFlagPos++);
+        if (iFlagPos == viStartingFields.size()) {
+            bBreak = true;
+            iFlagPos = 0;
+        }
+        WorldField& oEndField = viStartingFields.at(iFlagPos);
+
+        DoLog("Push Start to Stack");
+        viFieldList.push_back(oFirstField);
+        oFirstField.SetInformation(FieldBlack);
+        oFirstField.SetDistance(0);
+        oFirstField.SetPreCursor(oFirstField);
+
+        WorldField oField;
+        
+        while(viFieldList.size() > 0)
+        {
+            //Suche kleinsten Knoten aus der Liste
+            //std::cout<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
+
+            int iMin = -1;
+            for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
+            {
+                //First Element
+                if (iMin == -1)
+                {
+                    oField = *it;
+                    iMin = oField.GetDistance();
+                    continue;
+                }
+
+                //Smaller Element
+                if (iMin > it->GetDistance())
+                {
+                    oField = *it;
+                    iMin = oField.GetDistance();
+                    continue;
+                }
+            }
+
+            //Betrachte diesen Knoten als berechnet
+            oField.SetInformation(FieldBlack);
+
+            for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
+            {
+                if (it->GetPosX() == oField.GetPosX() && it->GetPosY() == oField.GetPosY())
+                {
+                    viFieldList.erase(it);
+                    break;
+                }
+            }
+
+            //Norden
+            if (oField.GetPosX() > 0) {
+                WorldField& oNorth = GetField(oField.GetPosX() - 1, oField.GetPosY());
+                if (!oNorth.HasInformation(FieldBlack))
+                {
+                    if (!oNorth.HasInformation(FieldGrey))
+                    {
+                        oNorth.SetInformation(FieldGrey);
+                        oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
+                        oNorth.SetPreCursor(oField);
+                        viFieldList.push_back(oNorth);
+                    }
+                    else
+                    {
+                        if (oNorth.GetDistance() > oField.GetDistance() + oNorth.GetWeight())
+                        {
+                            oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
+                            oNorth.SetPreCursor(oField);
+                        }
+                    }
+                }
+            }
+
+            //Sueden
+            if (oField.GetPosX() < m_iWidth - 1) {
+                WorldField& oSouth = GetField(oField.GetPosX() + 1, oField.GetPosY());
+                if (!oSouth.HasInformation(FieldBlack))
+                {
+                    if (!oSouth.HasInformation(FieldGrey))
+                    {
+                        oSouth.SetInformation(FieldGrey);
+                        oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
+                        oSouth.SetPreCursor(oField);
+                        viFieldList.push_back(oSouth);
+                    }
+                    else
+                    {
+                        if (oSouth.GetDistance() > oField.GetDistance() + oSouth.GetWeight())
+                        {
+                            oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
+                            oSouth.SetPreCursor(oField);
+                        }
+                    }
+                }
+            }
+
+            //Westen
+            if (oField.GetPosY() > 0) {
+                WorldField& oWest = GetField(oField.GetPosX(), oField.GetPosY() - 1);
+                if (!oWest.HasInformation(FieldBlack))
+                {
+                    if (!oWest.HasInformation(FieldGrey))
+                    {
+                        oWest.SetInformation(FieldGrey);
+                        oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
+                        oWest.SetPreCursor(oField);
+                        viFieldList.push_back(oWest);
+                    }
+                    else
+                    {
+                        if (oWest.GetDistance() > oField.GetDistance() + oWest.GetWeight())
+                        {
+                            oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
+                            oWest.SetPreCursor(oField);
+                        }
+                    }
+                }
+            }
+
+            //Osten
+            if (oField.GetPosY() < m_iHeight - 1) {
+                WorldField& oEast = GetField(oField.GetPosX(), oField.GetPosY() + 1);
+                if (!oEast.HasInformation(FieldBlack))
+                {
+                    if (!oEast.HasInformation(FieldGrey))
+                    {
+                        oEast.SetInformation(FieldGrey);
+                        oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
+                        oEast.SetPreCursor(oField);
+                        viFieldList.push_back(oEast);
+                    }
+                    else
+                    {
+                        if (oEast.GetDistance() > oField.GetDistance() + oEast.GetWeight())
+                        {
+                            oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
+                            oEast.SetPreCursor(oField);
+                        }
+                    }
+                }
+            }
+
+            // Finde Weg zurück und punsih die Felder
+            if (oEndField.HasInformation(FieldBlack))
+            {
+                DoLog("Found Final Field");
+                oEndField.Print();
+                viFieldList.clear();
+
+                WorldField& oWayField = oEndField;
+                while (oWayField.GetPosX() != oWayField.GetPreCursor().GetPosX() && oWayField.GetPosY() != oWayField.GetPreCursor().GetPosY()) {
+                    PunishField(oWayField.GetPosX(), oWayField.GetPosY(), 7);
+                    oWayField = oWayField.GetPreCursor();
+                    oWayField.SetInformation(FieldWay);
+                }
+
+
+
+                break;
+            }
+        }
+
+        //Male
+        DoLog("Betätige dich als Weltenkünstler");
+        for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+        {
+            for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+            {
+                if (GetField(iPosX, iPosY).HasInformation(FieldWay))
+                {
+                    GetField(iPosX, iPosY).SetType(FieldEmpty);
+                    continue;
+                }
+
+                if (GetField(iPosX, iPosY).GetWeight() > iMin * 3)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldMountain);
+                    continue;
+                }
+
+                if (GetField(iPosX, iPosY).GetWeight() < iMax / 3)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldSea);
+                    continue;
+                }
+
+                unsigned int iValue;
+
+                iValue = rand() % 20;
+                if (iValue < 2)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldStone);
+                    continue;
+                }
+
+                iValue = rand() % 30;
+                if (iValue < 3)
+                {
+                    GetField(iPosX, iPosY).SetType(FieldTree);
+                    continue;
+                }
+
+                GetField(iPosX, iPosY).SetType(FieldEmpty);
+            }
+        }
+
+    }
+
+
 
 
 
@@ -263,7 +495,20 @@ void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField
     GetField(iPosX, iPosY).SetType(iField);
 }
 
+void World::PunishField(unsigned int iPosX, unsigned int iPosY, unsigned int iWeight)
+{
+    if (iWeight <= 0 || iPosX < 0 || iPosY < 0 || iPosX >= m_iWidth || iPosY >= m_iHeight)
+    {
+        return;
+    }
 
+    GetField(iPosX, iPosY).IncrWeight(iWeight--);
+
+    PunishField(iPosX-1,iPosY,iWeight);
+    PunishField(iPosX+1,iPosY,iWeight);
+    PunishField(iPosX,iPosY-1,iWeight);
+    PunishField(iPosX,iPosY+1,iWeight);
+}
 
 
 

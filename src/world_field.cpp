@@ -5,6 +5,8 @@
  * Created on 23. Juni 2011, 11:40
  */
 
+#include <iostream>
+
 #include "world_field.h"
 
 #ifdef WORLD_FIELD_H
@@ -21,6 +23,14 @@ WorldField::WorldField()
 }
 
 WorldField::~WorldField() {}
+
+
+/**********************************************************************/
+
+void WorldField::Print()
+{
+    std::cout<<m_iPosX<<":"<<m_iPosY<<"="<<m_iType<<" "<<m_fInformation<<std::endl;
+}
 
 /**********************************************************************/
 
@@ -77,6 +87,12 @@ void WorldField::SetWeight(int iValue)
     m_iWeight = iValue;
 }
 
+void WorldField::IncrWeight(int iValue)
+{
+    m_iWeight += iValue;
+}
+
+
 void WorldField::SetPreCursor(WorldField& oPreCursor)
 {
     m_pPreCursor = &oPreCursor;
@@ -95,6 +111,11 @@ void WorldField::SetPosY(unsigned int iPosY)
 void WorldField::SetInformation(WorldFieldInformation fInformation)
 {
     m_fInformation = (WorldFieldInformation) (m_fInformation | fInformation);
+}
+
+void WorldField::UnSetInformation(WorldFieldInformation fInformation)
+{
+    m_fInformation = (WorldFieldInformation) (m_fInformation & ~fInformation);
 }
 
 #endif

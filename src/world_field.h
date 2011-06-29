@@ -18,9 +18,12 @@ typedef enum WorldMapField {
 } WorldMapField;
 
 typedef enum WorldFieldInformation {
-    FieldBlocked = 0x1,
-    FieldWay = 0x2,
-    FieldFlag = 0x4
+    FieldBlocked = 1,
+    FieldWay = 2,
+    FieldFlag = 4,
+    FieldWhite = 8,
+    FieldGrey = 16,
+    FieldBlack = 32
 } WorldFieldInformation;
 
 class WorldField;
@@ -35,6 +38,11 @@ public:
 
     WorldField();
     virtual ~WorldField();
+    
+    /**********************************************************************/
+    // Operatoren
+    
+    void Print();
 
     /**********************************************************************/
     // Getter
@@ -58,12 +66,14 @@ private:
     void SetType(WorldMapField iValue);
     void SetDistance(unsigned int iValue);
     void SetWeight(int iValue);
+    void IncrWeight(int iValue);
     void SetPreCursor(WorldField& oPreCursor);
 
     void SetPosX(unsigned int iPosX);
     void SetPosY(unsigned int iPosY);
 
     void SetInformation(WorldFieldInformation fInformation);
+    void UnSetInformation(WorldFieldInformation fInformation);
 
 protected:
 
