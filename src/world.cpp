@@ -381,6 +381,15 @@ void World::DoInitalisation()
                 DoLog("Found Final Field");
                 oEndField.Print();
                 viFieldList.clear();
+
+                WorldField& oWayField = oEndField;
+                while (oWayField.GetPosX() != oWayField.GetPreCursor().GetPosX() && oWayField.GetPosY() != oWayField.GetPreCursor().GetPosY()) {
+                    PunishField(oWayField.GetPosX(), oWayField.GetPosY(), 5);
+                    oWayField = oWayField.GetPreCursor();
+                }
+
+
+
                 break;
             }
         }
@@ -439,7 +448,20 @@ void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField
     GetField(iPosX, iPosY).SetType(iField);
 }
 
+void World::PunishField(unsigned int iPosX, unsigned int iPosY, unsigned int iWeight)
+{
+    if (iWeight <= 0 || iPosX < 0 || iPosY < 0 || iPosX >= m_iWidth || iPosY >= m_iHeight)
+    {
+        return;
+    }
 
+    GetField(iPosX, iPosY).IncrWeight(iWeight--);
+
+    PunishField(iPosX-1,iPosY,iWeight);
+    PunishField(iPosX+1,iPosY,iWeight);
+    PunishField(iPosX,iPosY-1,iWeight);
+    PunishField(iPosX,iPosY+1,iWeight);
+}
 
 
 

@@ -66,6 +66,7 @@ private:
     void SetType(WorldMapField iValue);
     void SetDistance(unsigned int iValue);
     void SetWeight(int iValue);
+    void IncrWeight(int iValue);
     void SetPreCursor(WorldField& oPreCursor);
 
     void SetPosX(unsigned int iPosX);

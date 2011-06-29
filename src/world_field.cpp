@@ -87,6 +87,12 @@ void WorldField::SetWeight(int iValue)
     m_iWeight = iValue;
 }
 
+void WorldField::IncrWeight(int iValue)
+{
+    m_iWeight += iValue;
+}
+
+
 void WorldField::SetPreCursor(WorldField& oPreCursor)
 {
     m_pPreCursor = &oPreCursor;
