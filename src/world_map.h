@@ -12,10 +12,14 @@
 #include <vector>
 using std::vector;
 
+#include <list>
+using std::list;
+
 #include "world_field.h"
 
 typedef vector< vector<WorldField> >::iterator    WorldMapIterator;
 typedef vector<WorldField>                        WorldMapFields;
+typedef list<WorldField>                          WorldFieldList;
 typedef vector<WorldField>::iterator              WorldMapFieldsIterator;
 typedef vector< vector<WorldField> >              WorldMap;
 

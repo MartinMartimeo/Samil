@@ -58,9 +58,10 @@ private:
     WorldField& GetField(unsigned int x, unsigned int y);
 
     /**********************************************************************/
-    // private Sette
+    // private Setter
 
     void SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField);
+    void PunishField(unsigned int iPosX, unsigned int iPosY, unsigned int iWeight);
 
 
 protected:

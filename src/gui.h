@@ -38,6 +38,7 @@ public:
     static void idle(void);
     static void resize(int w, int h);
     static void processNormalKeys(unsigned char key, int x, int y);
+    static void updatePerspective();
 
     /**********************************************************************/
     // Getter
@@ -66,6 +67,10 @@ private:
     unsigned int GetWidth();
     CameraOrientation stCamOrient;
     unsigned int m_iWidth, m_iHeight;
+    float m_fFovyAngle;
+    float m_fWindowRatio;
+    int m_iWindowWidth;
+    int m_iWindowHeight;
 
 
 };

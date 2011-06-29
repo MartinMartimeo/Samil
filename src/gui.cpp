@@ -4,23 +4,25 @@
 
 Gui *Gui::m_this;
 
-Gui::~Gui()
-{
-    
+Gui::~Gui() {
+
 }
 
 Gui::Gui(int argc, char **argv, World *pWorld) {
     SetWidth(pWorld->GetWidth());
     SetHeight(pWorld->GetHeight());
     Gui::m_this = this;
+    Gui::m_this->m_fFovyAngle = 100;
     init(argc, argv);
 }
 
 void Gui::SetHeight(unsigned int i) {
+    std::cout << "setter: " << i << "\n";
     m_iHeight = i;
 }
 
 void Gui::SetWidth(unsigned int i) {
+    std::cout << "setter: " << i << "\n";
     m_iWidth = i;
 }
 
@@ -54,12 +56,10 @@ void Gui::init(int argc, char **argv) {
     stCamOrient.afVectEye[2] = 0.0f;
     stCamOrient.afVectDest[0] = 0.0f;
     stCamOrient.afVectDest[1] = 0.0f;
-    stCamOrient.afVectDest[2] = 0.0f;
+    stCamOrient.afVectDest[2] = -1.0f;
     stCamOrient.afVectUp[0] = 0.0f;
     stCamOrient.afVectUp[1] = 1.0f;
     stCamOrient.afVectUp[2] = 0.0f;
-
-    //glutTimerFunc(40,Timer,0);
 
     glutMainLoop();
 
@@ -71,41 +71,46 @@ void Gui::idle(void) {
 
 void Gui::render(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    updatePerspective();
+    
     glPushMatrix(); // rendering shall not influence the scene.
     //glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
     gluLookAt(
-            Gui::m_this->stCamOrient.afVectEye[0], 
-            Gui::m_this->stCamOrient.afVectEye[1], 
+            Gui::m_this->stCamOrient.afVectEye[0],
+            Gui::m_this->stCamOrient.afVectEye[1],
             Gui::m_this->stCamOrient.afVectEye[2],
-            Gui::m_this->stCamOrient.afVectDest[0], 
-            Gui::m_this->stCamOrient.afVectDest[1], 
+            Gui::m_this->stCamOrient.afVectDest[0],
+            Gui::m_this->stCamOrient.afVectDest[1],
             Gui::m_this->stCamOrient.afVectDest[2],
-            Gui::m_this->stCamOrient.afVectUp[0], 
-            Gui::m_this->stCamOrient.afVectUp[1], 
+            Gui::m_this->stCamOrient.afVectUp[0],
+            Gui::m_this->stCamOrient.afVectUp[1],
             Gui::m_this->stCamOrient.afVectUp[2]
-    );
+            );
+
+    float fDifWidth = Gui::m_this->m_iWidth / 2.0f;
+    float fDifHeight = Gui::m_this->m_iHeight / 2.0f;
 
     glBegin(GL_QUADS);
     glColor3f(1, 0, 0);
-    glVertex3f(-Gui::m_this->m_iWidth*3/2, -Gui::m_this->m_iHeight*3/2, -5.0f);
+    glVertex3f(-fDifWidth, -fDifHeight, -5.0f);
     glColor3f(0, 1, 0);
-    glVertex3f(-Gui::m_this->m_iWidth*3/2, Gui::m_this->m_iHeight*3/2, -5.0f);
+    glVertex3f(fDifWidth, -fDifHeight, -5.0f);
     glColor3f(0, 0, 1);
-    glVertex3f(Gui::m_this->m_iWidth*3/2, -Gui::m_this->m_iHeight*3/2, -5.0f);
+    glVertex3f(fDifWidth, fDifHeight, -5.0f);
     glColor3f(1, 1, 0);
-    glVertex3f(Gui::m_this->m_iWidth*3/2, Gui::m_this->m_iHeight*3/2, -5.0f);
+    glVertex3f(-fDifWidth, fDifHeight, -5.0f);
     glEnd();
-    
-    glBegin(GL_QUADS);
-    glColor3f(1, 0, 0);
-    glVertex3f(-2.0f, -2.0f, -5.0f);
-    glColor3f(0, 1, 0);
-    glVertex3f(2.0f, -2.0f, -5.0f);
-    glColor3f(0, 0, 1);
-    glVertex3f(2.0f, 2.0f, -5.0f);
-    glColor3f(1, 1, 0);
-    glVertex3f(-2.0f, 2.0f, -5.0f);
-    glEnd();
+
+    //    glBegin(GL_QUADS);
+    //    glColor3f(1, 0, 0);
+    //    glVertex3f(-2.0f, -2.0f, -5.0f);
+    //    glColor3f(0, 1, 0);
+    //    glVertex3f(2.0f, -2.0f, -5.0f);
+    //    glColor3f(0, 0, 1);
+    //    glVertex3f(2.0f, 2.0f, -5.0f);
+    //    glColor3f(1, 1, 0);
+    //    glVertex3f(-2.0f, 2.0f, -5.0f);
+    //    glEnd();
 
     glPopMatrix();
 
@@ -118,20 +123,28 @@ void Gui::resize(int w, int h) {
     // (you cant make a window of zero width).
     if (h == 0)
         h = 1;
+    Gui::m_this->m_iWindowWidth = w;
+    Gui::m_this->m_iWindowHeight = h;
 
-    float ratio = w * 1.0 / h;
+    Gui::m_this->m_fWindowRatio = w * 1.0 / h;
+    
+    updatePerspective();
 
+    
+}
+
+void Gui::updatePerspective(){
     // Use the Projection Matrix
     glMatrixMode(GL_PROJECTION);
 
     // Reset Matrix
     glLoadIdentity();
+    
+    gluPerspective(Gui::m_this->m_fFovyAngle, Gui::m_this->m_fWindowRatio, 0.01, 100);
 
     // Set the viewport to be the entire window
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, Gui::m_this->m_iWindowWidth, Gui::m_this->m_iWindowHeight);
 
-    // Set the correct perspective.
-    gluPerspective(10, ratio, 0.01, 100);
     //gluOrtho2D(0, 800, 500, 0);
 
     // Get Back to the Modelview
@@ -142,14 +155,13 @@ void Gui::resize(int w, int h) {
 void Gui::processNormalKeys(unsigned char key, int x, int y) {
     if (key == 27)
         exit(0);
-    if (key == 'q'){
-        Gui::m_this->stCamOrient.afVectEye[2] += 0.1f;
+    if (key == 'q') {
+        Gui::m_this->m_fFovyAngle += 0.5f;
     }
-    
-    if (key == 'e'){
-        Gui::m_this->stCamOrient.afVectEye[2] -= 0.1f;
+
+    if (key == 'e') {
+        Gui::m_this->m_fFovyAngle -= 0.5f;
     }
-    std::cout<<Gui::m_this->stCamOrient.afVectEye[2]<<"\n";
 }
 
 #endif
