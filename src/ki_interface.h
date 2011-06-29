@@ -8,7 +8,7 @@
 class KI_Interface
 {
 public:
-	PlayerAction Think(std::vector<std::vector<WorldMap> > const &view); // ich denke, also bin ich
+    virtual PlayerAction Think(WorldMap const &view); // ich denke, also bin ich
 };
 
 #endif
