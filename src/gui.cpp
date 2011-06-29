@@ -1,4 +1,6 @@
+#include "math.h"
 #include "gui.h"
+
 
 #ifdef __gui_h
 
@@ -53,7 +55,7 @@ void Gui::init(int argc, char **argv) {
 
     stCamOrient.afVectEye[0] = 0.0f;
     stCamOrient.afVectEye[1] = 0.0f;
-    stCamOrient.afVectEye[2] = 0.0f;
+    stCamOrient.afVectEye[2] = 30.0f;
     stCamOrient.afVectDest[0] = 0.0f;
     stCamOrient.afVectDest[1] = 0.0f;
     stCamOrient.afVectDest[2] = -1.0f;
@@ -72,7 +74,7 @@ void Gui::idle(void) {
 void Gui::render(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     updatePerspective();
-    
+
     glPushMatrix(); // rendering shall not influence the scene.
     //glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
     gluLookAt(
@@ -91,15 +93,22 @@ void Gui::render(void) {
     float fDifHeight = Gui::m_this->m_iHeight / 2.0f;
 
     glBegin(GL_QUADS);
-    glColor3f(1, 0, 0);
-    glVertex3f(-fDifWidth, -fDifHeight, -5.0f);
-    glColor3f(0, 1, 0);
-    glVertex3f(fDifWidth, -fDifHeight, -5.0f);
-    glColor3f(0, 0, 1);
-    glVertex3f(fDifWidth, fDifHeight, -5.0f);
-    glColor3f(1, 1, 0);
-    glVertex3f(-fDifWidth, fDifHeight, -5.0f);
+    glColor3f(1, 1, 1);
+    glVertex3f(-fDifWidth, -fDifHeight, 0.0f);
+    glColor3f(1, 1, 1);
+    glVertex3f(fDifWidth, -fDifHeight, 0.0f);
+    glColor3f(1, 1, 1);
+    glVertex3f(fDifWidth, fDifHeight, 0.0f);
+    glColor3f(1, 1, 1);
+    glVertex3f(-fDifWidth, fDifHeight, 0.0f);
     glEnd();
+
+    for (int y = -16; y < 16; y++) {
+        for (int x = -16; x < 16; x++) {
+             Gui::m_this->renderMountain(x, y);
+        }
+    }
+    
 
     //    glBegin(GL_QUADS);
     //    glColor3f(1, 0, 0);
@@ -118,6 +127,32 @@ void Gui::render(void) {
 
 }
 
+static void renderWater() {
+
+}
+
+static void renderTree() {
+
+}
+
+void Gui::renderMountain(float x, float y) {
+    float z = 1.5f + fabs(sin(x / 3.0f) + sin(x / 1.0f) + cos(y / 3.0f) + cos(y / 2.0f));
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3f(1, 1, 1);
+    glVertex3f(x + 0.5f, y + 0.5f, z);
+    glColor3f(0, 0, 0);
+    glVertex3f(x, y, 0.0f);
+    glVertex3f(x, y + 1.0f, 0.0f);
+    glVertex3f(x + 1.0f, y + 1.0f, 0.0f);
+    glVertex3f(x + 1.0f, y, 0.0f);
+    glVertex3f(x, y, 0.0f);
+    glEnd();
+}
+
+static void renderEmpty() {
+
+}
+
 void Gui::resize(int w, int h) {
     // Prevent a divide by zero, when window is too short
     // (you cant make a window of zero width).
@@ -127,20 +162,20 @@ void Gui::resize(int w, int h) {
     Gui::m_this->m_iWindowHeight = h;
 
     Gui::m_this->m_fWindowRatio = w * 1.0 / h;
-    
+
     updatePerspective();
 
-    
+
 }
 
-void Gui::updatePerspective(){
+void Gui::updatePerspective() {
     // Use the Projection Matrix
     glMatrixMode(GL_PROJECTION);
 
     // Reset Matrix
     glLoadIdentity();
-    
-    gluPerspective(Gui::m_this->m_fFovyAngle, Gui::m_this->m_fWindowRatio, 0.01, 100);
+
+    gluPerspective(Gui::m_this->m_fFovyAngle, Gui::m_this->m_fWindowRatio, 0.01, 200);
 
     // Set the viewport to be the entire window
     glViewport(0, 0, Gui::m_this->m_iWindowWidth, Gui::m_this->m_iWindowHeight);
@@ -158,9 +193,25 @@ void Gui::processNormalKeys(unsigned char key, int x, int y) {
     if (key == 'q') {
         Gui::m_this->m_fFovyAngle += 0.5f;
     }
-
     if (key == 'e') {
         Gui::m_this->m_fFovyAngle -= 0.5f;
+    }
+    if (key == 'w') {
+        Gui::m_this->stCamOrient.afVectEye[1] += 0.5;
+        //Gui::m_this->stCamOrient.afVectDest[1] += 0.5;
+    }
+
+    if (key == 's') {
+        Gui::m_this->stCamOrient.afVectEye[1] -= 0.5;
+        //Gui::m_this->stCamOrient.afVectDest[1] -= 0.5;
+    }
+    if (key == 'a') {
+        Gui::m_this->stCamOrient.afVectEye[0] -= 0.5;
+        //Gui::m_this->stCamOrient.afVectDest[0] -= 0.5;
+    }
+    if (key == 'd') {
+        Gui::m_this->stCamOrient.afVectEye[0] += 0.5;
+        //Gui::m_this->stCamOrient.afVectDest[0] += 0.5;
     }
 }
 

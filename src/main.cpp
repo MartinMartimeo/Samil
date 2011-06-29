@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 	std::cout<<"samil gestartet"<<std::endl;
 	std::cout<<"zum beenden ESC drücken"<<std::endl;
 
-        World *pWorld = new World(16, 16);
+        World *pWorld = new World(32, 32);
         Gui *pGui = new Gui(argc, argv, pWorld);
 
         delete pWorld;
