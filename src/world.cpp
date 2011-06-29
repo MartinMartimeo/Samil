@@ -232,35 +232,25 @@ void World::DoInitalisation()
         viFieldList.clear();
 
         DoLog("Get the Start and End");
-        WorldField oFirstField = viStartingFields.at(iFlagPos++);
-        std::cout<<"Starting Field: ";
-        oFirstField.Print();
+        WorldField& oFirstField = viStartingFields.at(iFlagPos++);
         if (iFlagPos == viStartingFields.size()) {
             bBreak = true;
             iFlagPos = 0;
         }
-        WorldField oEndField = viStartingFields.at(iFlagPos);
-        std::cout<<"Ending Field: ";
-        oEndField.Print();
+        WorldField& oEndField = viStartingFields.at(iFlagPos);
 
         DoLog("Push Start to Stack");
         viFieldList.push_back(oFirstField);
-        std::cout<<"Has Black Information: "<<oFirstField.HasInformation(FieldBlack)<<std::endl;
         oFirstField.SetInformation(FieldBlack);
-        std::cout<<"Has Black Information: "<<oFirstField.HasInformation(FieldBlack)<<std::endl;
         oFirstField.SetDistance(0);
         oFirstField.SetPreCursor(oFirstField);
 
         WorldField oField;
-        WorldField oNorth;
-        WorldField oSouth;
-        WorldField oEast;
-        WorldField oWest;
-
+        
         while(viFieldList.size() > 0)
         {
             //Suche kleinsten Knoten aus der Liste
-            std::cout<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
+            //std::cout<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
 
             int iMin = -1;
             for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
@@ -283,8 +273,6 @@ void World::DoInitalisation()
             }
 
             //Betrachte diesen Knoten als berechnet
-            DoLog("Found smallest Node");
-            oField.Print();
             oField.SetInformation(FieldBlack);
 
             for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
@@ -296,25 +284,24 @@ void World::DoInitalisation()
                 }
             }
 
-            std::cout<<"Field List now: "<<viFieldList.size()<<std::endl;
-
             //Norden
             if (oField.GetPosX() > 0) {
-                oNorth = GetField(oField.GetPosX() - 1, oField.GetPosY());
+                WorldField& oNorth = GetField(oField.GetPosX() - 1, oField.GetPosY());
                 if (!oNorth.HasInformation(FieldBlack))
                 {
                     if (!oNorth.HasInformation(FieldGrey))
                     {
                         oNorth.SetInformation(FieldGrey);
                         oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
+                        oNorth.SetPreCursor(oField);
                         viFieldList.push_back(oNorth);
-                        std::cout<<"Adding: "; oNorth.Print();
                     }
                     else
                     {
                         if (oNorth.GetDistance() > oField.GetDistance() + oNorth.GetWeight())
                         {
                             oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
+                            oNorth.SetPreCursor(oField);
                         }
                     }
                 }
@@ -322,21 +309,22 @@ void World::DoInitalisation()
 
             //Sueden
             if (oField.GetPosX() < m_iWidth - 1) {
-                oSouth = GetField(oField.GetPosX() + 1, oField.GetPosY());
+                WorldField& oSouth = GetField(oField.GetPosX() + 1, oField.GetPosY());
                 if (!oSouth.HasInformation(FieldBlack))
                 {
                     if (!oSouth.HasInformation(FieldGrey))
                     {
                         oSouth.SetInformation(FieldGrey);
                         oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
+                        oSouth.SetPreCursor(oField);
                         viFieldList.push_back(oSouth);
-                        std::cout<<"Adding: "; oSouth.Print();
                     }
                     else
                     {
                         if (oSouth.GetDistance() > oField.GetDistance() + oSouth.GetWeight())
                         {
                             oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
+                            oSouth.SetPreCursor(oField);
                         }
                     }
                 }
@@ -344,21 +332,22 @@ void World::DoInitalisation()
 
             //Westen
             if (oField.GetPosY() > 0) {
-                oWest = GetField(oField.GetPosX(), oField.GetPosY() - 1);
+                WorldField& oWest = GetField(oField.GetPosX(), oField.GetPosY() - 1);
                 if (!oWest.HasInformation(FieldBlack))
                 {
                     if (!oWest.HasInformation(FieldGrey))
                     {
                         oWest.SetInformation(FieldGrey);
                         oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
+                        oWest.SetPreCursor(oField);
                         viFieldList.push_back(oWest);
-                        std::cout<<"Adding: "; oWest.Print();
                     }
                     else
                     {
                         if (oWest.GetDistance() > oField.GetDistance() + oWest.GetWeight())
                         {
                             oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
+                            oWest.SetPreCursor(oField);
                         }
                     }
                 }
@@ -366,35 +355,33 @@ void World::DoInitalisation()
 
             //Osten
             if (oField.GetPosY() < m_iHeight - 1) {
-                oEast = GetField(oField.GetPosX(), oField.GetPosY() + 1);
+                WorldField& oEast = GetField(oField.GetPosX(), oField.GetPosY() + 1);
                 if (!oEast.HasInformation(FieldBlack))
                 {
                     if (!oEast.HasInformation(FieldGrey))
                     {
                         oEast.SetInformation(FieldGrey);
                         oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
+                        oEast.SetPreCursor(oField);
                         viFieldList.push_back(oEast);
-                        std::cout<<"Adding: "; oEast.Print();
                     }
                     else
                     {
                         if (oEast.GetDistance() > oField.GetDistance() + oEast.GetWeight())
                         {
                             oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
+                            oEast.SetPreCursor(oField);
                         }
                     }
                 }
             }
 
-            for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
+            if (oEndField.HasInformation(FieldBlack))
             {
-                if (oEndField.GetPosX() == it->GetPosX() && oEndField.GetPosY() == it->GetPosY() && it->HasInformation(FieldBlack))
-                {
-                    DoLog("Found Final Field");
-                    it->Print();
-                    viFieldList.clear();
-                    break;
-                }
+                DoLog("Found Final Field");
+                oEndField.Print();
+                viFieldList.clear();
+                break;
             }
         }
     }

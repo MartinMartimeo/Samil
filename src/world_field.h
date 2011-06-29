@@ -18,12 +18,12 @@ typedef enum WorldMapField {
 } WorldMapField;
 
 typedef enum WorldFieldInformation {
-    FieldBlocked = 0x1,
-    FieldWay = 0x2,
-    FieldFlag = 0x4,
-    FieldWhite = 0x8,
-    FieldGrey = 0x16,
-    FieldBlack = 0x32
+    FieldBlocked = 1,
+    FieldWay = 2,
+    FieldFlag = 4,
+    FieldWhite = 8,
+    FieldGrey = 16,
+    FieldBlack = 32
 } WorldFieldInformation;
 
 class WorldField;
