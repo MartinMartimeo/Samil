@@ -97,4 +97,9 @@ void WorldField::SetInformation(WorldFieldInformation fInformation)
     m_fInformation = (WorldFieldInformation) (m_fInformation | fInformation);
 }
 
+void WorldField::UnSetInformation(WorldFieldInformation fInformation)
+{
+    m_fInformation = (WorldFieldInformation) (m_fInformation & ~fInformation);
+}
+
 #endif

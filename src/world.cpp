@@ -211,6 +211,176 @@ void World::DoInitalisation()
         std::cout<<"Starting Flag "<<viStartingFields.size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
     }
 
+    //Dijkstra the first one
+    bool bBreak = false;
+    while (!bBreak)
+    {
+        DoLog("Run Dijkstra");
+
+        DoLog("Resetting Map Information for Dijkstra");
+        for (WorldMapIterator x = m_viiMap.begin(); x != m_viiMap.end(); ++x)
+        {
+            iPosY = 0;
+            WorldMapFields viRow = *x;
+            for (WorldMapFieldsIterator y = viRow.begin(); y != viRow.end(); ++y)
+            {
+                y->UnSetInformation(FieldBlack);
+                y->UnSetInformation(FieldGrey);
+                y->SetInformation(FieldWhite);
+                iPosY++;
+            }
+            iPosX++;
+        }
+
+        DoLog("Create Fieldlist");
+        WorldMapFields viFieldList(400);
+        viFieldList.clear();
+        std::cout<<"FieldList can hold: "<<viFieldList.capacity()<<std::endl;
+
+        DoLog("Get the Start and End");
+        unsigned int iFlagPos = 0;
+        WorldField oFirstField = viStartingFields.at(iFlagPos++);
+        if (iFlagPos == viFieldList.size()) {
+            bBreak = false;
+            iFlagPos = 0;
+        }
+        WorldField oEndField = viStartingFields.at(iFlagPos);
+
+        DoLog("Push Start to Stack");
+        viFieldList.push_back(oFirstField);
+        oFirstField.SetInformation(FieldBlack);
+        oFirstField.SetDistance(0);
+        oFirstField.SetPreCursor(oFirstField);
+
+        WorldField oField;
+        WorldField oNorth;
+        WorldField oSouth;
+        WorldField oEast;
+        WorldField oWest;
+
+        //Suche kleinsten Knoten aus der Liste
+        DoLog("Search for smallest Element");
+        int iMin = -1;
+        WorldMapFieldsIterator itRemove;
+        for (WorldMapFieldsIterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
+        {
+            //First Element
+            if (iMin == -1)
+            {
+                oField = *it;
+                iMin = oField.GetDistance();
+                itRemove = it;
+                continue;
+            }
+
+            //Smaller Element
+            if (iMin > it->GetDistance())
+            {
+                oField = *it;
+                iMin = oField.GetDistance();
+                itRemove = it;
+                continue;
+            }
+        }
+
+        //Betrachte diesen Knoten als berechnet
+        DoLog("Found smallest Node");
+        oField.SetInformation(FieldBlack);
+        viFieldList.erase(itRemove);
+
+        //Norden
+        DoLog("Norden");
+        if (oField.GetPosX() > 0) {
+            oNorth = GetField(oField.GetPosX() - 1, oField.GetPosY());
+            if (!oNorth.HasInformation(FieldBlack))
+            {
+                if (!oNorth.HasInformation(FieldGrey))
+                {
+                    oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
+                    viFieldList.push_back(oNorth);
+                }
+                else
+                {
+                    if (oNorth.GetDistance() > oField.GetDistance() + oNorth.GetWeight())
+                    {
+                        oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
+                    }
+                }
+                oNorth.SetInformation(FieldGrey);
+            }
+        }
+
+        //Sueden
+        DoLog("Süden");
+        if (oField.GetPosX() < m_iWidth - 1) {
+            oSouth = GetField(oField.GetPosX() + 1, oField.GetPosY());
+            if (!oSouth.HasInformation(FieldBlack))
+            {
+                if (!oSouth.HasInformation(FieldGrey))
+                {
+                    oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
+                    viFieldList.push_back(oSouth);
+                }
+                else
+                {
+                    if (oSouth.GetDistance() > oField.GetDistance() + oSouth.GetWeight())
+                    {
+                        oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
+                    }
+                }
+                oSouth.SetInformation(FieldGrey);
+            }
+        }
+
+        //Westen
+        DoLog("Westen");
+        if (oField.GetPosY() > 0) {
+            oWest = GetField(oField.GetPosX(), oField.GetPosY() - 1);
+            if (!oWest.HasInformation(FieldBlack))
+            {
+                if (!oWest.HasInformation(FieldGrey))
+                {
+                    oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
+                    viFieldList.push_back(oWest);
+                }
+                else
+                {
+                    if (oWest.GetDistance() > oField.GetDistance() + oWest.GetWeight())
+                    {
+                        oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
+                    }
+                }
+                oWest.SetInformation(FieldGrey);
+            }
+        }
+
+        //Osten
+        DoLog("Osten");
+        if (oField.GetPosY() < m_iHeight - 1) {
+            oEast = GetField(oField.GetPosX(), oField.GetPosY());
+            if (!oEast.HasInformation(FieldBlack))
+            {
+                if (!oEast.HasInformation(FieldGrey))
+                {
+                    oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
+                    viFieldList.push_back(oEast);
+                }
+                else
+                {
+                    if (oEast.GetDistance() > oField.GetDistance() + oEast.GetWeight())
+                    {
+                        oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
+                    }
+                }
+                oEast.SetInformation(FieldGrey);
+            }
+        }
+
+        bBreak = true;
+
+    }
+
+
 
 
 
