@@ -39,6 +39,11 @@ KIHandle Game::LoadKI(std::string sKIPath)
     return 0;
 }
 
+PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMap const & view)
+{
+    return ((KI_Interface*) kiHandle) -> Think(view);
+}
+
 int Game::InitWorld()
 {
     return 0;	
