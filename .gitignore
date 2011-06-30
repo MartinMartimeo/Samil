@@ -1,5 +1,6 @@
 *.mk
 *.o
+*.so
 *.obj
 *.so
 *.exe
