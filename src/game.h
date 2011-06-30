@@ -24,7 +24,7 @@ public:
 	Game(int height, int width);
 	~Game();
 
-	KIHandle LoadKI(std::string sKIPath);	// Lädt eine KI in den KI-Vektor
+	int LoadKI(std::string sKIPath);	// Lädt eine KI in den KI-Vektor
 	
 	int InitWorld(int width, int heigth);	// Initialisierung der Welt
 	

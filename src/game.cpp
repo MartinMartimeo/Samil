@@ -1,6 +1,7 @@
 
 
 #include <iostream>
+#include <vector>
 
 #include <dlfcn.h>
 
@@ -27,12 +28,14 @@ Game::~Game()
     delete(m_pvKIs);
 }
 
-KIHandle Game::LoadKI(std::string sKIPath)
+int Game::LoadKI(std::string sKIPath)
 {
     KIHandle k = dlopen(sKIPath.c_str(), RTLD_NOW | RTLD_GLOBAL);
     if(k)
     {
-        return k;
+        m_pvKIs->push_back(k);
+        std::cout<<"KI "<<sKIPath<<" loadet successfully to game"<<std::endl;
+        return 1;
     }
 
     std::cout<<"dlopen returned NULL-Handle while loading ["<<sKIPath<<"] with error ["<<"dlerror()"<<"]"<<std::endl;
