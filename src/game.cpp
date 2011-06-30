@@ -11,10 +11,10 @@
 # warning "RTLD_LOCAL nicht definiert"
 #endif
 
-Game::Game() 
+Game::Game(int width, int height) 
 {
 	m_pvKIs = new(std::vector<KIHandle>);
-	InitWorld();
+	InitWorld(width, height);
 }
 
 Game::~Game()
@@ -44,7 +44,13 @@ PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMap const & view)
     return ((KI_Interface*) kiHandle) -> Think(view);
 }
 
-int Game::InitWorld()
+int Game::InitWorld(int width, int height)
 {
+    m_pWorld = new World(width, height);
     return 0;	
+}
+
+World* Game::GetWorldPointer()
+{
+    return m_pWorld;
 }

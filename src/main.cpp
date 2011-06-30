@@ -11,12 +11,10 @@ int main(int argc, char **argv)
 	std::cout<<"samil gestartet"<<std::endl;
 	std::cout<<"zum beenden ESC drücken"<<std::endl;
 
-        World *pWorld = new World(32, 32);
-        Gui *pGui = new Gui(argc, argv, pWorld);
-        Game *pGame = new Game();
+        Game *pGame = new Game(32, 32);
+        Gui *pGui = new Gui(argc, argv, pGame->GetWorldPointer());
 
         delete pGame;
-        delete pWorld;
         delete pGui;
 
 	return -1; 

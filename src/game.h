@@ -21,17 +21,19 @@
 class Game
 {
 public:
-	Game();
+	Game(int height, int width);
 	~Game();
 
 	KIHandle LoadKI(std::string sKIPath);	// Lädt eine KI in den KI-Vektor
 	
-	int InitWorld();	// Initialisierung der Welt
+	int InitWorld(int width, int heigth);	// Initialisierung der Welt
 	
 	int ProcessRound();		// Abarbeitung einer Spielrunde
 
+    World* GetWorldPointer();
+
 private:
-//	World m_world;	// Spielwelt
+	World *m_pWorld;	// Spielwelt
 	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMap const & view);
 	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
 };
