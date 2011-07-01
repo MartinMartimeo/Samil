@@ -47,6 +47,8 @@ public:
     unsigned int GetHeight();
     unsigned int GetWidth();
 
+    WorldMapField GetCell(unsigned int x, unsigned int y);
+
     /**********************************************************************/
 
 private:
@@ -58,8 +60,7 @@ private:
 
     /**********************************************************************/
     // private Getter
-
-    WorldMapField GetCell(unsigned int x, unsigned int y);
+    
     WorldField& GetField(unsigned int x, unsigned int y);
 
     /**********************************************************************/
