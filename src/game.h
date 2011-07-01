@@ -21,17 +21,21 @@
 class Game
 {
 public:
-	Game(int height, int width);
-    Game(); // Game without World for testing
-	~Game();
-
+    /*******************************************************/
+    // Constructors, Desructors
+    Game(int height, int width);
+    Game();                 // Game without World for testing
+    ~Game();
+    
+    /********************************************************/
+    // public methods
 	int LoadKI(std::string sKIPath);	// Lädt eine KI in den KI-Vektor
 	
 	int InitWorld(int width, int heigth);	// Initialisierung der Welt
 	
 	int ProcessRound();		// Abarbeitung einer Spielrunde
 
-    World* GetWorldPointer();
+    World* GetWorldPointer();   // Gibt den Zeiger auf die Erstellte Spielwelt zurück.
 
 private:
 	World *m_pWorld;	// Spielwelt

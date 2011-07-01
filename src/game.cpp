@@ -15,7 +15,8 @@
 Game::Game(int width, int height) 
 {
 	m_pvKIs = new(std::vector<KIHandle>);
-	InitWorld(width, height);
+	m_pWorld = NULL;
+    InitWorld(width, height);
 }
 
 Game::Game() 
@@ -55,6 +56,11 @@ PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMap const & view)
 
 int Game::InitWorld(int width, int height)
 {
+    if(m_pWorld)
+    {
+        std::cout<<"Freeing old World to World-Heaven"<<std::endl;
+        delete m_pWorld;
+    }
     std::cout<<"Creating World ..."<<std::endl;
     m_pWorld = new World(width, height);
     std::cout<<"Creating World Done"<<std::endl;
