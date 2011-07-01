@@ -19,6 +19,7 @@ class World;
 
 #include "world_map.h"
 #include "world_field.h"
+#include "world_entity.h"
 
 // Source here
 class World
@@ -73,7 +74,7 @@ protected:
     unsigned int                                m_iPlayer;
     unsigned int                                m_iHeight;
     unsigned int                                m_iWidth;
-    unsigned int                                m_iWorldEntinies;
+    unsigned int                                m_iWorldEntities;
 
     unsigned int                                m_iMountainPercent;
     unsigned int                                m_iSeaPercent;

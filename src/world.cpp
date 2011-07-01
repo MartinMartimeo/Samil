@@ -15,8 +15,6 @@
 #include <string>
 
 #include "world.h"
-#include "world_map.h"
-#include "world_field.h"
 
 #ifdef _WIN32
 #define pow powf
@@ -39,7 +37,7 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
     m_iPlayer = iWorldPlayer;
     m_iHeight = floor(pow(2,floor(log(iWorldHeight)/log(2))));
     m_iWidth = floor(pow(2,floor(log(iWorldWidth)/log(2))));
-    m_iWorldEntinies = iWorldEntities;
+    m_iWorldEntities = iWorldEntities;
     
     m_iMountainPercent = iMountainPercent;
     m_iSeaPercent = iSeaPercent;
@@ -48,6 +46,7 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
     m_pviStartingFields = new WorldMapFields(m_iPlayer);
 
     DoWorldInitalisation();
+    DoEntityInitalisation();
 
 
 
