@@ -36,7 +36,8 @@ public:
 
     /**********************************************************************/
     // Functions
-    void DoInitalisation();
+    void DoWorldInitalisation();
+    void DoEntityInitalisation();
 
     /**********************************************************************/
     // Getter

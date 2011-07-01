@@ -45,7 +45,7 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
     m_iSeaPercent = iSeaPercent;
     m_iTreePercent = iTreePercent;
 
-    DoInitalisation();
+    DoWorldInitalisation();
 
 
 
@@ -78,7 +78,7 @@ void World::DoLog(int iValue)
  * Run all the stuff that should be done to create the World
  *
  */
-void World::DoInitalisation()
+void World::DoWorldInitalisation()
 {
     //Reset stuff
     DoLog("Assigning Memory for World");
@@ -466,9 +466,15 @@ void World::DoInitalisation()
     //Fertig
     DoLog("Neue Erde erschaffen");
 
+}
 
 
-
+/*
+ * Create Entities on World
+ */
+void World::DoEntityInitalisation()
+{
+    DoLog("Spiele Gott");
 
 
 }
