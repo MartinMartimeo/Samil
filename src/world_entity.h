@@ -8,10 +8,12 @@
 #ifndef WORLD_ENTITY_H
 #define	WORLD_ENTITY_H
 
-#include <list>
-using std::list;
+#include <vector>
+using std::vector;
 
 class WorldEntity {
+    friend class World;
+    
 public:
 
     /**********************************************************************/
@@ -28,14 +30,19 @@ public:
 
 private:
 
-
+    /**********************************************************************/
+    // Setter
+    void IncrId();
+    void SetPlayer(unsigned int iPlayer);
 
     unsigned int            m_iId;
     static unsigned int     c_iId;
 
+    unsigned int            m_iPlayer;
+
 };
 
-typedef list<WorldEntity>                        WorldEntities;
+typedef vector<WorldEntity>                        WorldEntities;
 
 #endif	/* WORLD_ENTITY_H */
 

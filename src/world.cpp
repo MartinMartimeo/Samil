@@ -56,7 +56,7 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
 World::~World()
 {
     delete m_pviStartingFields;
-    delete m_pliWorldEntities;
+    delete m_pviWorldEntities;
 }
 
 /**********************************************************************/
@@ -475,8 +475,16 @@ void World::DoEntityInitalisation()
 {
     DoLog("Spiele Gott");
     
-    m_pliWorldEntities = new WorldEntities(m_iPlayer * m_iWorldEntities);
+    m_pviWorldEntities = new WorldEntities(m_iPlayer * m_iWorldEntities);
 
+    for (unsigned int iPlayer = 0; iPlayer < m_iPlayer; iPlayer++)
+    {
+        for (unsigned int iEntity = 0; iEntity < m_iWorldEntities; iEntity++)
+        {
+            m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).IncrId();
+            m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPlayer(m_iPlayer);
+        }
+    }
 }
 
 /**********************************************************************/

@@ -12,7 +12,7 @@
 /**********************************************************************/
 // Konstruktor, Destruktor
 
-unsigned int WorldEntity::c_iId = 0;
+unsigned int WorldEntity::c_iId = -1;
 WorldEntity::WorldEntity()
 {
     //Get next Entity Id
@@ -36,3 +36,16 @@ unsigned int WorldEntity::GetMaxId()
     return c_iId;
 }
 
+/**********************************************************************/
+// Setter
+void WorldEntity::IncrId()
+{
+    //Get next Entity Id
+    c_iId++;
+    m_iId = c_iId;
+}
+
+void WorldEntity::SetPlayer(unsigned int iPlayer)
+{
+    m_iPlayer = iPlayer;
+}

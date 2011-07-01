@@ -84,7 +84,7 @@ protected:
     WorldMap                                    m_viiMap;
 
     WorldMapFields*                             m_pviStartingFields;
-    WorldEntities*                              m_pliWorldEntities;
+    WorldEntities*                              m_pviWorldEntities;
 
 };
 
