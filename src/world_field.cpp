@@ -20,6 +20,12 @@ WorldField::WorldField()
 {
     m_iType = FieldEmpty;
     m_iWeight = 0;
+    m_iDistance = 0;
+
+    m_fInformation = (WorldFieldInformation) 0;
+
+    m_iPosX = 0;
+    m_iPosY = 0;
 }
 
 WorldField::~WorldField() {}
