@@ -30,13 +30,20 @@
 /*
  * Konstrukts the World
  */
-World::World(unsigned int iWorldHeight, unsigned int iWorldWidth, unsigned int iWorldPlayer, unsigned int iWorldEntities)
+World::World(unsigned int iWorldHeight, unsigned int iWorldWidth, 
+        unsigned int iWorldPlayer, unsigned int iWorldEntities,
+        unsigned int iMountainPercent, unsigned int iSeaPercent,
+        unsigned int iTreePercent)
 {
     //Setting Values
     m_iPlayer = iWorldPlayer;
     m_iHeight = floor(pow(2,floor(log(iWorldHeight)/log(2))));
     m_iWidth = floor(pow(2,floor(log(iWorldWidth)/log(2))));
     m_iWorldEntinies = iWorldEntities;
+    
+    m_iMountainPercent = iMountainPercent;
+    m_iSeaPercent = iSeaPercent;
+    m_iTreePercent = iTreePercent;
 
     DoInitalisation();
 
@@ -264,7 +271,7 @@ void World::DoInitalisation()
                 }
 
                 //Smaller Element
-                if (iMin > it->GetDistance())
+                if (iMin > (int) it->GetDistance())
                 {
                     oField = *it;
                     iMin = oField.GetDistance();
@@ -396,51 +403,68 @@ void World::DoInitalisation()
             }
         }
 
-        //Male
-        DoLog("Betätige dich als Weltenkünstler");
-        for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
-        {
-            for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
-            {
-                if (GetField(iPosX, iPosY).HasInformation(FieldWay))
-                {
-                    GetField(iPosX, iPosY).SetType(FieldEmpty);
-                    continue;
-                }
-
-                if (GetField(iPosX, iPosY).GetWeight() > iMin * 3)
-                {
-                    GetField(iPosX, iPosY).SetType(FieldMountain);
-                    continue;
-                }
-
-                if (GetField(iPosX, iPosY).GetWeight() < iMax / 3)
-                {
-                    GetField(iPosX, iPosY).SetType(FieldSea);
-                    continue;
-                }
-
-                unsigned int iValue;
-
-                iValue = rand() % 20;
-                if (iValue < 2)
-                {
-                    GetField(iPosX, iPosY).SetType(FieldStone);
-                    continue;
-                }
-
-                iValue = rand() % 30;
-                if (iValue < 3)
-                {
-                    GetField(iPosX, iPosY).SetType(FieldTree);
-                    continue;
-                }
-
-                GetField(iPosX, iPosY).SetType(FieldEmpty);
-            }
-        }
-
     }
+
+    DoLog("Berechne Terrainabschnitte");
+    int iMinMountain = iMax - (iMax - iMin) * m_iMountainPercent / 100;
+    int iMaxSea = iMin + (iMax - iMin) * m_iSeaPercent / 100;
+    int iTreeRangeMin = (iMax - iMin) / 2 - (iMax - iMin) * m_iTreePercent / 200;
+    int iTreeRangeMax = (iMax - iMin) / 2 + (iMax - iMin) * m_iTreePercent / 200;
+    std::cout<<"Sea>"<<iMaxSea<<std::endl;
+    std::cout<<"Mountain<"<<iMinMountain<<std::endl;
+
+    //Male
+    DoLog("Betätige dich als Weltenkünstler");    
+    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+    {
+        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+        {
+            if (GetField(iPosX, iPosY).HasInformation(FieldWay))
+            {
+                GetField(iPosX, iPosY).SetType(FieldEmpty);
+                continue;
+            }
+
+            if (GetField(iPosX, iPosY).GetWeight() > iMinMountain)
+            {
+                GetField(iPosX, iPosY).SetType(FieldMountain);
+                continue;
+            }
+
+            if (GetField(iPosX, iPosY).GetWeight() < iMaxSea)
+            {
+                GetField(iPosX, iPosY).SetType(FieldSea);
+                continue;
+            }
+
+            if ((GetField(iPosX, iPosY).GetWeight() > iMin * iTreeRangeMin) && (GetField(iPosX, iPosY).GetWeight() < iTreeRangeMax))
+            {
+                GetField(iPosX, iPosY).SetType(FieldTree);
+                continue;
+            }
+
+            unsigned int iValue;
+
+            iValue = rand() % 20;
+            if (iValue < 2)
+            {
+                GetField(iPosX, iPosY).SetType(FieldStone);
+                continue;
+            }
+
+            iValue = rand() % 30;
+            if (iValue < 3)
+            {
+                GetField(iPosX, iPosY).SetType(FieldTree);
+                continue;
+            }
+
+            GetField(iPosX, iPosY).SetType(FieldEmpty);
+        }
+    }
+
+    //Fertig
+    DoLog("Neue Erde erschaffen");
 
 
 
