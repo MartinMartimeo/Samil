@@ -1,5 +1,7 @@
 #include <iostream>
-#include <GL/glut.h>
+#include <string>
+#include <GL/glut.h>    // unused?
+
 #include "game.h"
 #include "world.h"
 #include "gui.h"
@@ -11,10 +13,18 @@ int main(int argc, char **argv)
 	std::cout<<"samil gestartet"<<std::endl;
 	std::cout<<"zum beenden ESC drücken"<<std::endl;
 
-        World *pWorld = new World(32, 32);
-        Gui *pGui = new Gui(argc, argv, pWorld);
+        
+        std::cout<<"Pfad zur KI eingeben."<<std::endl;
 
-        delete pWorld;
+        std::string sPath;
+        std::cin>>sPath;
+        Game *pTestGame = new Game();           // for testing KI-Loading
+        pTestGame->LoadKI(sPath);
+
+        Game *pGame = new Game(32, 32);
+        Gui *pGui = new Gui(argc, argv, pGame->GetWorldPointer());
+
+        delete pGame;
         delete pGui;
 
 	return -1; 
