@@ -43,8 +43,6 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
     m_iSeaPercent = iSeaPercent;
     m_iTreePercent = iTreePercent;
 
-    m_pviStartingFields = new WorldMapFields(m_iPlayer);
-
     DoWorldInitalisation();
     DoEntityInitalisation();
 
@@ -58,7 +56,7 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
 World::~World()
 {
     delete m_pviStartingFields;
-
+    delete m_pliWorldEntities;
 }
 
 /**********************************************************************/
@@ -203,7 +201,7 @@ void World::DoWorldInitalisation()
 
     //Setting Starting Flags
     std::cout<<"Generating Starting Flags for "<<m_iPlayer<<" Player "<<std::endl;
-    //WorldMapFields viStartingFields(m_iPlayer);
+    m_pviStartingFields = new WorldMapFields(m_iPlayer);
     m_pviStartingFields->clear();
 
     unsigned int iMiddleX = m_iWidth / 2;
@@ -476,9 +474,8 @@ void World::DoWorldInitalisation()
 void World::DoEntityInitalisation()
 {
     DoLog("Spiele Gott");
-
-
-
+    
+    m_pliWorldEntities = new WorldEntities(m_iPlayer * m_iWorldEntities);
 
 }
 
