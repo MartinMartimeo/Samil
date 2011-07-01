@@ -45,6 +45,8 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
     m_iSeaPercent = iSeaPercent;
     m_iTreePercent = iTreePercent;
 
+    m_pviStartingFields = new WorldMapFields(m_iPlayer);
+
     DoWorldInitalisation();
 
 
@@ -56,7 +58,7 @@ World::World(unsigned int iWorldHeight, unsigned int iWorldWidth,
  */
 World::~World()
 {
-    
+    delete m_pviStartingFields;
 
 }
 
@@ -202,8 +204,8 @@ void World::DoWorldInitalisation()
 
     //Setting Starting Flags
     std::cout<<"Generating Starting Flags for "<<m_iPlayer<<" Player "<<std::endl;
-    WorldMapFields viStartingFields(m_iPlayer);
-    viStartingFields.clear();
+    //WorldMapFields viStartingFields(m_iPlayer);
+    m_pviStartingFields->clear();
 
     unsigned int iMiddleX = m_iWidth / 2;
     unsigned int iMiddleY = m_iHeight / 2;
@@ -211,9 +213,9 @@ void World::DoWorldInitalisation()
     {
         iPosX = sin(dAngel) * (m_iWidth * 3 / 8) + iMiddleX;
         iPosY = cos(dAngel) * (m_iHeight * 3 / 8) + iMiddleY;
-        viStartingFields.push_back(GetField(iPosX, iPosY));
+        m_pviStartingFields->push_back(GetField(iPosX, iPosY));
         GetField(iPosX, iPosY).SetInformation(FieldFlag);
-        std::cout<<"Starting Flag "<<viStartingFields.size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
+        std::cout<<"Starting Flag "<<m_pviStartingFields->size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
     }
 
     //Dijkstra the first one
@@ -239,12 +241,12 @@ void World::DoWorldInitalisation()
         viFieldList.clear();
 
         DoLog("Get the Start and End");
-        WorldField& oFirstField = viStartingFields.at(iFlagPos++);
-        if (iFlagPos == viStartingFields.size()) {
+        WorldField& oFirstField = m_pviStartingFields->at(iFlagPos++);
+        if (iFlagPos == m_pviStartingFields->size()) {
             bBreak = true;
             iFlagPos = 0;
         }
-        WorldField& oEndField = viStartingFields.at(iFlagPos);
+        WorldField& oEndField = m_pviStartingFields->at(iFlagPos);
 
         DoLog("Push Start to Stack");
         viFieldList.push_back(oFirstField);
@@ -475,6 +477,8 @@ void World::DoWorldInitalisation()
 void World::DoEntityInitalisation()
 {
     DoLog("Spiele Gott");
+
+
 
 
 }

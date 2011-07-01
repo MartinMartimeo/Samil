@@ -81,6 +81,8 @@ protected:
 
     WorldMap                                    m_viiMap;
 
+    WorldMapFields*                             m_pviStartingFields;
+
 };
 
 #endif
