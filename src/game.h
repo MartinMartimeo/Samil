@@ -22,6 +22,7 @@ class Game
 {
 public:
 	Game(int height, int width);
+    Game(); // Game without World for testing
 	~Game();
 
 	int LoadKI(std::string sKIPath);	// Lädt eine KI in den KI-Vektor

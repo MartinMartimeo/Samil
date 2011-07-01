@@ -18,6 +18,12 @@ Game::Game(int width, int height)
 	InitWorld(width, height);
 }
 
+Game::Game() 
+{
+	m_pvKIs = new(std::vector<KIHandle>);
+}
+
+
 Game::~Game()
 {
 	for(vector<KIHandle>::iterator it = m_pvKIs->begin(); it != m_pvKIs->end(); it++)
@@ -38,7 +44,7 @@ int Game::LoadKI(std::string sKIPath)
         return 1;
     }
 
-    std::cout<<"dlopen returned NULL-Handle while loading ["<<sKIPath<<"] with error ["<<"dlerror()"<<"]"<<std::endl;
+    std::cout<<"dlopen returned NULL-Handle while loading ["<<sKIPath<<"] with error ["<<dlerror()<<"]"<<std::endl;
     return 0;
 }
 
@@ -49,7 +55,9 @@ PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMap const & view)
 
 int Game::InitWorld(int width, int height)
 {
+    std::cout<<"Creating World ..."<<std::endl;
     m_pWorld = new World(width, height);
+    std::cout<<"Creating World Done"<<std::endl;
     return 0;	
 }
 
