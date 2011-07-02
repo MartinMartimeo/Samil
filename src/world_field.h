@@ -10,37 +10,35 @@
 
 #include "ki_interface.h"
 
+
+typedef enum WorldFieldType {
+    WorldFieldTypeUnkown = FieldUnkown,
+    WorldFieldTypeEmpty = FieldEmpty,
+
+    WorldFieldTypeTree = FieldTree,
+    WorldFieldTypeStone = FieldStone,
+    WorldFieldTypeSea = FieldSea,
+    WorldFieldTypeMountain = FieldMountain
+} WorldFieldType;
+
+
+typedef enum WorldFieldInformation {
+    WorldFieldInformationBlocked = 1,
+    WorldFieldInformationWay = 2,
+    WorldFieldInformationFlag = 4,
+    WorldFieldInformationRecruit = 64,
+
+    WorldFieldInformationWhite = 8,
+    WorldFieldInformationGrey = 16,
+    WorldFieldInformationBlack = 32
+} WorldFieldInformation;
+
+
+
 class WorldField;
 
 class WorldField {
-    friend class World;
-
 public:
-
-    /**********************************************************************/
-    // Enumeration
-
-    typedef enum WorldFieldType {
-        Unkown = FieldUnkown,
-        Empty = FieldEmpty,
-
-        Tree = FieldTree,
-        Stone = FieldStone,
-        Sea = FieldSea,
-        Mountain = FieldMountain
-    } WorldFieldType;
-
-    typedef enum WorldFieldInformation {
-        Blocked = 1,
-        Way = 2,
-        Flag = 4,
-        Recruit = 64,
-
-        White = 8,
-        Grey = 16,
-        Black = 32
-    } WorldFieldInformation;
-
 
     /**********************************************************************/
     // Konstruktor, Destruktor
@@ -66,9 +64,6 @@ public:
 
     bool HasInformation(WorldFieldInformation fInformation);
 
-
-private:
-
     /**********************************************************************/
     // private Setter
 
@@ -83,6 +78,9 @@ private:
 
     void SetInformation(WorldFieldInformation fInformation);
     void UnSetInformation(WorldFieldInformation fInformation);
+
+
+private:
 
 protected:
 

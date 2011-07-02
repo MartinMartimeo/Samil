@@ -47,7 +47,7 @@ public:
     unsigned int GetHeight();
     unsigned int GetWidth();
 
-    WorldField::WorldFieldType GetCell(unsigned int x, unsigned int y);
+    WorldFieldType GetCell(unsigned int x, unsigned int y);
 
     /**********************************************************************/
 
@@ -67,7 +67,7 @@ private:
     /**********************************************************************/
     // private Setter
 
-    void SetCell(unsigned int iPosX, unsigned int iPosY, WorldField::WorldFieldType iField);
+    void SetCell(unsigned int iPosX, unsigned int iPosY, WorldFieldType iField);
     void PunishField(unsigned int iPosX, unsigned int iPosY, unsigned int iWeight);
 
 

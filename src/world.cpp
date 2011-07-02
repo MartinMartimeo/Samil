@@ -15,6 +15,7 @@
 #include <string>
 
 #include "world.h"
+#include "world_field.h"
 
 #ifdef _WIN32
 #define pow powf
@@ -89,7 +90,7 @@ void World::DoWorldInitalisation()
     {
         for (iPosY = 0; iPosY < m_iHeight; iPosY++)
         {
-            GetField(iPosX, iPosY).SetType(WorldField::Empty);
+            GetField(iPosX, iPosY).SetType(WorldFieldTypeEmpty);
             GetField(iPosX, iPosY).SetWeight(0);
             GetField(iPosX, iPosY).SetPosX(iPosX);
             GetField(iPosX, iPosY).SetPosY(iPosY);
@@ -211,7 +212,7 @@ void World::DoWorldInitalisation()
         iPosX = sin(dAngel) * (m_iWidth * 3 / 8) + iMiddleX;
         iPosY = cos(dAngel) * (m_iHeight * 3 / 8) + iMiddleY;
         m_pviStartingFields->push_back(GetField(iPosX, iPosY));
-        GetField(iPosX, iPosY).SetInformation(WorldField::Flag);
+        GetField(iPosX, iPosY).SetInformation(WorldFieldInformationFlag);
         std::cout<<"Starting Flag "<<m_pviStartingFields->size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
     }
 
@@ -227,9 +228,9 @@ void World::DoWorldInitalisation()
         {
             for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
             {
-                GetField(iPosX, iPosY).UnSetInformation(WorldField::Black);
-                GetField(iPosX, iPosY).UnSetInformation(WorldField::Grey);
-                GetField(iPosX, iPosY).SetInformation(WorldField::White);
+                GetField(iPosX, iPosY).UnSetInformation(WorldFieldInformationBlack);
+                GetField(iPosX, iPosY).UnSetInformation(WorldFieldInformationGrey);
+                GetField(iPosX, iPosY).SetInformation(WorldFieldInformationWhite);
             }
         }
 
@@ -247,7 +248,7 @@ void World::DoWorldInitalisation()
 
         DoLog("Push Start to Stack");
         viFieldList.push_back(oFirstField);
-        oFirstField.SetInformation(WorldField::Black);
+        oFirstField.SetInformation(WorldFieldInformationBlack);
         oFirstField.SetDistance(0);
         oFirstField.SetPreCursor(oFirstField);
 
@@ -279,7 +280,7 @@ void World::DoWorldInitalisation()
             }
 
             //Betrachte diesen Knoten als berechnet
-            oField.SetInformation(WorldField::Black);
+            oField.SetInformation(WorldFieldInformationBlack);
 
             for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
             {
@@ -293,11 +294,11 @@ void World::DoWorldInitalisation()
             //Norden
             if (oField.GetPosX() > 0) {
                 WorldField& oNorth = GetField(oField.GetPosX() - 1, oField.GetPosY());
-                if (!oNorth.HasInformation(WorldField::Black))
+                if (!oNorth.HasInformation(WorldFieldInformationBlack))
                 {
-                    if (!oNorth.HasInformation(WorldField::Grey))
+                    if (!oNorth.HasInformation(WorldFieldInformationGrey))
                     {
-                        oNorth.SetInformation(WorldField::Grey);
+                        oNorth.SetInformation(WorldFieldInformationGrey);
                         oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
                         oNorth.SetPreCursor(oField);
                         viFieldList.push_back(oNorth);
@@ -316,11 +317,11 @@ void World::DoWorldInitalisation()
             //Sueden
             if (oField.GetPosX() < m_iWidth - 1) {
                 WorldField& oSouth = GetField(oField.GetPosX() + 1, oField.GetPosY());
-                if (!oSouth.HasInformation(WorldField::Black))
+                if (!oSouth.HasInformation(WorldFieldInformationBlack))
                 {
-                    if (!oSouth.HasInformation(WorldField::Grey))
+                    if (!oSouth.HasInformation(WorldFieldInformationGrey))
                     {
-                        oSouth.SetInformation(WorldField::Grey);
+                        oSouth.SetInformation(WorldFieldInformationGrey);
                         oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
                         oSouth.SetPreCursor(oField);
                         viFieldList.push_back(oSouth);
@@ -339,11 +340,11 @@ void World::DoWorldInitalisation()
             //Westen
             if (oField.GetPosY() > 0) {
                 WorldField& oWest = GetField(oField.GetPosX(), oField.GetPosY() - 1);
-                if (!oWest.HasInformation(WorldField::Black))
+                if (!oWest.HasInformation(WorldFieldInformationBlack))
                 {
-                    if (!oWest.HasInformation(WorldField::Grey))
+                    if (!oWest.HasInformation(WorldFieldInformationGrey))
                     {
-                        oWest.SetInformation(WorldField::Grey);
+                        oWest.SetInformation(WorldFieldInformationGrey);
                         oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
                         oWest.SetPreCursor(oField);
                         viFieldList.push_back(oWest);
@@ -362,11 +363,11 @@ void World::DoWorldInitalisation()
             //Osten
             if (oField.GetPosY() < m_iHeight - 1) {
                 WorldField& oEast = GetField(oField.GetPosX(), oField.GetPosY() + 1);
-                if (!oEast.HasInformation(WorldField::Black))
+                if (!oEast.HasInformation(WorldFieldInformationBlack))
                 {
-                    if (!oEast.HasInformation(WorldField::Grey))
+                    if (!oEast.HasInformation(WorldFieldInformationGrey))
                     {
-                        oEast.SetInformation(WorldField::Grey);
+                        oEast.SetInformation(WorldFieldInformationGrey);
                         oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
                         oEast.SetPreCursor(oField);
                         viFieldList.push_back(oEast);
@@ -383,7 +384,7 @@ void World::DoWorldInitalisation()
             }
 
             // Finde Weg zurück und punsih die Felder
-            if (oEndField.HasInformation(WorldField::Black))
+            if (oEndField.HasInformation(WorldFieldInformationBlack))
             {
                 DoLog("Found Final Field");
                 oEndField.Print();
@@ -393,7 +394,7 @@ void World::DoWorldInitalisation()
                 while (oWayField.GetPosX() != oWayField.GetPreCursor().GetPosX() && oWayField.GetPosY() != oWayField.GetPreCursor().GetPosY()) {
                     PunishField(oWayField.GetPosX(), oWayField.GetPosY(), 7);
                     oWayField = oWayField.GetPreCursor();
-                    oWayField.SetInformation(WorldField::Way);
+                    oWayField.SetInformation(WorldFieldInformationWay);
                 }
 
 
@@ -418,27 +419,27 @@ void World::DoWorldInitalisation()
     {
         for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
         {
-            if (GetField(iPosX, iPosY).HasInformation(WorldField::Way))
+            if (GetField(iPosX, iPosY).HasInformation(WorldFieldInformationWay))
             {
-                GetField(iPosX, iPosY).SetType(WorldField::Empty);
+                GetField(iPosX, iPosY).SetType(WorldFieldTypeEmpty);
                 continue;
             }
 
             if (GetField(iPosX, iPosY).GetWeight() > iMinMountain)
             {
-                GetField(iPosX, iPosY).SetType(WorldField::Mountain);
+                GetField(iPosX, iPosY).SetType(WorldFieldTypeMountain);
                 continue;
             }
 
             if (GetField(iPosX, iPosY).GetWeight() < iMaxSea)
             {
-                GetField(iPosX, iPosY).SetType(WorldField::Sea);
+                GetField(iPosX, iPosY).SetType(WorldFieldTypeSea);
                 continue;
             }
 
             if ((GetField(iPosX, iPosY).GetWeight() > iMin * iTreeRangeMin) && (GetField(iPosX, iPosY).GetWeight() < iTreeRangeMax))
             {
-                GetField(iPosX, iPosY).SetType(WorldField::Tree);
+                GetField(iPosX, iPosY).SetType(WorldFieldTypeTree);
                 continue;
             }
 
@@ -447,18 +448,18 @@ void World::DoWorldInitalisation()
             iValue = rand() % 20;
             if (iValue < 2)
             {
-                GetField(iPosX, iPosY).SetType(WorldField::Stone);
+                GetField(iPosX, iPosY).SetType(WorldFieldTypeStone);
                 continue;
             }
 
             iValue = rand() % 30;
             if (iValue < 3)
             {
-                GetField(iPosX, iPosY).SetType(WorldField::Tree);
+                GetField(iPosX, iPosY).SetType(WorldFieldTypeTree);
                 continue;
             }
 
-            GetField(iPosX, iPosY).SetType(WorldField::Empty);
+            GetField(iPosX, iPosY).SetType(WorldFieldTypeEmpty);
         }
     }
 
@@ -546,8 +547,8 @@ void World::DoEntityInitalisation()
             }
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPosX(iPosX);
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPosY(iPosY);
-            GetField(iPosX, iPosY).SetType(WorldField::Empty);
-            GetField(iPosX, iPosY).SetInformation(WorldField::Recruit);
+            GetField(iPosX, iPosY).SetType(WorldFieldTypeEmpty);
+            GetField(iPosX, iPosY).SetInformation(WorldFieldInformationRecruit);
 
             //Type
             unsigned int iType = rand() % 3;
@@ -620,17 +621,17 @@ unsigned int World::GetWidth()
     return m_iWidth;
 }
 
-WorldField::WorldFieldType World::GetCell(unsigned int iPosX, unsigned int iPosY)
+WorldFieldType World::GetCell(unsigned int iPosX, unsigned int iPosY)
 {
 
     if ((iPosX < 0) || (iPosX > m_iWidth))
     {
-        return WorldField::Unkown;
+        return WorldFieldTypeUnkown;
     }
 
     if ((iPosY < 0) || (iPosY > m_iHeight))
     {
-        return WorldField::Unkown;
+        return WorldFieldTypeUnkown;
     }
 
     return GetField(iPosX, iPosY).GetType();
@@ -643,7 +644,7 @@ WorldField& World::GetField(unsigned int iPosX, unsigned int iPosY)
 
 /**********************************************************************/
 
-void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldField::WorldFieldType iField)
+void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldFieldType iField)
 {
     GetField(iPosX, iPosY).SetType(iField);
 }

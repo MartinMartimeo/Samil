@@ -18,7 +18,7 @@
  */
 WorldField::WorldField()
 {
-    m_iType = Empty;
+    m_iType = WorldFieldTypeEmpty;
     m_iWeight = 0;
     m_iDistance = 0;
 
@@ -40,7 +40,7 @@ void WorldField::Print()
 
 /**********************************************************************/
 
-WorldField::WorldFieldType WorldField::GetType()
+WorldFieldType WorldField::GetType()
 {
     return m_iType;
 }
