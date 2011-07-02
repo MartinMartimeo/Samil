@@ -2,8 +2,11 @@
 #ifndef __ki_interface_h
 #define __ki_interface_h
 
-#include <vector>
-using std::vector;
+#include <map>
+using std::map;
+
+#include <utility>
+using std::pair;
 
 #include "player_action.h"
 
@@ -35,7 +38,8 @@ typedef enum WorldMapField {
 
 } WorldMapField;
 
-typedef vector< vector<WorldMapField> >::iterator    WorldMapView;
+typedef pair<unsigned int, unsigned int>        WorldMapCoords;
+typedef map<WorldMapCoords, WorldMapField>      WorldMapView;
 
 class KiInterface
 {
