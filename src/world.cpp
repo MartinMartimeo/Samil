@@ -89,7 +89,7 @@ void World::DoWorldInitalisation()
     {
         for (iPosY = 0; iPosY < m_iHeight; iPosY++)
         {
-            GetField(iPosX, iPosY).SetType(FieldEmpty);
+            GetField(iPosX, iPosY).SetType(Empty);
             GetField(iPosX, iPosY).SetWeight(0);
             GetField(iPosX, iPosY).SetPosX(iPosX);
             GetField(iPosX, iPosY).SetPosY(iPosY);
@@ -420,25 +420,25 @@ void World::DoWorldInitalisation()
         {
             if (GetField(iPosX, iPosY).HasInformation(FieldWay))
             {
-                GetField(iPosX, iPosY).SetType(FieldEmpty);
+                GetField(iPosX, iPosY).SetType(Empty);
                 continue;
             }
 
             if (GetField(iPosX, iPosY).GetWeight() > iMinMountain)
             {
-                GetField(iPosX, iPosY).SetType(FieldMountain);
+                GetField(iPosX, iPosY).SetType(Mountain);
                 continue;
             }
 
             if (GetField(iPosX, iPosY).GetWeight() < iMaxSea)
             {
-                GetField(iPosX, iPosY).SetType(FieldSea);
+                GetField(iPosX, iPosY).SetType(Sea);
                 continue;
             }
 
             if ((GetField(iPosX, iPosY).GetWeight() > iMin * iTreeRangeMin) && (GetField(iPosX, iPosY).GetWeight() < iTreeRangeMax))
             {
-                GetField(iPosX, iPosY).SetType(FieldTree);
+                GetField(iPosX, iPosY).SetType(Tree);
                 continue;
             }
 
@@ -447,18 +447,18 @@ void World::DoWorldInitalisation()
             iValue = rand() % 20;
             if (iValue < 2)
             {
-                GetField(iPosX, iPosY).SetType(FieldStone);
+                GetField(iPosX, iPosY).SetType(Stone);
                 continue;
             }
 
             iValue = rand() % 30;
             if (iValue < 3)
             {
-                GetField(iPosX, iPosY).SetType(FieldTree);
+                GetField(iPosX, iPosY).SetType(Tree);
                 continue;
             }
 
-            GetField(iPosX, iPosY).SetType(FieldEmpty);
+            GetField(iPosX, iPosY).SetType(Empty);
         }
     }
 
@@ -516,8 +516,6 @@ void World::DoEntityInitalisation()
     
     m_pviWorldEntities = new WorldEntities(m_iPlayer * m_iWorldEntities);
 
-
-
     for (unsigned int iPlayer = 0; iPlayer < m_iPlayer; iPlayer++)
     {
         unsigned int iHealer = 0;
@@ -548,7 +546,8 @@ void World::DoEntityInitalisation()
             }
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPosX(iPosX);
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPosY(iPosY);
-            GetField(iPosX, iPosY).SetType(FieldEmpty);
+            GetField(iPosX, iPosY).SetType(Empty);
+            GetField(iPosX, iPosY).SetInformation(FieldRecruit);
 
             //Type
             unsigned int iType = rand() % 3;
@@ -601,6 +600,10 @@ void World::DoEntityInitalisation()
 
 /**********************************************************************/
 
+
+
+/**********************************************************************/
+
 unsigned int World::GetPlayer()
 {
     return m_iPlayer;
@@ -617,17 +620,17 @@ unsigned int World::GetWidth()
     return m_iWidth;
 }
 
-WorldMapField World::GetCell(unsigned int iPosX, unsigned int iPosY)
+WorldFieldType World::GetCell(unsigned int iPosX, unsigned int iPosY)
 {
 
     if ((iPosX < 0) || (iPosX > m_iWidth))
     {
-        return FieldUnkown;
+        return Unkown;
     }
 
     if ((iPosY < 0) || (iPosY > m_iHeight))
     {
-        return FieldUnkown;
+        return Unkown;
     }
 
     return GetField(iPosX, iPosY).GetType();
@@ -640,7 +643,7 @@ WorldField& World::GetField(unsigned int iPosX, unsigned int iPosY)
 
 /**********************************************************************/
 
-void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldMapField iField)
+void World::SetCell(unsigned int iPosX, unsigned int iPosY, WorldFieldType iField)
 {
     GetField(iPosX, iPosY).SetType(iField);
 }

@@ -8,14 +8,15 @@
 #ifndef WORLD_FIELD_H
 #define	WORLD_FIELD_H
 
-typedef enum WorldMapField {
-    FieldEmpty = '0',
-    FieldTree = 'T',
-    FieldStone = 'S',
-    FieldSea = '~',
-    FieldMountain = 'M',
-    FieldUnkown = '?'
-} WorldMapField;
+typedef enum WorldFieldType {
+    Unkown = 0,
+    Empty = 1,
+
+    Tree = 12,
+    Stone = 13,
+    Sea = 14,
+    Mountain = 15
+} WorldFieldType;
 
 typedef enum WorldFieldInformation {
     FieldBlocked = 1,
@@ -23,7 +24,8 @@ typedef enum WorldFieldInformation {
     FieldFlag = 4,
     FieldWhite = 8,
     FieldGrey = 16,
-    FieldBlack = 32
+    FieldBlack = 32,
+    FieldRecruit = 64
 } WorldFieldInformation;
 
 class WorldField;
@@ -47,7 +49,7 @@ public:
     /**********************************************************************/
     // Getter
 
-    WorldMapField GetType();
+    WorldFieldType GetType();
     int GetWeight();
     unsigned int GetDistance();
     WorldField& GetPreCursor();
@@ -63,7 +65,7 @@ private:
     /**********************************************************************/
     // private Setter
 
-    void SetType(WorldMapField iValue);
+    void SetType(WorldFieldType iValue);
     void SetDistance(unsigned int iValue);
     void SetWeight(int iValue);
     void IncrWeight(int iValue);
@@ -77,7 +79,7 @@ private:
 
 protected:
 
-    WorldMapField           m_iType;
+    WorldFieldType          m_iType;
 
     WorldField*             m_pPreCursor;
     unsigned int            m_iDistance;

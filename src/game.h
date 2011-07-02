@@ -39,7 +39,7 @@ public:
 
 private:
 	World *m_pWorld;	// Spielwelt
-	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMap const & view);
+	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityType const eType);
 	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
 };
 #endif

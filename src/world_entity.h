@@ -11,11 +11,7 @@
 #include <vector>
 using std::vector;
 
-typedef enum WorldEntityType {
-    Healer = 1,
-    Warrior = 2,
-    Terroist = 4
-} WorldEntityType;
+#include "ki_interface.h"
 
 class WorldEntity {
     friend class World;
