@@ -8,25 +8,7 @@
 #ifndef WORLD_FIELD_H
 #define	WORLD_FIELD_H
 
-typedef enum WorldFieldType {
-    Unkown = 0,
-    Empty = 1,
-
-    Tree = 12,
-    Stone = 13,
-    Sea = 14,
-    Mountain = 15
-} WorldFieldType;
-
-typedef enum WorldFieldInformation {
-    FieldBlocked = 1,
-    FieldWay = 2,
-    FieldFlag = 4,
-    FieldWhite = 8,
-    FieldGrey = 16,
-    FieldBlack = 32,
-    FieldRecruit = 64
-} WorldFieldInformation;
+#include "ki_interface.h"
 
 class WorldField;
 
@@ -34,6 +16,31 @@ class WorldField {
     friend class World;
 
 public:
+
+    /**********************************************************************/
+    // Enumeration
+
+    typedef enum WorldFieldType {
+        Unkown = FieldUnkown,
+        Empty = FieldEmpty,
+
+        Tree = FieldTree,
+        Stone = FieldStone,
+        Sea = FieldSea,
+        Mountain = FieldMountain
+    } WorldFieldType;
+
+    typedef enum WorldFieldInformation {
+        Blocked = 1,
+        Way = 2,
+        Flag = 4,
+        Recruit = 64,
+
+        White = 8,
+        Grey = 16,
+        Black = 32
+    } WorldFieldInformation;
+
 
     /**********************************************************************/
     // Konstruktor, Destruktor

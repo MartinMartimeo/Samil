@@ -5,7 +5,6 @@
 #include <vector>
 using std::vector;
 
-#include "world_field.h"
 #include "player_action.h"
 
 typedef enum WorldEntityType {
@@ -19,10 +18,10 @@ typedef enum WorldMapField {
 
     FieldEmpty = 1,
 
-    FieldTree = Tree,
-    FieldStone = Stone,
-    FieldSea = Sea,
-    FieldMountain = Mountain,
+    FieldTree = 11,
+    FieldStone = 12,
+    FieldSea = 13,
+    FieldMountain = 14,
 
     FieldHealer = Healer,
     FieldWarrior = Warrior,

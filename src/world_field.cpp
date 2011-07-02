@@ -40,7 +40,7 @@ void WorldField::Print()
 
 /**********************************************************************/
 
-WorldFieldType WorldField::GetType()
+WorldField::WorldFieldType WorldField::GetType()
 {
     return m_iType;
 }
