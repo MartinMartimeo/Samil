@@ -467,6 +467,45 @@ void World::DoWorldInitalisation()
 
 }
 
+void World::GetNextCoords(int& iPosX, int& iPosY)
+{
+    static int dx = 1;
+    static int dy = 0;
+    
+    static int tx = 0;
+    static int ty = 0;
+    
+    //Reset
+    if ((iPosX == -1) && (iPosY == -1))
+    {
+        dx = 1;
+        dy = 0;
+
+        tx = 0;
+        ty = 0;
+    }
+
+    tx += dx;
+    ty += dy;
+
+    if (((tx == ty + 1) && (tx > 0)) || ((tx == ty) && (tx < 0)))
+    {
+        int d = dx;
+        dx = dy;
+        dy = - d;
+    }
+
+    if (tx == - ty)
+    {
+        int d = dx;
+        dx = dy;
+        dy = d;
+    }
+
+    iPosX += tx;
+    iPosY += ty;
+}
+
 
 /*
  * Create Entities on World
@@ -477,14 +516,87 @@ void World::DoEntityInitalisation()
     
     m_pviWorldEntities = new WorldEntities(m_iPlayer * m_iWorldEntities);
 
+
+
     for (unsigned int iPlayer = 0; iPlayer < m_iPlayer; iPlayer++)
     {
+        unsigned int iHealer = 0;
+        unsigned int iWarrior = 0;
+        unsigned int iTerroist = 0;
+
+        int iFlagPosX = -1;
+        int iFlagPosY = -1;
+        GetNextCoords(iFlagPosX, iFlagPosY);
+        iFlagPosX = m_pviStartingFields->at(iPlayer).GetPosX();
+        iFlagPosY = m_pviStartingFields->at(iPlayer).GetPosY();
+
         for (unsigned int iEntity = 0; iEntity < m_iWorldEntities; iEntity++)
         {
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).IncrId();
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPlayer(m_iPlayer);
+            m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).DoRelive();
+
+            //Position
+            int iPosX = iFlagPosX;
+            int iPosY = iFlagPosY;
+            GetNextCoords(iPosX, iPosY);
+            while ((iPosX > (int) m_iWidth) || (iPosY > (int) m_iHeight) || (iPosX < 0) || (iPosY < 0))
+            {
+                iPosX = iFlagPosX;
+                iPosY = iFlagPosY;
+                GetNextCoords(iPosX, iPosY);
+            }
+            m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPosX(iPosX);
+            m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPosY(iPosY);
+            GetField(iPosX, iPosY).SetType(FieldEmpty);
+
+            //Type
+            unsigned int iType = rand() % 3;
+            //Create Random Type
+            if (iType == 0 && iHealer <= m_iWorldEntities / 3)
+            {
+                m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).InitHealer();
+                iHealer++;
+                continue;
+            }
+            if (iType == 1 && iWarrior <= m_iWorldEntities / 3)
+            {
+                m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).InitWarrior();
+                iWarrior++;
+                continue;
+            }
+            if (iType == 2 && iTerroist <= m_iWorldEntities / 3)
+            {
+                m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).InitTerroist();
+                iTerroist++;
+                continue;
+            }
+            //Enough Random, create missing onews
+            if (iHealer <= m_iWorldEntities / 3)
+            {
+                m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).InitHealer();
+                iHealer++;
+                continue;               
+            }
+            if (iWarrior <= m_iWorldEntities / 3)
+            {
+                m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).InitWarrior();
+                iWarrior++;
+                continue;
+            }
+            if (iTerroist <= m_iWorldEntities / 3)
+            {
+                m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).InitTerroist();
+                iTerroist++;
+                continue;
+            }
+
+
+
         }
     }
+
+    DoLog("Einheiten platziert");
 }
 
 /**********************************************************************/

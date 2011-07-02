@@ -62,6 +62,7 @@ private:
     // private Getter
     
     WorldField& GetField(unsigned int x, unsigned int y);
+    void GetNextCoords(int& iPosX, int& iPosY);
 
     /**********************************************************************/
     // private Setter
