@@ -12,6 +12,9 @@
 #include <vector>
 using std::vector;
 
+#include <utility>
+using std::pair;
+
 #include <string>
 using std::string;
 
@@ -48,6 +51,7 @@ public:
     unsigned int GetWidth();
 
     WorldFieldType GetCell(unsigned int x, unsigned int y);
+    WorldMapView GetViewPort(unsigned int iEntity);
 
     /**********************************************************************/
 

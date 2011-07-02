@@ -13,9 +13,7 @@ using std::vector;
 
 #include "ki_interface.h"
 
-class WorldEntity {
-    friend class World;
-    
+class WorldEntity {    
 public:
 
     /**********************************************************************/
@@ -28,10 +26,17 @@ public:
     // Getter
     unsigned int GetId();
     unsigned int GetMaxId();
+
+    unsigned int GetViewRange();
+    unsigned int GetAttackRange();
     
-
-private:
-
+    unsigned int GetPosX();
+    unsigned int GetPosY();
+    
+    WorldEntityType GetType();
+    
+    unsigned int GetPlayer();
+    
     /**********************************************************************/
     // Setter
     void IncrId();
@@ -43,7 +48,10 @@ private:
 
     void InitHealer();
     void InitTerroist();
-    void InitWarrior();
+    void InitWarrior();    
+
+private:
+
 
 
     unsigned int            m_iId;
@@ -66,8 +74,9 @@ private:
     unsigned int            m_iBP;
     unsigned int            m_iBPMax;
 
-    unsigned int            m_iRange;
+    unsigned int            m_iAttackRange;
     unsigned int            m_iDamage;
+    unsigned int            m_iViewRange;
 
     WorldEntityType         m_eType;
 

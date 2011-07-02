@@ -35,6 +35,36 @@ unsigned int WorldEntity::GetMaxId()
     return c_iId;
 }
 
+unsigned int WorldEntity::GetAttackRange()
+{
+    return m_iAttackRange;
+}
+
+unsigned int WorldEntity::GetViewRange()
+{
+    return m_iViewRange;
+}
+
+unsigned int WorldEntity::GetPosX()
+{
+    return m_iPosX;
+}
+
+unsigned int WorldEntity::GetPosY()
+{
+    return m_iPosY;
+}
+
+WorldEntityType WorldEntity::GetType()
+{
+    return m_eType;
+}
+
+unsigned int WorldEntity::GetPlayer()
+{
+    return m_iPlayer;
+}
+
 /**********************************************************************/
 // Setter
 void WorldEntity::IncrId()
@@ -80,8 +110,9 @@ void WorldEntity::InitHealer()
 
     m_bCanBomb = false;
 
-    m_iRange = 2;
+    m_iAttackRange = 2;
     m_iDamage = 10;
+    m_iViewRange = 5;
 
     m_eType = Healer;
 }
@@ -99,8 +130,9 @@ void WorldEntity::InitTerroist()
 
     m_bCanAttack = false;
 
-    m_iRange = 2;
+    m_iAttackRange = 2;
     m_iDamage = 10;
+    m_iViewRange = 5;
 
     m_eType = Terroist;
 }
@@ -118,8 +150,9 @@ void WorldEntity::InitWarrior()
 
     m_bCanAttack = true;
 
-    m_iRange = 1;
+    m_iAttackRange = 1;
     m_iDamage = 3;
+    m_iViewRange = 5;
 
     m_eType = Warrior;
 }

@@ -597,10 +597,91 @@ void World::DoEntityInitalisation()
     }
 
     DoLog("Einheiten platziert");
+    
+    WorldMapView mView = GetViewPort(1);
+    
+    DoLog("Ensured View Port of Entity");
 }
 
 /**********************************************************************/
 
+WorldMapView World::GetViewPort(unsigned int iEntity)
+{    
+    unsigned int iViewRange = m_pviWorldEntities->at(iEntity).GetViewRange();
+    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
+    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+   
+    WorldMapView mView;
+    
+    unsigned int iMinX = (unsigned int) std::max(0, (int) (iEntityX - iViewRange));
+    unsigned int iMaxX = (unsigned int) std::min(m_iWidth-1, iEntityX + iViewRange);
+    unsigned int iMinY = (unsigned int) std::max(0, (int) (iEntityY - iViewRange));
+    unsigned int iMaxY = (unsigned int) std::min(m_iHeight-1, iEntityY + iViewRange);
+    
+    // Get Terrain
+    for (unsigned int iPosX = iMinX; iPosX <= iMaxX; iPosX++)
+    {
+        for (unsigned int iPosY = iMinY; iPosY <= iMaxY; iPosY++)
+        {
+            //Not in View Range
+            if (abs(iPosX - iEntityX) + abs(iPosY - iEntityY) > (int) iViewRange)
+            {
+                continue;
+            }
+            
+            
+            mView.insert( pair<WorldMapCoords, WorldMapField>( WorldMapCoords(iPosX, iPosY), (WorldMapField) GetCell(iPosX, iPosY) ));            
+        }       
+    }
+    
+    // Get Entities
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        if ((itEntity->GetPosX() >= iMinX) && (itEntity->GetPosX() <= iMaxX) &&
+            (itEntity->GetPosY() >= iMinY) && (itEntity->GetPosY() <= iMaxY))
+        {
+            WorldMapView::iterator itViewElement = mView.find(WorldMapCoords(itEntity->GetPosX(), itEntity->GetPosY()));
+            if (itViewElement == mView.end())
+            {
+                continue;
+            }
+                        
+            itViewElement->second = (WorldMapField) (itViewElement->second | itEntity->GetType());
+            
+            if (itEntity->GetPlayer() == m_pviWorldEntities->at(iEntity).GetPlayer())
+            {
+                itViewElement->second = (WorldMapField) (itViewElement->second | FieldFriend);
+            } else {
+                itViewElement->second = (WorldMapField) (itViewElement->second | FieldEnemy);
+            }
+            
+        }
+    }
+    
+    // Get Flags
+    for (unsigned int iPlayer = 0; iPlayer < m_iPlayer; iPlayer++)
+    {
+        unsigned int iFlagPosX = m_pviStartingFields->at(iPlayer).GetPosX();
+        unsigned int iFlagPosY = m_pviStartingFields->at(iPlayer).GetPosY();
+        
+        WorldMapView::iterator itViewElement = mView.find(WorldMapCoords(iFlagPosX, iFlagPosY));
+        if (itViewElement == mView.end())
+        {
+            continue;
+        }
+        
+        if (iPlayer == m_pviWorldEntities->at(iEntity).GetPlayer())
+        {
+            itViewElement->second = (WorldMapField) (itViewElement->second | FieldFriendFlag);
+        } else {
+            itViewElement->second = (WorldMapField) (itViewElement->second | FieldEnemyFlag);
+        }
+        
+    }
+    
+    return mView;
+    
+}
 
 
 /**********************************************************************/
