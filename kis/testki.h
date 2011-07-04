@@ -7,7 +7,7 @@
 
 class TestKI : public AiInterface
 {
-    PlayerAction DoThink(WorldMapView const &vvView, WorldEntityType const eEntityType, WorldMapCoords const iiEntityCoordination);
+    PlayerAction DoThink(WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
 };
 
 #endif
