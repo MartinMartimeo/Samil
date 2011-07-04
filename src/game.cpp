@@ -33,6 +33,7 @@ Game::~Game()
     }
 
     delete(m_pvKIs);
+    std::cout<<"[game] KIHandles freed"<<std::endl;
 }
 
 int Game::LoadKI(std::string sKIPath)
@@ -53,6 +54,7 @@ int Game::LoadKI()
 {
     std::cout<<"[game] Bitte Pfad zur KI eingeben:"<<std::endl;
     std::string sKIPath;
+    std::cin>>sKIPath;
     return LoadKI(sKIPath);
 }
 
@@ -76,14 +78,15 @@ int Game::InitWorld(int width, int height)
 
 int Game::ProcessRound()
 {   
+    std::cout<<"[game] Processing Round!"<<std::endl;
+    
     if(!m_pWorld)
     {   
-        std::cout<<"[game] WorldPointer = NULL"<<std::endl;
+        std::cout<<"[game] ProcessingRound failed: WorldPointer = NULL"<<std::endl;
         return -1;
     }
 
     list<unsigned int> vLivingEntities = m_pWorld->GetLivingEntities();
-    
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
     {
         std::cout<<"[game] "<<m_pWorld->GetEntityType(*it);
