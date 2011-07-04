@@ -37,6 +37,16 @@ public:
     
     unsigned int GetPlayer();
     
+    unsigned int GetBp();
+    unsigned int GetHealRate();
+    unsigned int GetDamage();
+    
+    bool CanHeal();
+    bool CanAttack();
+    bool CanExplode();
+    
+    bool IsDead();
+    
     /**********************************************************************/
     // Setter
     void IncrId();
@@ -49,6 +59,12 @@ public:
     void InitHealer();
     void InitTerroist();
     void InitWarrior();    
+    
+    void DecrBp(unsigned int iValue);
+    void SetBp(unsigned int iValue);
+    
+    void IncrHitpoints(int iValue);
+    void DecrHitpoints(int iValue);
 
 private:
 
@@ -62,7 +78,7 @@ private:
 
     unsigned int            m_iPlayer;
 
-    unsigned int            m_iHitpoints;
+    int                     m_iHitpoints;
     unsigned int            m_iMaxHitpoints;
 
     bool                    m_bCanHeal;
@@ -71,8 +87,8 @@ private:
     bool                    m_bCanBomb;
     bool                    m_bCanAttack;
 
-    unsigned int            m_iBP;
-    unsigned int            m_iBPMax;
+    unsigned int            m_iBp;
+    unsigned int            m_iBpMax;
 
     unsigned int            m_iAttackRange;
     unsigned int            m_iDamage;

@@ -63,6 +63,204 @@ World::~World()
 /**********************************************************************/
 
 /*
+ * Iteratoren, nur für Grafik!
+ */
+
+WorldMapFields::iterator World::begin()
+{
+    return m_pviStartingFields->begin();
+}
+
+WorldMapFields::iterator World::end()
+{
+    return m_pviStartingFields->end();
+}
+
+/**********************************************************************/
+
+list<unsigned int> World::GetLivingEntities()
+{
+    list<unsigned int> viEntities;
+    
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        if (itEntity->IsDead())
+        {
+            m_pviWorldEntities->erase(itEntity);
+            continue;
+        }
+        viEntities.push_back(itEntity->GetId());        
+    }
+    
+    return viEntities;
+}
+
+
+bool World::MoveEntity(unsigned int iEntity, int iTargetX, int iTargetY)
+{
+    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
+    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    
+    unsigned int iNewEntityX = iEntityX + iTargetX;
+    unsigned int iNewEntityY = iEntityY + iTargetY;
+    
+    // Out of Map X
+    if (iNewEntityX < 0 || iNewEntityX >= m_iWidth)
+    {
+        return false;
+    }
+    
+    // Out of Map Y
+    if (iNewEntityY < 0 || iNewEntityY <= m_iHeight)
+    {
+        return false;
+    }
+    
+    // Is Place free?
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        if ((itEntity->GetPosX() == iNewEntityX) && (itEntity->GetPosY() == iNewEntityY) && (itEntity->GetId() != iEntity))
+        {
+            return false;
+        }        
+    }
+    
+    // Check if Entity has enough Bp
+    unsigned int iBp = m_pviWorldEntities->at(iEntity).GetBp();
+    if (iBp < (unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY))
+    {
+        return false;
+    }
+    m_pviWorldEntities->at(iEntity).DecrBp(iTargetX + iTargetY);
+    
+    // Set Position
+    m_pviWorldEntities->at(iEntity).SetPosX(iNewEntityX);
+    m_pviWorldEntities->at(iEntity).SetPosY(iNewEntityY);
+    
+    return true;
+}
+    
+bool World::HealEntity(unsigned int iEntity, int iTargetX, int iTargetY)
+{
+    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
+    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    
+    int iTargetEntityX = iEntityX + iTargetX;
+    int iTargetEntityY = iEntityY + iTargetY;
+    
+    // Out of Map X
+    if (iTargetEntityX < 0 || (unsigned int) iTargetEntityX >= m_iWidth)
+    {
+        return false;
+    }
+    
+    // Out of Map Y
+    if (iTargetEntityY < 0 || (unsigned int) iTargetEntityY <= m_iHeight)
+    {
+        return false;
+    }
+    
+    //Can Heal in the Range?
+    if ((unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY) > m_pviWorldEntities->at(iEntity).GetAttackRange())
+    {
+        return false;
+    }
+    
+    //Can Heal?
+    if (!m_pviWorldEntities->at(iEntity).CanHeal() && m_pviWorldEntities->at(iEntity).GetBp() > 0)
+    {
+        return false;
+    }
+    
+    
+    // Find Entity and Heal it
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        if ((itEntity->GetPosX() == (unsigned int) iTargetEntityX) && (itEntity->GetPosY() == (unsigned int) iTargetEntityY))
+        {
+            itEntity->DecrHitpoints(m_pviWorldEntities->at(iEntity).GetHealRate());
+            m_pviWorldEntities->at(iEntity).SetBp(0);
+            return true;
+        }        
+    }
+    
+    return false;
+}
+    
+bool World::AttackEntity(unsigned int iEntity, int iTargetX, int iTargetY)
+{
+    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
+    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    
+    int iTargetEntityX = iEntityX + iTargetX;
+    int iTargetEntityY = iEntityY + iTargetY;
+    
+    // Out of Map X
+    if (iTargetEntityX < 0 || (unsigned int) iTargetEntityX >= m_iWidth)
+    {
+        return false;
+    }
+    
+    // Out of Map Y
+    if (iTargetEntityY < 0 || (unsigned int) iTargetEntityY <= m_iHeight)
+    {
+        return false;
+    }
+    
+    //Can Heal in the Range?
+    if ((unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY) > m_pviWorldEntities->at(iEntity).GetAttackRange())
+    {
+        return false;
+    }
+    
+    //Can Attack?
+    if (!m_pviWorldEntities->at(iEntity).CanAttack() && m_pviWorldEntities->at(iEntity).GetBp() > 0)
+    {
+        return false;
+    }
+    
+    
+    // Find Entity and Attack it
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        if ((itEntity->GetPosX() == (unsigned int) iTargetEntityX) && (itEntity->GetPosY() == (unsigned int) iTargetEntityY))
+        {
+            itEntity->IncrHitpoints(m_pviWorldEntities->at(iEntity).GetDamage());
+            m_pviWorldEntities->at(iEntity).SetBp(0);
+            return true;
+        }        
+    }
+    
+    return false;
+}
+
+bool World::ExplodeEntity(unsigned int iEntity)
+{
+    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
+    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    
+    //Can Explode?
+    if (!m_pviWorldEntities->at(iEntity).CanExplode() && m_pviWorldEntities->at(iEntity).GetBp() > 0)
+    {
+        return false;
+    }
+    
+    // Don't Explode agaim
+    m_pviWorldEntities->at(iEntity).SetBp(0);
+    
+    // Find Entity and Explode
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        itEntity->IncrHitpoints(m_pviWorldEntities->at(iEntity).GetDamage() + itEntity->GetPosX() - iEntityX + itEntity->GetPosY() - iEntityY);
+    }
+        
+    return true;
+}
+
+
+/**********************************************************************/
+
+/*
  * Log Stuff
  */
 void World::DoLog(string sStr)
@@ -598,9 +796,13 @@ void World::DoEntityInitalisation()
 
     DoLog("Einheiten platziert");
     
-    WorldMapView mView = GetViewPort(1);
+    GetViewPort(1);
     
     DoLog("Ensured View Port of Entity");
+    
+    list<unsigned int> viEntities = GetLivingEntities();
+    
+    std::cout<<"Living Entites: "<<viEntities.size()<<std::endl;
 }
 
 /**********************************************************************/
@@ -681,6 +883,11 @@ WorldMapView World::GetViewPort(unsigned int iEntity)
     
     return mView;
     
+}
+
+WorldEntityType World::GetEntityType(unsigned int iEntity)
+{ 
+    return m_pviWorldEntities->at(iEntity).GetType();
 }
 
 

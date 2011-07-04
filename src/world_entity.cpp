@@ -65,6 +65,95 @@ unsigned int WorldEntity::GetPlayer()
     return m_iPlayer;
 }
 
+unsigned int WorldEntity::GetBp()
+{
+    return m_iBp;
+}
+
+unsigned int WorldEntity::GetHealRate()
+{
+    return m_iHealRate;
+}
+
+unsigned int WorldEntity::GetDamage()
+{
+    return m_iDamage;
+}
+
+/**********************************************************************/
+    
+void WorldEntity::IncrHitpoints(int iValue)
+{
+    if (iValue < 0)
+        return;
+    
+    m_iHitpoints += iValue;
+}
+
+void WorldEntity::DecrHitpoints(int iValue)
+{
+    if (iValue < 0)
+        return;
+    
+    m_iHitpoints -= iValue;
+}
+
+/**********************************************************************/
+    
+bool WorldEntity::CanHeal()
+{
+    return m_bCanHeal;
+}
+
+bool WorldEntity::CanAttack()
+{
+    return m_bCanAttack;
+}
+
+bool WorldEntity::CanExplode()
+{
+    return m_bCanBomb;
+}
+    
+bool WorldEntity::IsDead()
+{
+    if (m_iHitpoints < 0)
+    {
+        return false;
+    }
+    return ((unsigned int) m_iHitpoints) > m_iMaxHitpoints;
+}
+
+/**********************************************************************/
+
+void WorldEntity::DecrBp(unsigned int iValue)
+{
+    if (iValue > m_iBp)
+    {
+        m_iBp = 0;
+        return;
+    }
+    m_iBp -= iValue;
+    if (m_iBp > m_iBpMax)
+    {
+        m_iBp = m_iBpMax;
+    }
+}
+
+void WorldEntity::SetBp(unsigned int iValue)
+{
+    if (iValue < 0)
+    {
+        m_iBp = 0;
+        return;
+    }
+    m_iBp = iValue;
+    if (m_iBp > m_iBpMax)
+    {
+        m_iBp = m_iBpMax;
+    }
+}
+
 /**********************************************************************/
 // Setter
 void WorldEntity::IncrId()
@@ -96,14 +185,14 @@ void WorldEntity::DoRelive()
 {
     m_iHitpoints = 0;
 
-    m_iBP = 0;
+    m_iBp = m_iBpMax;
 }
 
 void WorldEntity::InitHealer()
 {
     m_iMaxHitpoints = 3;
 
-    m_iBPMax = 10;
+    m_iBpMax = 10;
 
     m_bCanHeal = true;
     m_iHealRate = 3;
@@ -121,7 +210,7 @@ void WorldEntity::InitTerroist()
 {
     m_iMaxHitpoints = 5;
 
-    m_iBPMax = 10;
+    m_iBpMax = 10;
 
     m_bCanHeal = false;
     m_iHealRate = 0;
@@ -141,7 +230,7 @@ void WorldEntity::InitWarrior()
 {
     m_iMaxHitpoints = 7;
 
-    m_iBPMax = 8;
+    m_iBpMax = 8;
 
     m_bCanHeal = false;
     m_iHealRate = 0;

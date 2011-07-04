@@ -51,9 +51,27 @@ public:
     unsigned int GetWidth();
 
     WorldFieldType GetCell(unsigned int x, unsigned int y);
-    WorldMapView GetViewPort(unsigned int iEntity);
-
+    
     /**********************************************************************/
+    // Game -> World Action
+    
+    list<unsigned int> GetLivingEntities();
+    
+    WorldMapView GetViewPort(unsigned int iEntity);
+    WorldEntityType GetEntityType(unsigned int iEntity);
+    
+    bool MoveEntity(unsigned int iEntity, int iTargetX, int iTargetY);
+    
+    bool HealEntity(unsigned int iEntity, int iTargetX, int iTargetY);
+    bool AttackEntity(unsigned int iEntity, int iTargetX, int iTargetY);
+    bool ExplodeEntity(unsigned int iEntity);
+    
+    
+    /**********************************************************************/
+    // Iteratoren
+    
+    WorldMapFields::iterator begin();
+    WorldMapFields::iterator end();
 
 private:
 
