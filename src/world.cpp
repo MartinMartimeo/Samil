@@ -265,11 +265,11 @@ bool World::ExplodeEntity(unsigned int iEntity)
  */
 void World::DoLog(string sStr)
 {
-    std::cout<<sStr<<std::endl;
+    std::cout<<"[world] "<<sStr<<std::endl;
 }
 void World::DoLog(int iValue)
 {
-    std::cout<<iValue<<std::endl;
+    std::cout<<"[world] "<<iValue<<std::endl;
 }
 
 /*
@@ -296,7 +296,7 @@ void World::DoWorldInitalisation()
     }
 
     DoLog("Test whether setting has been successfull");
-    std::cout<<"2:5=="<<GetField(2, 5).GetPosX()<<":"<<GetField(2, 5).GetPosY()<<std::endl;
+    std::cout<<"[world] "<<"2:5=="<<GetField(2, 5).GetPosX()<<":"<<GetField(2, 5).GetPosY()<<std::endl;
 
     //Random
     DoLog("Create Random Generator");
@@ -395,11 +395,11 @@ void World::DoWorldInitalisation()
         }
     }
 
-    std::cout<<"Minimum Weight: "<<iMin<<std::endl;
-    std::cout<<"Maximum Weight: "<<iMax<<std::endl;
+    std::cout<<"[world] "<<"Minimum Weight: "<<iMin<<std::endl;
+    std::cout<<"[world] "<<"Maximum Weight: "<<iMax<<std::endl;
 
     //Setting Starting Flags
-    std::cout<<"Generating Starting Flags for "<<m_iPlayer<<" Player "<<std::endl;
+    std::cout<<"[world] "<<"Generating Starting Flags for "<<m_iPlayer<<" Player "<<std::endl;
     m_pviStartingFields = new WorldMapFields(m_iPlayer);
     m_pviStartingFields->clear();
 
@@ -411,7 +411,7 @@ void World::DoWorldInitalisation()
         iPosY = cos(dAngel) * (m_iHeight * 3 / 8) + iMiddleY;
         m_pviStartingFields->push_back(GetField(iPosX, iPosY));
         GetField(iPosX, iPosY).SetInformation(WorldFieldInformationFlag);
-        std::cout<<"Starting Flag "<<m_pviStartingFields->size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
+        std::cout<<"[world] "<<"Starting Flag "<<m_pviStartingFields->size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
     }
 
     //Dijkstra the first one
@@ -455,7 +455,7 @@ void World::DoWorldInitalisation()
         while(viFieldList.size() > 0)
         {
             //Suche kleinsten Knoten aus der Liste
-            //std::cout<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
+            //std::cout<<"[world] "<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
 
             int iMin = -1;
             for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
@@ -608,8 +608,8 @@ void World::DoWorldInitalisation()
     int iMaxSea = iMin + (iMax - iMin) * m_iSeaPercent / 100;
     int iTreeRangeMin = (iMax - iMin) / 2 - (iMax - iMin) * m_iTreePercent / 200;
     int iTreeRangeMax = (iMax - iMin) / 2 + (iMax - iMin) * m_iTreePercent / 200;
-    std::cout<<"Sea>"<<iMaxSea<<std::endl;
-    std::cout<<"Mountain<"<<iMinMountain<<std::endl;
+    std::cout<<"[world] "<<"Sea>"<<iMaxSea<<std::endl;
+    std::cout<<"[world] "<<"Mountain<"<<iMinMountain<<std::endl;
 
     //Male
     DoLog("Betätige dich als Weltenkünstler");    
@@ -802,7 +802,7 @@ void World::DoEntityInitalisation()
     
     list<unsigned int> viEntities = GetLivingEntities();
     
-    std::cout<<"Living Entites: "<<viEntities.size()<<std::endl;
+    std::cout<<"[world] "<<"Living Entites: "<<viEntities.size()<<std::endl;
 }
 
 /**********************************************************************/

@@ -10,8 +10,8 @@ int main(int argc, char **argv)
 {	
 	/* Initialize Glut and Create Window */
 	
-	std::cout<<"samil gestartet"<<std::endl;
-	std::cout<<"zum beenden ESC drücken"<<std::endl;
+	std::cout<<"[main] samil gestartet"<<std::endl;
+	std::cout<<"[main] zum beenden ESC drücken"<<std::endl;
 
         
         Game *pGame = new Game(32, 32);
