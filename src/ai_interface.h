@@ -41,10 +41,21 @@ typedef enum WorldMapField {
 typedef pair<unsigned int, unsigned int>        WorldMapCoords;
 typedef map<WorldMapCoords, WorldMapField>      WorldMapView;
 
+struct WorldEntityInformation {
+    
+    WorldEntityType eEntityType;
+    
+    unsigned int iPosX;
+    unsigned int iPosY;
+    
+    unsigned int iPlayer;
+    
+};
+
 class AiInterface
 {
 public:
-    virtual PlayerAction DoThink(WorldMapView const &vvView, WorldEntityType const eType) 
+    virtual PlayerAction DoThink(WorldMapView const &vvView, WorldEntityInformation const uEntityInformation) 
     {
         return DoNothing;
     }; // ich denke, also bin ich

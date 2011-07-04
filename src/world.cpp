@@ -890,6 +890,26 @@ WorldEntityType World::GetEntityType(unsigned int iEntity)
     return m_pviWorldEntities->at(iEntity).GetType();
 }
 
+WorldMapCoords World::GetEntityCoords(unsigned int iEntity)
+{
+    unsigned int iPosX = m_pviWorldEntities->at(iEntity).GetPosX();
+    unsigned int iPosY = m_pviWorldEntities->at(iEntity).GetPosY();
+   
+    return WorldMapCoords(iPosX,iPosY);
+}
+
+unsigned int World::GetEntityPlayer(unsigned int iEntity)
+{
+    return m_pviWorldEntities->at(iEntity).GetPlayer();
+}
+
+
+WorldEntityInformation World::GetEntityInformation(unsigned int iEntity)
+{
+    WorldMapCoords iEntityCoords = GetEntityCoords(iEntity);
+    struct WorldEntityInformation uEntityInformation = {GetEntityType(iEntity), iEntityCoords.first, iEntityCoords.second, GetEntityPlayer(iEntity)};
+    return uEntityInformation;
+}
 
 /**********************************************************************/
 
