@@ -30,6 +30,7 @@ public:
     /********************************************************/
     // public methods
 	int LoadKI(std::string sKIPath);	// Lädt eine KI in den KI-Vektor
+	int LoadKI();	                    // Pfad Manuell eingeben
 	
 	int InitWorld(int width, int heigth);	// Initialisierung der Welt
 	

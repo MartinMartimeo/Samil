@@ -14,15 +14,10 @@ int main(int argc, char **argv)
 	std::cout<<"zum beenden ESC drücken"<<std::endl;
 
         
-        std::cout<<"Pfad zur KI eingeben."<<std::endl;
-
-        std::string sPath;
-        std::cin>>sPath;
-        Game *pTestGame = new Game();           // for testing KI-Loading
-        pTestGame->LoadKI(sPath);
-
         Game *pGame = new Game(32, 32);
         Gui *pGui = new Gui(argc, argv, pGame->GetWorldPointer());
+        
+        pGame->LoadKI();
 
         delete pGame;
         delete pGui;

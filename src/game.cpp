@@ -49,6 +49,13 @@ int Game::LoadKI(std::string sKIPath)
     return 0;
 }
 
+int Game::LoadKI()
+{
+    std::cout<<"Bitte Pfad zur KI eingeben:"<<std::endl;
+    std::string sKIPath;
+    return LoadKI(sKIPath);
+}
+
 PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityType const eType)
 {
     return ((AiInterface*) kiHandle) -> DoThink(vvView, eType);
@@ -63,8 +70,21 @@ int Game::InitWorld(int width, int height)
     }
     std::cout<<"Creating World ..."<<std::endl;
     m_pWorld = new World(width, height);
+    m_pWorld->DoWorldInitalisation();
+    m_pWorld->DoEntityInitalisation();
     std::cout<<"Creating World Done"<<std::endl;
     return 0;	
+}
+
+int Game::ProcessRound()
+{   
+    if(!m_pWorld)
+    {
+        return -1;
+    }
+
+
+    return 0;
 }
 
 World* Game::GetWorldPointer()
