@@ -88,8 +88,10 @@ int Game::ProcessRound()
 
     list<unsigned int> vLivingEntities = m_pWorld->GetLivingEntities();
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
-    {
-        std::cout<<"[game] "<<m_pWorld->GetEntityType(*it);
+    {        
+        
+        // PlayerAction iAction = GetPlayerAction(...);
+        // ProcessPlayerAction(iAction);
     }
     return 0;
 }
@@ -97,6 +99,63 @@ int Game::ProcessRound()
 
 int Game::ProcessPlayerAction(PlayerAction iPlayerAction, int iEntinyX, int iEntintyY)
 {
+    int dx = 0;
+    int dy = 0;
+    switch(iPlayerAction)
+    {
+        case(DoNothing) :
+        {
+            return 0;
+        }
+
+        case(Move_NW) :  // Ursprung: Oben, Links
+        {
+            dx = -1;
+            dy = -1;
+        }        
+
+        case(Move_N) :
+        {
+            dx = 0;
+            dy = -1;
+        }        
+
+        case(Move_NE) :
+        {
+            dx = 1;
+            dy = -1;
+        }        
+
+        case(Move_E) :
+        {
+            dx = 1;
+            dy = 0;
+        }        
+
+        case(Move_SE) :
+        {
+            dx = 1;
+            dy = 1;
+        }        
+
+        case(Move_S) :
+        {
+            dx = 0;
+            dy = 1;
+        }        
+
+        case(Move_SW) :
+        {
+            dx = -1;
+            dy = 1;
+        }        
+
+        case(Move_W) :
+        {
+            dx = -1;
+            dy = 0;
+        }        
+    }
     return -1;
 }
 
