@@ -41,7 +41,7 @@ typedef enum WorldMapField {
 typedef pair<unsigned int, unsigned int>        WorldMapCoords;
 typedef map<WorldMapCoords, WorldMapField>      WorldMapView;
 
-class KiInterface
+class AiInterface
 {
 public:
     virtual PlayerAction DoThink(WorldMapView const &vvView, WorldEntityType const eType); // ich denke, also bin ich

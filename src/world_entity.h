@@ -11,7 +11,7 @@
 #include <vector>
 using std::vector;
 
-#include "ki_interface.h"
+#include "ai_interface.h"
 
 class WorldEntity {    
 public:

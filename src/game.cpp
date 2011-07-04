@@ -51,7 +51,7 @@ int Game::LoadKI(std::string sKIPath)
 
 PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityType const eType)
 {
-    return ((KiInterface*) kiHandle) -> DoThink(vvView, eType);
+    return ((AiInterface*) kiHandle) -> DoThink(vvView, eType);
 }
 
 int Game::InitWorld(int width, int height)

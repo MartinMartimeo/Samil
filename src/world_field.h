@@ -8,7 +8,7 @@
 #ifndef WORLD_FIELD_H
 #define	WORLD_FIELD_H
 
-#include "ki_interface.h"
+#include "ai_interface.h"
 
 
 typedef enum WorldFieldType {
