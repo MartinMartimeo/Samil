@@ -3,13 +3,11 @@
 #define __testki_h
 
 #include "player_action.h"
-#include "world_map.h"
-#include "ki_interface.h"
-#include "world_field.h"
+#include "ai_interface.h"
 
-class TestKI : public KI_Interface
+class TestKI : public AiInterface
 {
-    PlayerAction Think(WorldMap const & view);
+    PlayerAction DoThink(WorldMapView const &vvView, WorldEntityType const eType);
 };
 
 #endif
