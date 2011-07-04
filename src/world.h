@@ -59,6 +59,7 @@ public:
     
     WorldMapView GetViewPort(unsigned int iEntity);
     WorldEntityType GetEntityType(unsigned int iEntity);
+    WorldMapCoords GetEntityCoords(unsigned int iEntity);
     
     bool MoveEntity(unsigned int iEntity, int iTargetX, int iTargetY);
     

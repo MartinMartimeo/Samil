@@ -56,9 +56,9 @@ int Game::LoadKI()
     return LoadKI(sKIPath);
 }
 
-PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityType const eType)
+PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityType const eEntityType, WorldMapCoords const iiEntityCoordination)
 {
-    return ((AiInterface*) kiHandle) -> DoThink(vvView, eType);
+    return ((AiInterface*) kiHandle) -> DoThink(vvView, eEntityType, iiEntityCoordination);
 }
 
 int Game::InitWorld(int width, int height)
