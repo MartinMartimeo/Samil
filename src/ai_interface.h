@@ -44,7 +44,10 @@ typedef map<WorldMapCoords, WorldMapField>      WorldMapView;
 class AiInterface
 {
 public:
-    virtual PlayerAction DoThink(WorldMapView const &vvView, WorldEntityType const eType); // ich denke, also bin ich
+    virtual PlayerAction DoThink(WorldMapView const &vvView, WorldEntityType const eType) 
+    {
+        return DoNothing;
+    }; // ich denke, also bin ich
 };
 
 #endif
