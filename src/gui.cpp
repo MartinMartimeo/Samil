@@ -19,12 +19,12 @@ Gui::Gui(int argc, char **argv, World *pWorld) {
 }
 
 void Gui::SetHeight(unsigned int i) {
-    std::cout << "setter: " << i << "\n";
+    std::cout<<"[gui] " << "setter: " << i << "\n";
     m_iHeight = i;
 }
 
 void Gui::SetWidth(unsigned int i) {
-    std::cout << "setter: " << i << "\n";
+    std::cout<<"[gui] " << "setter: " << i << "\n";
     m_iWidth = i;
 }
 
