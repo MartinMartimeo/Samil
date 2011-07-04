@@ -97,10 +97,11 @@ int Game::ProcessRound()
 }
 
 
-int Game::ProcessPlayerAction(PlayerAction iPlayerAction, int iEntinyX, int iEntintyY)
+int Game::ProcessPlayerAction(PlayerAction iPlayerAction, int iEntityX, int iEntityY)
 {
     int dx = 0;
     int dy = 0;
+    bool hit = false;
     switch(iPlayerAction)
     {
         case(DoNothing) :
@@ -154,7 +155,80 @@ int Game::ProcessPlayerAction(PlayerAction iPlayerAction, int iEntinyX, int iEnt
         {
             dx = -1;
             dy = 0;
+        }
+
+        case(Hit_NW) :
+        {
+            dx = -1;
+            dy = -1;
+            hit = true;
+        }
+        
+        case(Hit_N) :
+        {
+            dx = 0;
+            dy = -1;
+            hit = true;
         }        
+
+        case(Hit_NE) :
+        {
+            dx = 1;
+            dy = -1;
+            hit = true;
+        }        
+
+        case(Hit_E) :
+        {
+            dx = 1;
+            dy = 0;
+            hit = true;
+        }        
+
+        case(Hit_SE) :
+        {
+            dx = 1;
+            dy = 1;
+            hit = true;
+        }        
+
+        case(Hit_S) :
+        {
+            dx = 0;
+            dy = 1;
+            hit = true;
+        }        
+ 
+        case(Hit_SW) :
+        {
+            dx = -1;
+            dy = 1;
+            hit = true;
+        }        
+
+        case(Hit_W) :
+        {
+            dx = -1;
+            dy = 0;
+            hit = true;
+        }
+
+    }   // end switch
+
+    if(iEntityX + dx < 0 || iEntityX + dx > m_pWorld->GetWidth())
+    {
+        dx = 0;
+    }
+
+    if(iEntityY + dy < 0 || iEntityY + dy > m_pWorld->GetWidth())
+    {
+        dy = 0;
+    }
+
+    if(!hit)
+    {
+        
+        return 1;
     }
     return -1;
 }
