@@ -40,7 +40,7 @@ public:
 
 private:
 	World *m_pWorld;	// Spielwelt
-	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityType const eEntityType, WorldMapCoords const iiEntityCoordination);
+	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
 	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
 
     int ProcessPlayerAction(PlayerAction iPlayerAction, int iEntityX, int iEntityY);

@@ -898,6 +898,19 @@ WorldMapCoords World::GetEntityCoords(unsigned int iEntity)
     return WorldMapCoords(iPosX,iPosY);
 }
 
+unsigned int World::GetEntityPlayer(unsigned int iEntity)
+{
+    return m_pviWorldEntities->at(iEntity).GetPlayer();
+}
+
+
+WorldEntityInformation World::GetEntityInformation(unsigned int iEntity)
+{
+    WorldMapCoords iEntityCoords = GetEntityCoords(iEntity);
+    struct WorldEntityInformation uEntityInformation = {GetEntityType(iEntity), iEntityCoords.first, iEntityCoords.second, GetEntityPlayer(iEntity)};
+    return uEntityInformation;
+}
+
 /**********************************************************************/
 
 unsigned int World::GetPlayer()
