@@ -730,7 +730,7 @@ void World::DoEntityInitalisation()
         for (unsigned int iEntity = 0; iEntity < m_iWorldEntities; iEntity++)
         {
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).IncrId();
-            m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPlayer(m_iPlayer);
+            m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).SetPlayer(iPlayer);
             m_pviWorldEntities->at(iPlayer * m_iWorldEntities + iEntity).DoRelive();
 
             //Position
