@@ -92,10 +92,15 @@ int Game::ProcessRound()
     
     list<unsigned int> vLivingEntities = m_pWorld->GetLivingEntities();
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
-    {        
-        
-        // PlayerAction iAction = GetPlayerAction(...);
-        // ProcessPlayerAction(iAction);
+    {         
+        unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it);
+        if(uiPlayerNum >= m_pvKIs->size())
+        {
+            std::cout<<"[game] Player "<< uiPlayerNum <<" does not Exist"<<std::endl;
+            return -1;
+        }
+        PlayerAction iAction = GetPlayerAction(m_pvKIs->at(uiPlayerNum), m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
+        ProcessPlayerAction(iAction, *it);
     }
     return 0;
 }
@@ -233,9 +238,16 @@ int Game::ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity)
 
     if(!hit)
     {
-        m_pWorld->MoveEntity(iEntity, pCoords.first, pCoords.second);
+        m_pWorld->MoveEntity(iEntity, pCoords.first + dx, pCoords.second + dy);
         return 1;
+    } 
+    else
+    {
+       // hit player
+       return 2;
     }
+
+    
     return -1;
 }
 
