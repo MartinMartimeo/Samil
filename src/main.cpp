@@ -15,12 +15,13 @@ int main(int argc, char **argv)
 
         
         Game *pGame = new Game(32, 32);
-        Gui *pGui = new Gui(argc, argv, pGame->GetWorldPointer());
-        
+        //Gui *pGui = new Gui(argc, argv, pGame->GetWorldPointer());
         pGame->LoadKI();
-
+        
+        pGame->ProcessRound();
         delete pGame;
-        delete pGui;
-
+        //delete pGui;
+    
+    std::cout<<"[main] samil beendet."<<std::endl;
 	return -1; 
 }
