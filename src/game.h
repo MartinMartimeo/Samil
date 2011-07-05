@@ -39,10 +39,11 @@ public:
     World* GetWorldPointer();   // Gibt den Zeiger auf die Erstellte Spielwelt zurück.
 
 private:
-	World *m_pWorld;	// Spielwelt
+	int iRoundCount;
+    World *m_pWorld;	// Spielwelt
 	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
 	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
-
-    int ProcessPlayerAction(PlayerAction iPlayerAction, int iEntityX, int iEntityY);
+    
+    int ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity);
 };
 #endif

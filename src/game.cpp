@@ -17,11 +17,14 @@ Game::Game(int width, int height)
 	m_pvKIs = new(std::vector<KIHandle>);
 	m_pWorld = NULL;
     InitWorld(width, height);
+    iRoundCount = 0;
 }
 
 Game::Game() 
 {
 	m_pvKIs = new(std::vector<KIHandle>);
+    m_pWorld = NULL;
+    iRoundCount = 0;
 }
 
 
@@ -78,26 +81,32 @@ int Game::InitWorld(int width, int height)
 
 int Game::ProcessRound()
 {   
-    std::cout<<"[game] Processing Round!"<<std::endl;
-    
     if(!m_pWorld)
     {   
         std::cout<<"[game] ProcessingRound failed: WorldPointer = NULL"<<std::endl;
         return -1;
     }
-
+    
+    std::cout<<"[game] Processing Round "<<iRoundCount<<"."<<std::endl;
+    iRoundCount++;
+    
     list<unsigned int> vLivingEntities = m_pWorld->GetLivingEntities();
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
-    {        
-        
-        // PlayerAction iAction = GetPlayerAction(...);
-        // ProcessPlayerAction(iAction);
+    {         
+        unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it);
+        if(uiPlayerNum >= m_pvKIs->size())
+        {
+            std::cout<<"[game] Player "<< uiPlayerNum <<" does not Exist"<<std::endl;
+            return -1;
+        }
+        PlayerAction iAction = GetPlayerAction(m_pvKIs->at(uiPlayerNum), m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
+        ProcessPlayerAction(iAction, *it);
     }
     return 0;
 }
 
 
-int Game::ProcessPlayerAction(PlayerAction iPlayerAction, int iEntityX, int iEntityY)
+int Game::ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity)
 {
     int dx = 0;
     int dy = 0;
@@ -215,21 +224,30 @@ int Game::ProcessPlayerAction(PlayerAction iPlayerAction, int iEntityX, int iEnt
 
     }   // end switch
 
-    if(iEntityX + dx < 0 || iEntityX + dx > m_pWorld->GetWidth())
+    WorldMapCoords pCoords = m_pWorld->GetEntityCoords(iEntity);
+    
+    if(pCoords.first + dx < 0 || pCoords.first + dx > m_pWorld->GetWidth())
     {
         dx = 0;
     }
 
-    if(iEntityY + dy < 0 || iEntityY + dy > m_pWorld->GetWidth())
+    if(pCoords.second + dy < 0 || pCoords.second + dy > m_pWorld->GetWidth())
     {
         dy = 0;
     }
 
     if(!hit)
     {
-        
+        m_pWorld->MoveEntity(iEntity, pCoords.first + dx, pCoords.second + dy);
         return 1;
+    } 
+    else
+    {
+       // hit player
+       return 2;
     }
+
+    
     return -1;
 }
 
