@@ -17,8 +17,9 @@ int main(int argc, char **argv)
         Game *pGame = new Game(32, 32);
         //Gui *pGui = new Gui(argc, argv, pGame->GetWorldPointer());
         pGame->LoadKI();
+        pGame->LoadKI();
         
-        pGame->ProcessRound();
+        pGame->ProcessRound(10);
         delete pGame;
         //delete pGui;
     

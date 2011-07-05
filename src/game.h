@@ -35,6 +35,7 @@ public:
 	int InitWorld(int width, int heigth);	// Initialisierung der Welt
 	
 	int ProcessRound();		// Abarbeitung einer Spielrunde
+    int ProcessRound(int iRoundNum);
 
     World* GetWorldPointer();   // Gibt den Zeiger auf die Erstellte Spielwelt zurück.
 

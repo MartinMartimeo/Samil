@@ -79,6 +79,18 @@ int Game::InitWorld(int width, int height)
     return 0;	
 }
 
+int Game::ProcessRound(int n)
+{
+    for(int i = 0; i < n; i++)
+    {
+        if(ProcessRound() == -1)
+        {
+            return -1;
+        }
+    }
+    return 1;
+}
+
 int Game::ProcessRound()
 {   
     if(!m_pWorld)
@@ -97,6 +109,7 @@ int Game::ProcessRound()
         if(uiPlayerNum >= m_pvKIs->size())
         {
             std::cout<<"[game] Player "<< uiPlayerNum <<" does not Exist"<<std::endl;
+            std::cout<<"KI Nr " << m_pvKIs->size() << "is biggest in List"<<std::endl;
             return -1;
         }
         PlayerAction iAction = GetPlayerAction(m_pvKIs->at(uiPlayerNum), m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
