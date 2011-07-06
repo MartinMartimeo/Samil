@@ -34,7 +34,7 @@ public:
     
     World(unsigned int iWorldHeight, unsigned int iWorldWidth,
             unsigned int iWorldPlayer=2, unsigned int iWorldEntities=10,
-            unsigned int iMountainPercent=20, unsigned int iSeaPercent=20, 
+            unsigned int iMountainPercent=0, unsigned int iSeaPercent=20, 
             unsigned int iTreePercent=10);
     virtual ~World();
 

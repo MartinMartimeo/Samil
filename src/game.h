@@ -13,6 +13,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 #include "ai_interface.h"
 #include "world.h"
@@ -43,8 +44,9 @@ public:
 private:
 	int iRoundCount;
     World *m_pWorld;	// Spielwelt
-	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
-	std::vector<KIHandle> *m_pvKIHandles; // Liste mit SpielerKIs
+	PlayerAction GetPlayerAction(AiInterface* pAi, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
+	std::vector<KIHandle> *m_pvKIHandles;
+    std::map<unsigned int, AiInterface*> *m_pmAis;
     Statistics *m_pStats;
 
     int ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity);
