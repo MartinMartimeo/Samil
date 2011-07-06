@@ -7,9 +7,11 @@
 
 class TestKI : public AiInterface
 {
+public:
     TestKI();
     ~TestKI();
     
+    unsigned int GetRandomNumber();
     PlayerAction DoThink(WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
 };
 

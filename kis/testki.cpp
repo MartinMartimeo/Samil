@@ -14,3 +14,16 @@ PlayerAction TestKI::DoThink(WorldMapView const &vvView, WorldEntityInformation 
 {
     return DoNothing;
 }
+
+unsigned int TestKI::GetRandomNumber()
+{
+    return 7;
+}
+
+extern "C" AiInterface* create() {
+    return new TestKI;
+}
+
+extern "C" void destroy(AiInterface* p) {
+    delete p;
+}

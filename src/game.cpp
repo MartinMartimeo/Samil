@@ -68,7 +68,19 @@ int Game::LoadKI()
 PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation)
 {
     std::cout<<"[game] GetPlayerAction() called with KI["<<kiHandle<<"]"<<std::endl;
-    return ((AiInterface*) kiHandle) -> DoThink(vvView, uEntityInformation);
+    
+    create_ai* funcCreateClass = (create_ai*) dlsym(kiHandle, "create");
+    const char* dlsym_error = dlerror();
+    if (dlsym_error) {
+        std::cerr << "[game] Cannot load symbol create: " << dlsym_error << std::endl;
+        return 1;
+    }
+    
+    AiInterface* aiClass = funcCreateClass();
+    std::cout<<"[game] RandomNumber: "<<aiClass->GetRandomNumber()<<std::endl;
+    
+    return DoNothing;
+    //return ((AiInterface*) kiHandle) -> DoThink(vvView, uEntityInformation);
 }
 
 int Game::InitWorld(int width, int height)
