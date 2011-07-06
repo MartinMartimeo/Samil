@@ -57,7 +57,9 @@ public:
     
     list<unsigned int> GetLivingEntities();
     
+    WorldMapView GetViewPort();
     WorldMapView GetViewPort(unsigned int iEntity);
+        
     WorldEntityType GetEntityType(unsigned int iEntity);
     WorldMapCoords GetEntityCoords(unsigned int iEntity);
     unsigned int GetEntityPlayer(unsigned int iEntity);
@@ -68,13 +70,6 @@ public:
     bool HealEntity(unsigned int iEntity, int iTargetX, int iTargetY);
     bool AttackEntity(unsigned int iEntity, int iTargetX, int iTargetY);
     bool ExplodeEntity(unsigned int iEntity);
-    
-    
-    /**********************************************************************/
-    // Iteratoren
-    
-    WorldMapFields::iterator begin();
-    WorldMapFields::iterator end();
 
 private:
 
