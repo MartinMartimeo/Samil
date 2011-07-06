@@ -40,7 +40,7 @@ public:
     static void processNormalKeys(unsigned char key, int x, int y);
     static void updatePerspective();
     void renderWater(float x, float y);
-    void renderTree();
+    void renderTree(float x, float y);
     void renderMountain(float x, float y);
     void renderEmpty();
     //void transformArraytoCoordinates(int x, y);

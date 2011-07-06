@@ -116,6 +116,9 @@ void Gui::render(void) {
             case FieldSea:
                 Gui::m_this->renderWater(it->first.first-fDifWidth, it->first.second-fDifHeight);
                 break;
+            case FieldTree:
+                Gui::m_this->renderTree(it->first.first-fDifWidth, it->first.second-fDifHeight);
+                break;
                 
         }
     }
@@ -145,21 +148,28 @@ void Gui::render(void) {
 }
 
 void Gui::renderWater(float x, float y) {
-    float z = 0.1;
+    glBegin(GL_QUADS);
+    glColor3f(0, 0, 1);
+    glVertex3f(x, y, 0.125f);
+    glVertex3f(x, y + 1.0f, 0.125f);
+    glVertex3f(x + 1.0f, y + 1.0f, 0.125f);
+    glVertex3f(x + 1.0f, y, 0.125f);
+    glEnd();
+
+}
+
+void Gui::renderTree(float x, float y) {
+    float z = 0.25*1.5f + fabs(sin(x / 3.0f) + sin(x / 1.0f) + cos(y / 3.0f) + cos(y / 2.0f));
     glBegin(GL_TRIANGLE_FAN);
-    glColor3f(0, 0, 1);
+    glColor3f(0, 1, 0);
     glVertex3f(x + 0.5f, y + 0.5f, z);
-    glColor3f(0, 0, 1);
+    glColor3f(0.54, 0.27, 0.074);
     glVertex3f(x, y, 0.0f);
     glVertex3f(x, y + 1.0f, 0.0f);
     glVertex3f(x + 1.0f, y + 1.0f, 0.0f);
     glVertex3f(x + 1.0f, y, 0.0f);
     glVertex3f(x, y, 0.0f);
     glEnd();
-
-}
-
-static void renderTree() {
 
 }
 
