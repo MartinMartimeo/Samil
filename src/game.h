@@ -17,6 +17,7 @@
 #include "ai_interface.h"
 #include "world.h"
 #include "ki_handle.h"
+#include "statistics.h"
 
 class Game
 {
@@ -44,7 +45,8 @@ private:
     World *m_pWorld;	// Spielwelt
 	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
 	std::vector<KIHandle> *m_pvKIs; // Liste mit SpielerKIs
-    
+    Statistics *m_pStats;
+
     int ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity);
 };
 #endif
