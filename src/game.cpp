@@ -119,7 +119,7 @@ int Game::ProcessRound()
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
     {         
         std::cout<<"[game] "<<*it<<std::endl;
-        unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it);
+        unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it - 1);
         if(uiPlayerNum >= m_pvKIHandles->size())
         {
             std::cout<<"[game] Player "<< uiPlayerNum <<" does not Exist"<<std::endl;
@@ -137,10 +137,10 @@ int Game::ProcessRound()
             }
             m_pmAis->insert(std::pair<unsigned int, AiInterface*>(*it, funcCreateClass()));
         }
-        std::cout<<"[game] TEST y"<<uiPlayerNum<<std::endl;
-        PlayerAction iAction = GetPlayerAction(m_pmAis->find(*it)->second, m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
+        std::cout<<"[game] TEST y "<<uiPlayerNum<<std::endl;
+        PlayerAction iAction = GetPlayerAction(m_pmAis->find(*it)->second, m_pWorld->GetViewPort(*it - 1), m_pWorld->GetEntityInformation(*it - 1));
         
-        std::cout<<"[game] TEST x"<<uiPlayerNum<<std::endl;
+        std::cout<<"[game] TEST x "<<uiPlayerNum<<std::endl;
         ProcessPlayerAction(iAction, *it);
     }
     // render();
