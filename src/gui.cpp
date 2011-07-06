@@ -69,7 +69,7 @@ void Gui::init(int argc, char **argv) {
 }
 
 void Gui::idle(void) {
-    //Gui::m_this->m_pGame->ProcessRound();
+    Gui::m_this->m_pGame->ProcessRound();
     render();
     
 }
@@ -118,6 +118,8 @@ void Gui::render(void) {
                 break;
             case FieldTree:
                 Gui::m_this->renderTree(it->first.first-fDifWidth, it->first.second-fDifHeight);
+                break;
+            default:
                 break;
                 
         }
