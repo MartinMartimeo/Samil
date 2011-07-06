@@ -10,8 +10,7 @@ COMPILE = $(CC) $(CFLAGS) -c -g
 
 OBJFILES := $(patsubst %.cpp,%.o,$(wildcard ./src/*.cpp))
 
-KISOBJECTS := $(patsubst %.cpp,%.o,$(wildcard ./kis/*.cpp))
-KISFILES := $(patsubst %.cpp,%.so,$(wildcard ./kis/*.cpp))	
+KISOBJECTS := $(patsubst %.cpp,%.oo,$(wildcard ./kis/*.cpp))	
 	
 
 
@@ -20,7 +19,7 @@ all: samil kis
 
 kis: $(KISOBJECTS)
 	
-	$(CC) --shared -o $(KISFILES) $(KISOBJECTS) $(LDFLAGS) $(CFLAGS)
+	
 
 samil: $(OBJFILES)
 
@@ -29,9 +28,14 @@ samil: $(OBJFILES)
 %.o: %.cpp
 
 	$(COMPILE) -o $@ $<
+	
+%.oo: %.cpp	
+	
+	$(COMPILE) -o $@ $<
+	$(CC) --shared -o $(patsubst %.oo,%.so,$@) $@ $(LDFLAGS) $(CFLAGS)
 
 clean:
 	rm src/*.o
-	rm kis/*.o
+	rm kis/*.oo
 	rm kis/*.so
 
