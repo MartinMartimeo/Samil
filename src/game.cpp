@@ -18,12 +18,14 @@ Game::Game(int width, int height)
 	m_pWorld = NULL;
     InitWorld(width, height);
     iRoundCount = 0;
+    m_pvpAis = NULL;
 }
 
 Game::Game() 
 {
 	m_pvKIHandles = new(std::vector<KIHandle>);
     m_pWorld = NULL;
+    m_pvpAis = NULL;
     iRoundCount = 0;
 }
 
@@ -37,6 +39,7 @@ Game::~Game()
 
     delete(m_pvKIHandles);
     std::cout<<"[game] KIHandles freed"<<std::endl;
+    delete(m_pvpAis);
 }
 
 int Game::LoadKI(std::string sKIPath)
@@ -79,8 +82,8 @@ PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView
     AiInterface* aiClass = funcCreateClass();
     std::cout<<"[game] RandomNumber: "<<aiClass->GetRandomNumber()<<std::endl;
     
-    return DoNothing;
-    //return ((AiInterface*) kiHandle) -> DoThink(vvView, uEntityInformation);
+    // return DoNothing;
+    return ((AiInterface*) kiHandle) -> DoThink(vvView, uEntityInformation);
 }
 
 int Game::InitWorld(int width, int height)
@@ -115,11 +118,18 @@ int Game::ProcessRound()
         std::cout<<"[game] ProcessingRound failed: WorldPointer = NULL"<<std::endl;
         return -1;
     }
-    
+
     std::cout<<"[game] Processing Round "<<iRoundCount<<"."<<std::endl;
     iRoundCount++;
     
     list<unsigned int> vLivingEntities = m_pWorld->GetLivingEntities();
+    
+    if(!m_pvpAis)
+    {
+        m_pvpAis = new std::vector<AiInterface*>();
+        m_pvpAis->assign(vLivingEntities.size(), NULL);
+    }
+    
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
     {         
         unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it);

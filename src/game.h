@@ -44,7 +44,8 @@ private:
 	int iRoundCount;
     World *m_pWorld;	// Spielwelt
 	PlayerAction GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation);
-	std::vector<KIHandle> *m_pvKIHandles; // Liste mit SpielerKIs
+	std::vector<KIHandle> *m_pvKIHandles;
+    std::vector<AiInterface*> *m_pvpAis;
     Statistics *m_pStats;
 
     int ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity);
