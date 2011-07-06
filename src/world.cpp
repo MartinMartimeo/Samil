@@ -395,7 +395,7 @@ void World::DoWorldInitalisation()
         }
         iStepY /= 2;
         iDynamicChange--;
-    }
+    }   
 
     //Checking for Minimum, Maximum (just for interest)
     DoLog("Check for Maximum/Minimum");
@@ -636,9 +636,9 @@ void World::DoWorldInitalisation()
 
     //Male
     DoLog("Betätige dich als Weltenkünstler");    
-    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX++)
     {
-        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY++)
         {
             if (GetField(iPosX, iPosY).HasInformation(WorldFieldInformationWay))
             {
@@ -683,6 +683,7 @@ void World::DoWorldInitalisation()
             GetField(iPosX, iPosY).SetType(WorldFieldTypeEmpty);
         }
     }
+            
 
     //Fertig
     DoLog("Neue Erde erschaffen");
