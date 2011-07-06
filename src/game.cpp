@@ -277,8 +277,13 @@ int Game::ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity)
     } 
     else
     {
-       // hit player
-       return 2;
+        switch(m_pWorld->GetEntityType(iEntity))
+        {
+            case(Healer) : m_pWorld->HealEntity(iEntity, pCoords.first + dx, pCoords.second + dy);
+            case(Warrior) : m_pWorld->AttackEntity(iEntity, pCoords.first + dx, pCoords.second + dy);
+            case(Terroist) : m_pWorld->ExplodeEntity(iEntity);
+        }
+        return 2;
     }
     
     return -1;
