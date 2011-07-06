@@ -14,7 +14,7 @@
 
 Game::Game(int width, int height) 
 {
-	m_pvKIs = new(std::vector<KIHandle>);
+	m_pvKIHandles = new(std::vector<KIHandle>);
 	m_pWorld = NULL;
     InitWorld(width, height);
     iRoundCount = 0;
@@ -22,7 +22,7 @@ Game::Game(int width, int height)
 
 Game::Game() 
 {
-	m_pvKIs = new(std::vector<KIHandle>);
+	m_pvKIHandles = new(std::vector<KIHandle>);
     m_pWorld = NULL;
     iRoundCount = 0;
 }
@@ -30,12 +30,12 @@ Game::Game()
 
 Game::~Game()
 {
-	for(vector<KIHandle>::iterator it = m_pvKIs->begin(); it != m_pvKIs->end(); it++)
+	for(vector<KIHandle>::iterator it = m_pvKIHandles->begin(); it != m_pvKIHandles->end(); it++)
     {
         dlclose(*it);
     }
 
-    delete(m_pvKIs);
+    delete(m_pvKIHandles);
     std::cout<<"[game] KIHandles freed"<<std::endl;
 }
 
@@ -44,7 +44,7 @@ int Game::LoadKI(std::string sKIPath)
     KIHandle k = dlopen(sKIPath.c_str(), RTLD_NOW | RTLD_GLOBAL);
     if(k)
     {
-        m_pvKIs->push_back(k);
+        m_pvKIHandles->push_back(k);
         std::cout<<"[game] KI \""<<sKIPath<<"\" loadet successfully to game as ["<<k<<"]"<<std::endl;
         return 1;
     }
@@ -123,13 +123,13 @@ int Game::ProcessRound()
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
     {         
         unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it);
-        if(uiPlayerNum >= m_pvKIs->size())
+        if(uiPlayerNum >= m_pvKIHandles->size())
         {
             std::cout<<"[game] Player "<< uiPlayerNum <<" does not Exist"<<std::endl;
-            std::cout<<"KI Nr " << m_pvKIs->size() << "is biggest in List"<<std::endl;
+            std::cout<<"KI Nr " << m_pvKIHandles->size() << "is biggest in List"<<std::endl;
             return -1;
         }
-        PlayerAction iAction = GetPlayerAction(m_pvKIs->at(uiPlayerNum), m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
+        PlayerAction iAction = GetPlayerAction(m_pvKIHandles->at(uiPlayerNum), m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
         ProcessPlayerAction(iAction, *it);
     }
     return 0;
