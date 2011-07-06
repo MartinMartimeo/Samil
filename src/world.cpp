@@ -442,12 +442,12 @@ void World::DoWorldInitalisation()
     unsigned int iFlagPos = 0;
     while (!bBreak)
     {
-        DoLog("Run Dijkstra");
+        std::cout<<"[world] Run Dijkstra for Flag Pos "<<iFlagPos<<std::endl;
 
         DoLog("Resetting Map Information for Dijkstra");
-        for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX += floor(pow(m_iWidth, 0.5)))
+        for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX++)
         {
-            for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY += floor(pow(m_iHeight, 0.5)))
+            for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY++)
             {
                 GetField(iPosX, iPosY).UnSetInformation(WorldFieldInformationBlack);
                 GetField(iPosX, iPosY).UnSetInformation(WorldFieldInformationGrey);
@@ -471,14 +471,14 @@ void World::DoWorldInitalisation()
         viFieldList.push_back(oFirstField);
         oFirstField.SetInformation(WorldFieldInformationBlack);
         oFirstField.SetDistance(0);
-        oFirstField.SetPreCursor(oFirstField);
+        //oFirstField.SetPreCursor(oFirstField);
 
         WorldField oField;
         
         while(viFieldList.size() > 0)
         {
             //Suche kleinsten Knoten aus der Liste
-            //std::cout<<"[world] "<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
+            std::cout<<"[world_dijkstra] "<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
 
             int iMin = -1;
             for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
@@ -521,7 +521,7 @@ void World::DoWorldInitalisation()
                     {
                         oNorth.SetInformation(WorldFieldInformationGrey);
                         oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
-                        oNorth.SetPreCursor(oField);
+                        oNorth.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         viFieldList.push_back(oNorth);
                     }
                     else
@@ -529,7 +529,7 @@ void World::DoWorldInitalisation()
                         if (oNorth.GetDistance() > oField.GetDistance() + oNorth.GetWeight())
                         {
                             oNorth.SetDistance(oField.GetDistance() + oNorth.GetWeight());
-                            oNorth.SetPreCursor(oField);
+                            oNorth.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         }
                     }
                 }
@@ -544,7 +544,7 @@ void World::DoWorldInitalisation()
                     {
                         oSouth.SetInformation(WorldFieldInformationGrey);
                         oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
-                        oSouth.SetPreCursor(oField);
+                        oSouth.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         viFieldList.push_back(oSouth);
                     }
                     else
@@ -552,7 +552,7 @@ void World::DoWorldInitalisation()
                         if (oSouth.GetDistance() > oField.GetDistance() + oSouth.GetWeight())
                         {
                             oSouth.SetDistance(oField.GetDistance() + oSouth.GetWeight());
-                            oSouth.SetPreCursor(oField);
+                            oSouth.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         }
                     }
                 }
@@ -567,7 +567,7 @@ void World::DoWorldInitalisation()
                     {
                         oWest.SetInformation(WorldFieldInformationGrey);
                         oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
-                        oWest.SetPreCursor(oField);
+                        oWest.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         viFieldList.push_back(oWest);
                     }
                     else
@@ -575,7 +575,7 @@ void World::DoWorldInitalisation()
                         if (oWest.GetDistance() > oField.GetDistance() + oWest.GetWeight())
                         {
                             oWest.SetDistance(oField.GetDistance() + oWest.GetWeight());
-                            oWest.SetPreCursor(oField);
+                            oWest.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         }
                     }
                 }
@@ -590,7 +590,7 @@ void World::DoWorldInitalisation()
                     {
                         oEast.SetInformation(WorldFieldInformationGrey);
                         oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
-                        oEast.SetPreCursor(oField);
+                        oEast.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         viFieldList.push_back(oEast);
                     }
                     else
@@ -598,7 +598,7 @@ void World::DoWorldInitalisation()
                         if (oEast.GetDistance() > oField.GetDistance() + oEast.GetWeight())
                         {
                             oEast.SetDistance(oField.GetDistance() + oEast.GetWeight());
-                            oEast.SetPreCursor(oField);
+                            oEast.SetPreCursor(oField.GetPosX(), oField.GetPosY());
                         }
                     }
                 }
@@ -608,14 +608,15 @@ void World::DoWorldInitalisation()
             if (oEndField.HasInformation(WorldFieldInformationBlack))
             {
                 DoLog("Found Final Field");
-                oEndField.Print();
                 viFieldList.clear();
 
                 WorldField& oWayField = oEndField;
-                while (oWayField.GetPosX() != oWayField.GetPreCursor().GetPosX() && oWayField.GetPosY() != oWayField.GetPreCursor().GetPosY()) {
+                oEndField.Print();
+                GetField(oEndField.GetPreCursor().first, oEndField.GetPreCursor().second).Print();                
+                while (oWayField.GetPosX() != oWayField.GetPreCursor().first && oWayField.GetPosY() != oWayField.GetPreCursor().second) {
                     PunishField(oWayField.GetPosX(), oWayField.GetPosY(), 7);
-                    oWayField = oWayField.GetPreCursor();
-                    oWayField.SetInformation(WorldFieldInformationWay);
+                    oWayField = GetField(oWayField.GetPreCursor().first, oWayField.GetPreCursor().second);
+                    oWayField.SetInformation(WorldFieldInformationWay);   
                 }
 
 
