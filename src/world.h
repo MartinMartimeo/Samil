@@ -34,7 +34,7 @@ public:
     
     World(unsigned int iWorldHeight, unsigned int iWorldWidth,
             unsigned int iWorldPlayer=2, unsigned int iWorldEntities=10,
-            unsigned int iMountainPercent=20, unsigned int iSeaPercent=20, 
+            unsigned int iMountainPercent=0, unsigned int iSeaPercent=20, 
             unsigned int iTreePercent=10);
     virtual ~World();
 
@@ -56,6 +56,9 @@ public:
     // Game -> World Action
     
     list<unsigned int> GetLivingEntities();
+    
+    void IncrPlayerPoints(unsigned int iPlayer, unsigned int iPoints);
+    bool HasPlayerWon(unsigned int iPlayer);
     
     WorldMapView GetViewPort();
     WorldMapView GetViewPort(unsigned int iEntity);
@@ -106,6 +109,8 @@ protected:
 
     WorldMapFields*                             m_pviStartingFields;
     WorldEntities*                              m_pviWorldEntities;
+    
+    map<unsigned int, unsigned int>*            m_pviPlayerPoints;
 
 };
 

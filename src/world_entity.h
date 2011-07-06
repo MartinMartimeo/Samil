@@ -76,7 +76,7 @@ private:
     unsigned int            m_iPosX;
     unsigned int            m_iPosY;
 
-    unsigned int            m_iPlayer;
+    unsigned int            m_iPlayer;    
 
     int                     m_iHitpoints;
     unsigned int            m_iMaxHitpoints;
