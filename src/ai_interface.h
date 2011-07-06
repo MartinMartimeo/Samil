@@ -55,6 +55,9 @@ struct WorldEntityInformation {
 class AiInterface
 {
 public:
+    AiInterface() {};
+    virtual ~AiInterface() {};
+    
     virtual PlayerAction DoThink(WorldMapView const &vvView, WorldEntityInformation const uEntityInformation) 
     {
         return DoNothing;
