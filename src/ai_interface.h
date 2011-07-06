@@ -11,9 +11,9 @@ using std::pair;
 #include "player_action.h"
 
 typedef enum WorldEntityType {
-    Healer = 100,
-    Warrior = 200,
-    Terroist = 300
+    Healer = 1024,
+    Warrior = 2048,
+    Terroist = 4096
 } WorldEntityType;
 
 typedef enum WorldMapField {
@@ -21,20 +21,20 @@ typedef enum WorldMapField {
 
     FieldEmpty = 1,
 
-    FieldTree = 11,
-    FieldStone = 12,
-    FieldSea = 13,
-    FieldMountain = 14,
+    FieldTree = 2,
+    FieldStone = 4,
+    FieldSea = 8,
+    FieldMountain = 16,
 
     FieldHealer = Healer,
     FieldWarrior = Warrior,
     FieldTerroist = Terroist,
 
-    FieldEnemy = 1000,
-    FieldFriend = 2000,
+    FieldEnemy = 32,
+    FieldFriend = 64,
 
-    FieldFriendFlag = 10000,
-    FieldEnemyFlag = 20000
+    FieldFriendFlag = 128,
+    FieldEnemyFlag = 256
 
 } WorldMapField;
 

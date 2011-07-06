@@ -631,8 +631,8 @@ void World::DoWorldInitalisation()
     int iMaxSea = iMin + (iMax - iMin) * m_iSeaPercent / 100;
     int iTreeRangeMin = (iMax - iMin) / 2 - (iMax - iMin) * m_iTreePercent / 200;
     int iTreeRangeMax = (iMax - iMin) / 2 + (iMax - iMin) * m_iTreePercent / 200;
-    std::cout<<"[world] "<<"Sea>"<<iMaxSea<<std::endl;
-    std::cout<<"[world] "<<"Mountain<"<<iMinMountain<<std::endl;
+    std::cout<<"[world] "<<"Sea<"<<iMaxSea<<std::endl;
+    std::cout<<"[world] "<<"Mountain>"<<iMinMountain<<std::endl;
 
     //Male
     DoLog("Betätige dich als Weltenkünstler");    
