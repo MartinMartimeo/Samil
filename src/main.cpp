@@ -12,14 +12,14 @@ int main(int argc, char **argv)
 	
 	std::cout<<"[main] samil gestartet"<<std::endl;
 	std::cout<<"[main] zum beenden ESC drücken"<<std::endl;
-
+        Game *pGame = new Game(128,128);
+//        pGame->LoadKI();
+//        pGame->LoadKI();
         
-        Game *pGame = new Game(32, 32);
-        //Gui *pGui = new Gui(argc, argv, pGame->GetWorldPointer());
-        pGame->LoadKI();
-        pGame->LoadKI();
+        Gui *pGui = new Gui(argc, argv, pGame);
         
-        pGame->ProcessRound(10);
+        
+        
         delete pGame;
         //delete pGui;
     

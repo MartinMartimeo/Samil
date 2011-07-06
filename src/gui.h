@@ -9,7 +9,7 @@
 #include <iostream>
 #include <GL/glut.h>
 #include <vector>
-#include "world.h"
+#include "game.h"
 
 class Gui;
 
@@ -27,7 +27,7 @@ public:
     /**********************************************************************/
     // Konstruktor, Destruktor
 
-    Gui(int argc, char **argv, World *pWorld = NULL);
+    Gui(int argc, char **argv, Game *m_pGame = NULL);
     virtual ~Gui();
 
     /**********************************************************************/
@@ -39,7 +39,7 @@ public:
     static void resize(int w, int h);
     static void processNormalKeys(unsigned char key, int x, int y);
     static void updatePerspective();
-    void renderWater();
+    void renderWater(float x, float y);
     void renderTree();
     void renderMountain(float x, float y);
     void renderEmpty();
@@ -70,12 +70,14 @@ private:
     unsigned int GetHeight();
     void SetWidth(unsigned int i);
     unsigned int GetWidth();
+    void RenderWorld();
     CameraOrientation stCamOrient;
     unsigned int m_iWidth, m_iHeight;
     float m_fFovyAngle;
     float m_fWindowRatio;
     int m_iWindowWidth;
     int m_iWindowHeight;
+    Game *m_pGame;
 
 
 };

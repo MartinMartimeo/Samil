@@ -10,10 +10,11 @@ Gui::~Gui() {
 
 }
 
-Gui::Gui(int argc, char **argv, World *pWorld) {
-    SetWidth(pWorld->GetWidth());
-    SetHeight(pWorld->GetHeight());
+Gui::Gui(int argc, char **argv, Game *m_pGame) {
     Gui::m_this = this;
+    Gui::m_this->m_pGame = m_pGame;
+    SetWidth(Gui::m_this->m_pGame->GetWorldPointer()->GetWidth());
+    SetHeight(Gui::m_this->m_pGame->GetWorldPointer()->GetHeight());
     Gui::m_this->m_fFovyAngle = 100;
     init(argc, argv);
 }
@@ -68,8 +69,11 @@ void Gui::init(int argc, char **argv) {
 }
 
 void Gui::idle(void) {
-    Gui::render();
+    //Gui::m_this->m_pGame->ProcessRound();
+    render();
+    
 }
+
 
 void Gui::render(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -102,12 +106,25 @@ void Gui::render(void) {
     glColor3f(1, 1, 1);
     glVertex3f(-fDifWidth, fDifHeight, 0.0f);
     glEnd();
-
-    for (int y = -16; y < 16; y++) {
-        for (int x = -16; x < 16; x++) {
-             Gui::m_this->renderMountain(x, y);
+    
+    WorldMapView oWorldView = Gui::m_this->m_pGame->GetWorldPointer()->GetViewPort();
+    for (WorldMapView::iterator it = oWorldView.begin(); it != oWorldView.end(); it++){
+        switch (it->second){
+            case FieldStone:
+                Gui::m_this->renderMountain(it->first.first-fDifWidth, it->first.second-fDifHeight);
+                break;
+            case FieldSea:
+                Gui::m_this->renderWater(it->first.first-fDifWidth, it->first.second-fDifHeight);
+                break;
+                
         }
     }
+
+//    for (int y = -16; y < 16; y++) {
+//        for (int x = -16; x < 16; x++) {
+//             Gui::m_this->renderMountain(x, y);
+//        }
+//    }
     
 
     //    glBegin(GL_QUADS);
@@ -127,7 +144,18 @@ void Gui::render(void) {
 
 }
 
-static void renderWater() {
+void Gui::renderWater(float x, float y) {
+    float z = 0.1;
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3f(0, 0, 1);
+    glVertex3f(x + 0.5f, y + 0.5f, z);
+    glColor3f(0, 0, 1);
+    glVertex3f(x, y, 0.0f);
+    glVertex3f(x, y + 1.0f, 0.0f);
+    glVertex3f(x + 1.0f, y + 1.0f, 0.0f);
+    glVertex3f(x + 1.0f, y, 0.0f);
+    glVertex3f(x, y, 0.0f);
+    glEnd();
 
 }
 

@@ -8,7 +8,7 @@
 
 CameraOrientation stCamOrient;
 
-void init_gui(int argc, char **argv, World *pWorld) {
+void init_gui(int argc, char **argv, World *pGame) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
