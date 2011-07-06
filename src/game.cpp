@@ -45,7 +45,7 @@ int Game::LoadKI(std::string sKIPath)
     if(k)
     {
         m_pvKIs->push_back(k);
-        std::cout<<"[game] KI \""<<sKIPath<<"\" loadet successfully to game"<<std::endl;
+        std::cout<<"[game] KI \""<<sKIPath<<"\" loadet successfully to game as ["<<k<<"]"<<std::endl;
         return 1;
     }
 
@@ -67,6 +67,7 @@ int Game::LoadKI()
 
 PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation)
 {
+    std::cout<<"[game] GetPlayerAction() called with KI["<<kiHandle<<"]"<<std::endl;
     return ((AiInterface*) kiHandle) -> DoThink(vvView, uEntityInformation);
 }
 
