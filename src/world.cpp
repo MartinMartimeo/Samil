@@ -1,4 +1,4 @@
-/*
+ /*
  * World Map
  *
  * Severin Orth
@@ -62,28 +62,14 @@ World::~World()
 
 /**********************************************************************/
 
-/*
- * Iteratoren, nur für Grafik!
- */
-
-WorldMapFields::iterator World::begin()
-{
-    return m_pviStartingFields->begin();
-}
-
-WorldMapFields::iterator World::end()
-{
-    return m_pviStartingFields->end();
-}
-
-/**********************************************************************/
-
 list<unsigned int> World::GetLivingEntities()
 {
+    DoLog("Get Living Entites");
+    
     list<unsigned int> viEntities;
     
     for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
-    {
+    {        
         if (itEntity->IsDead())
         {
             m_pviWorldEntities->erase(itEntity);
@@ -91,6 +77,8 @@ list<unsigned int> World::GetLivingEntities()
         }
         viEntities.push_back(itEntity->GetId());        
     }
+    
+    DoLog("Killed all dead entities");
     
     return viEntities;
 }
@@ -245,7 +233,7 @@ bool World::ExplodeEntity(unsigned int iEntity)
         return false;
     }
     
-    // Don't Explode agaim
+    // Don't Explode again
     m_pviWorldEntities->at(iEntity).SetBp(0);
     
     // Find Entity and Explode
@@ -806,6 +794,47 @@ void World::DoEntityInitalisation()
 }
 
 /**********************************************************************/
+
+WorldMapView World::GetViewPort()
+{    
+    WorldMapView mView;
+    
+    // Get Terrain
+    for (unsigned int iPosX = 0; iPosX < m_iWidth; iPosX++)
+    {
+        for (unsigned int iPosY = 0; iPosY < m_iHeight; iPosY++)
+        {            
+            mView.insert( pair<WorldMapCoords, WorldMapField>( WorldMapCoords(iPosX, iPosY), (WorldMapField) GetCell(iPosX, iPosY) ));            
+        }       
+    }
+    
+    // Get Entities
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        WorldMapView::iterator itViewElement = mView.find(WorldMapCoords(itEntity->GetPosX(), itEntity->GetPosY()));
+        if (itViewElement == mView.end())
+        {
+            continue;
+        }
+    }
+    
+    // Get Flags
+    for (unsigned int iPlayer = 0; iPlayer < m_iPlayer; iPlayer++)
+    {
+        unsigned int iFlagPosX = m_pviStartingFields->at(iPlayer).GetPosX();
+        unsigned int iFlagPosY = m_pviStartingFields->at(iPlayer).GetPosY();
+        
+        WorldMapView::iterator itViewElement = mView.find(WorldMapCoords(iFlagPosX, iFlagPosY));
+        if (itViewElement == mView.end())
+        {
+            continue;
+        }
+        
+    }
+    
+    return mView;
+    
+}
 
 WorldMapView World::GetViewPort(unsigned int iEntity)
 {    

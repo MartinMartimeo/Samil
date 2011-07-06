@@ -35,7 +35,7 @@ WorldField::~WorldField() {}
 
 void WorldField::Print()
 {
-    std::cout<<m_iPosX<<":"<<m_iPosY<<"="<<m_iType<<" "<<m_fInformation<<std::endl;
+    std::cout<<"[world_field] "<<m_iPosX<<":"<<m_iPosY<<"="<<m_iType<<" "<<m_fInformation<<std::endl;
 }
 
 /**********************************************************************/
