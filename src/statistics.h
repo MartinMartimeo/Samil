@@ -12,8 +12,17 @@
 class Statistics
 {
     public:
+    Statistics();
+    Statistics(Statistics& stats);
+    Statistics(int iPoints1, int iPoints2);
+    Statistics(std::vector<int> *pvPoints);
+    void print();
 
     private:
+    std::vector<int> *m_pvPoints;
+
+    protected:
+    std::vector<int> GetPoints();
 };
 
 #endif
