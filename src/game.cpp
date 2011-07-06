@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include <dlfcn.h>
 
@@ -16,16 +17,16 @@ Game::Game(int width, int height)
 {
 	m_pvKIHandles = new(std::vector<KIHandle>);
 	m_pWorld = NULL;
+    m_pmAis = new (std::map<unsigned int, AiInterface*>);
     InitWorld(width, height);
     iRoundCount = 0;
-    m_pvpAis = NULL;
 }
 
 Game::Game() 
 {
 	m_pvKIHandles = new(std::vector<KIHandle>);
+    m_pmAis = new (std::map<unsigned int, AiInterface*>);
     m_pWorld = NULL;
-    m_pvpAis = NULL;
     iRoundCount = 0;
 }
 
@@ -39,7 +40,6 @@ Game::~Game()
 
     delete(m_pvKIHandles);
     std::cout<<"[game] KIHandles freed"<<std::endl;
-    delete(m_pvpAis);
 }
 
 int Game::LoadKI(std::string sKIPath)
@@ -68,22 +68,14 @@ int Game::LoadKI()
     return LoadKI(sKIPath);
 }
 
-PlayerAction Game::GetPlayerAction(KIHandle kiHandle, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation)
+PlayerAction Game::GetPlayerAction(AiInterface* pAi, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation)
 {
-    std::cout<<"[game] GetPlayerAction() called with KI["<<kiHandle<<"]"<<std::endl;
+    std::cout<<"[game] GetPlayerAction() called with KI["<<pAi<<"]"<<std::endl;
     
-    create_ai* funcCreateClass = (create_ai*) dlsym(kiHandle, "create");
-    const char* dlsym_error = dlerror();
-    if (dlsym_error) {
-        std::cerr << "[game] Cannot load symbol create: " << dlsym_error << std::endl;
-        return 1;
-    }
     
-    AiInterface* aiClass = funcCreateClass();
-    std::cout<<"[game] RandomNumber: "<<aiClass->GetRandomNumber()<<std::endl;
+    std::cout<<"[game] RandomNumber: "<<pAi->GetRandomNumber()<<std::endl;
     
-    // return DoNothing;
-    return ((AiInterface*) kiHandle) -> DoThink(vvView, uEntityInformation);
+    return DoNothing;
 }
 
 int Game::InitWorld(int width, int height)
@@ -124,14 +116,9 @@ int Game::ProcessRound()
     
     list<unsigned int> vLivingEntities = m_pWorld->GetLivingEntities();
     
-    if(!m_pvpAis)
-    {
-        m_pvpAis = new std::vector<AiInterface*>();
-        m_pvpAis->assign(vLivingEntities.size(), NULL);
-    }
-    
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
     {         
+        std::cout<<"[game] "<<*it<<std::endl;
         unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it);
         if(uiPlayerNum >= m_pvKIHandles->size())
         {
@@ -139,9 +126,24 @@ int Game::ProcessRound()
             std::cout<<"KI Nr " << m_pvKIHandles->size() << "is biggest in List"<<std::endl;
             return -1;
         }
-        PlayerAction iAction = GetPlayerAction(m_pvKIHandles->at(uiPlayerNum), m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
+
+        if(m_pmAis->find(*it) == m_pmAis->end())
+        {
+            create_ai* funcCreateClass = (create_ai*) dlsym(m_pvKIHandles->at(uiPlayerNum), "create");
+            const char* dlsym_error = dlerror();
+            if (dlsym_error) {
+                std::cerr << "[game] Cannot load symbol create: " << dlsym_error << std::endl;
+                return 1;
+            }
+            m_pmAis->insert(std::pair<unsigned int, AiInterface*>(*it, funcCreateClass()));
+        }
+        std::cout<<"[game] TEST y"<<uiPlayerNum<<std::endl;
+        PlayerAction iAction = GetPlayerAction(m_pmAis->find(*it)->second, m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
+        
+        std::cout<<"[game] TEST x"<<uiPlayerNum<<std::endl;
         ProcessPlayerAction(iAction, *it);
     }
+    // render();
     return 0;
 }
 
@@ -286,7 +288,6 @@ int Game::ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity)
        // hit player
        return 2;
     }
-
     
     return -1;
 }
