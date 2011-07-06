@@ -70,12 +70,7 @@ int Game::LoadKI()
 
 PlayerAction Game::GetPlayerAction(AiInterface* pAi, WorldMapView const &vvView, WorldEntityInformation const uEntityInformation)
 {
-    std::cout<<"[game] GetPlayerAction() called with KI["<<pAi<<"]"<<std::endl;
-    
-    
-    std::cout<<"[game] RandomNumber: "<<pAi->GetRandomNumber()<<std::endl;
-    
-    return DoNothing;
+    return pAi->DoThink(vvView, uEntityInformation);
 }
 
 int Game::InitWorld(int width, int height)
@@ -118,8 +113,7 @@ int Game::ProcessRound()
     
     for(list<unsigned int>::iterator it = vLivingEntities.begin(); it != vLivingEntities.end(); it++)
     {         
-        std::cout<<"[game] "<<*it<<std::endl;
-        unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it);
+        unsigned int uiPlayerNum = m_pWorld->GetEntityPlayer(*it - 1);
         if(uiPlayerNum >= m_pvKIHandles->size())
         {
             std::cout<<"[game] Player "<< uiPlayerNum <<" does not Exist"<<std::endl;
@@ -137,10 +131,8 @@ int Game::ProcessRound()
             }
             m_pmAis->insert(std::pair<unsigned int, AiInterface*>(*it, funcCreateClass()));
         }
-        std::cout<<"[game] TEST y"<<uiPlayerNum<<std::endl;
-        PlayerAction iAction = GetPlayerAction(m_pmAis->find(*it)->second, m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
+        PlayerAction iAction = GetPlayerAction(m_pmAis->find(*it)->second, m_pWorld->GetViewPort(*it - 1), m_pWorld->GetEntityInformation(*it - 1));
         
-        std::cout<<"[game] TEST x"<<uiPlayerNum<<std::endl;
         ProcessPlayerAction(iAction, *it);
     }
     // render();
@@ -285,8 +277,13 @@ int Game::ProcessPlayerAction(PlayerAction iPlayerAction, unsigned int iEntity)
     } 
     else
     {
-       // hit player
-       return 2;
+        switch(m_pWorld->GetEntityType(iEntity))
+        {
+            case(Healer) : m_pWorld->HealEntity(iEntity, pCoords.first + dx, pCoords.second + dy);
+            case(Warrior) : m_pWorld->AttackEntity(iEntity, pCoords.first + dx, pCoords.second + dy);
+            case(Terroist) : m_pWorld->ExplodeEntity(iEntity);
+        }
+        return 2;
     }
     
     return -1;
