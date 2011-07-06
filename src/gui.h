@@ -78,6 +78,8 @@ private:
     int m_iWindowWidth;
     int m_iWindowHeight;
     Game *m_pGame;
+    float m_fAngleX;
+    float m_fAngleY;
 
 
 };

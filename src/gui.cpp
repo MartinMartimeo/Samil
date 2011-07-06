@@ -20,12 +20,12 @@ Gui::Gui(int argc, char **argv, Game *m_pGame) {
 }
 
 void Gui::SetHeight(unsigned int i) {
-    std::cout<<"[gui] " << "setter: " << i << "\n";
+    std::cout << "[gui] " << "setter: " << i << "\n";
     m_iHeight = i;
 }
 
 void Gui::SetWidth(unsigned int i) {
-    std::cout<<"[gui] " << "setter: " << i << "\n";
+    std::cout << "[gui] " << "setter: " << i << "\n";
     m_iWidth = i;
 }
 
@@ -71,9 +71,8 @@ void Gui::init(int argc, char **argv) {
 void Gui::idle(void) {
     Gui::m_this->m_pGame->ProcessRound();
     render();
-    
-}
 
+}
 
 void Gui::render(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -106,31 +105,31 @@ void Gui::render(void) {
     glColor3f(1, 1, 1);
     glVertex3f(-fDifWidth, fDifHeight, 0.0f);
     glEnd();
-    
+
     WorldMapView oWorldView = Gui::m_this->m_pGame->GetWorldPointer()->GetViewPort();
-    for (WorldMapView::iterator it = oWorldView.begin(); it != oWorldView.end(); it++){
-        switch (it->second){
+    for (WorldMapView::iterator it = oWorldView.begin(); it != oWorldView.end(); it++) {
+        switch (it->second) {
             case FieldStone:
-                Gui::m_this->renderMountain(it->first.first-fDifWidth, it->first.second-fDifHeight);
+                Gui::m_this->renderMountain(it->first.first - fDifWidth, it->first.second - fDifHeight);
                 break;
             case FieldSea:
-                Gui::m_this->renderWater(it->first.first-fDifWidth, it->first.second-fDifHeight);
+                Gui::m_this->renderWater(it->first.first - fDifWidth, it->first.second - fDifHeight);
                 break;
             case FieldTree:
-                Gui::m_this->renderTree(it->first.first-fDifWidth, it->first.second-fDifHeight);
+                Gui::m_this->renderTree(it->first.first - fDifWidth, it->first.second - fDifHeight);
                 break;
             default:
                 break;
-                
+
         }
     }
 
-//    for (int y = -16; y < 16; y++) {
-//        for (int x = -16; x < 16; x++) {
-//             Gui::m_this->renderMountain(x, y);
-//        }
-//    }
-    
+    //    for (int y = -16; y < 16; y++) {
+    //        for (int x = -16; x < 16; x++) {
+    //             Gui::m_this->renderMountain(x, y);
+    //        }
+    //    }
+
 
     //    glBegin(GL_QUADS);
     //    glColor3f(1, 0, 0);
@@ -161,7 +160,7 @@ void Gui::renderWater(float x, float y) {
 }
 
 void Gui::renderTree(float x, float y) {
-    float z = 0.25*1.5f + fabs(sin(x / 3.0f) + sin(x / 1.0f) + cos(y / 3.0f) + cos(y / 2.0f));
+    float z = 0.25 * 1.5f + fabs(sin(x / 3.0f) + sin(x / 1.0f) + cos(y / 3.0f) + cos(y / 2.0f));
     glBegin(GL_TRIANGLE_FAN);
     glColor3f(0, 1, 0);
     glVertex3f(x + 0.5f, y + 0.5f, z);
@@ -237,22 +236,29 @@ void Gui::processNormalKeys(unsigned char key, int x, int y) {
         Gui::m_this->m_fFovyAngle -= 0.5f;
     }
     if (key == 'w') {
-        Gui::m_this->stCamOrient.afVectEye[1] += 0.5;
-        //Gui::m_this->stCamOrient.afVectDest[1] += 0.5;
+        //Gui::m_this->stCamOrient.afVectEye[1] += 0.5;
+        if (Gui::m_this->m_fAngleX < 0) {
+            Gui::m_this->m_fAngleX += 0.0625;
+        }
     }
 
     if (key == 's') {
-        Gui::m_this->stCamOrient.afVectEye[1] -= 0.5;
-        //Gui::m_this->stCamOrient.afVectDest[1] -= 0.5;
+        //Gui::m_this->stCamOrient.afVectEye[1] -= 0.5;
+        if (Gui::m_this->m_fAngleX > 0.125 -(M_PI/2.0f)) {
+            Gui::m_this->m_fAngleX -= 0.0625;
+        }
     }
     if (key == 'a') {
-        Gui::m_this->stCamOrient.afVectEye[0] -= 0.5;
-        //Gui::m_this->stCamOrient.afVectDest[0] -= 0.5;
+        Gui::m_this->m_fAngleY -= 0.0625;
     }
+    
     if (key == 'd') {
-        Gui::m_this->stCamOrient.afVectEye[0] += 0.5;
-        //Gui::m_this->stCamOrient.afVectDest[0] += 0.5;
+        Gui::m_this->m_fAngleY += 0.0625;
     }
+    float fXZ = cos(Gui::m_this->m_fAngleX)*100;
+    Gui::m_this->stCamOrient.afVectEye[0] = sin(Gui::m_this->m_fAngleY)*fXZ;
+    Gui::m_this->stCamOrient.afVectEye[1] = sin(Gui::m_this->m_fAngleX)*100;
+    Gui::m_this->stCamOrient.afVectEye[2] = cos(Gui::m_this->m_fAngleY)*fXZ;
 }
 
 #endif
