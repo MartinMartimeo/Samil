@@ -55,10 +55,21 @@ struct WorldEntityInformation {
 class AiInterface
 {
 public:
+    AiInterface() {};
+    virtual ~AiInterface() {};
+    
+    virtual unsigned int GetRandomNumber()
+    {
+        return 4;
+    };
+    
     virtual PlayerAction DoThink(WorldMapView const &vvView, WorldEntityInformation const uEntityInformation) 
     {
         return DoNothing;
     }; // ich denke, also bin ich
 };
+
+typedef AiInterface* create_ai();
+typedef void destroy_ai(AiInterface*);
 
 #endif

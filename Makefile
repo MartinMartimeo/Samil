@@ -2,11 +2,11 @@
 
 CC = g++
 
-CFLAGS = -Wall -pedantic -O2
+CFLAGS = -Wall -pedantic -O0 -fPIC
 LDFLAGS += -lglut -lGLU
 
 
-COMPILE = $(CC) $(CFLAGS) -c
+COMPILE = $(CC) $(CFLAGS) -c -g
 
 OBJFILES := $(patsubst %.cpp,%.o,$(wildcard ./src/*.cpp))
 
