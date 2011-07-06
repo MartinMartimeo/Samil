@@ -58,6 +58,10 @@ int Game::LoadKI()
     std::cout<<"[game] Bitte Pfad zur KI eingeben:"<<std::endl;
     std::string sKIPath;
     std::cin>>sKIPath;
+    if(sKIPath[0] != '/')
+    {
+        sKIPath.insert(0,"kis/");
+    }
     return LoadKI(sKIPath);
 }
 
