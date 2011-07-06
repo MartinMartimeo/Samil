@@ -26,6 +26,8 @@ WorldField::WorldField()
 
     m_iPosX = 0;
     m_iPosY = 0;
+    
+    m_cPreCursor = WorldMapCoords(0, 0);
 }
 
 WorldField::~WorldField() {}
@@ -55,9 +57,9 @@ int WorldField::GetWeight()
     return m_iWeight;
 }
 
-WorldField& WorldField::GetPreCursor()
+WorldMapCoords WorldField::GetPreCursor()
 {
-    return *m_pPreCursor;
+    return m_cPreCursor;
 }
 
 unsigned int WorldField::GetPosX()
@@ -99,9 +101,9 @@ void WorldField::IncrWeight(int iValue)
 }
 
 
-void WorldField::SetPreCursor(WorldField& oPreCursor)
+void WorldField::SetPreCursor(unsigned int iPosX, unsigned int iPosY)
 {
-    m_pPreCursor = &oPreCursor;
+    m_cPreCursor = WorldMapCoords(iPosX, iPosY);
 }
 
 void WorldField::SetPosX(unsigned int iPosX)
