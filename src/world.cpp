@@ -125,6 +125,22 @@ bool World::MoveEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     m_pviWorldEntities->at(iEntity).SetPosX(iNewEntityX);
     m_pviWorldEntities->at(iEntity).SetPosY(iNewEntityY);
     
+    //Check if position of Flag
+    for (unsigned int iPlayer = 0; iPlayer < m_iPlayer; iPlayer++)
+    {
+        if (iPlayer == m_pviWorldEntities->at(iEntity).GetPlayer())
+        {
+            continue;
+        }
+        if (m_pviStartingFields->at(iPlayer).GetPosX() == iNewEntityX || 
+            m_pviStartingFields->at(iPlayer).GetPosY() == iNewEntityY)
+        {
+            IncrPlayerPoints(iPlayer, 5);
+            m_pviWorldEntities->at(iEntity).InitTerroist();
+            ExplodeEntity(iEntity);
+        }
+    }
+    
     return true;
 }
     
@@ -245,6 +261,19 @@ bool World::ExplodeEntity(unsigned int iEntity)
     return true;
 }
 
+/**********************************************************************/
+
+void World::IncrPlayerPoints(unsigned int iPlayer, unsigned int iPoints)
+{
+    unsigned int iCurPoints = m_pviPlayerPoints->find(iPlayer)->second;
+    m_pviPlayerPoints->erase(iPlayer);
+    m_pviPlayerPoints->insert(pair<unsigned int, unsigned int>(iPlayer, iCurPoints+iPoints));
+}
+
+bool World::HasPlayerWon(unsigned int iPlayer)
+{
+    return (m_pviPlayerPoints->find(iPlayer)->second > 24);
+}
 
 /**********************************************************************/
 
@@ -387,19 +416,25 @@ void World::DoWorldInitalisation()
     std::cout<<"[world] "<<"Maximum Weight: "<<iMax<<std::endl;
 
     //Setting Starting Flags
+    std::cout<<"[world] "<<"Setting points for "<<m_iPlayer<<" Player "<<std::endl;
+    m_pviPlayerPoints = new map<unsigned int, unsigned int>;
+    
     std::cout<<"[world] "<<"Generating Starting Flags for "<<m_iPlayer<<" Player "<<std::endl;
     m_pviStartingFields = new WorldMapFields(m_iPlayer);
     m_pviStartingFields->clear();
 
     unsigned int iMiddleX = m_iWidth / 2;
     unsigned int iMiddleY = m_iHeight / 2;
+    unsigned int iPlayer = 0;
     for (double dAngel = 0; dAngel < M_PI * 2; dAngel += 2 * M_PI / m_iPlayer)
     {
         iPosX = sin(dAngel) * (m_iWidth * 3 / 8) + iMiddleX;
         iPosY = cos(dAngel) * (m_iHeight * 3 / 8) + iMiddleY;
         m_pviStartingFields->push_back(GetField(iPosX, iPosY));
+        m_pviPlayerPoints->insert(pair<unsigned int, unsigned int>(iPlayer, 0));
         GetField(iPosX, iPosY).SetInformation(WorldFieldInformationFlag);
         std::cout<<"[world] "<<"Starting Flag "<<m_pviStartingFields->size()<<" is at "<<iPosX<<":"<<iPosY<<std::endl;
+        iPlayer++;
     }
 
     //Dijkstra the first one
