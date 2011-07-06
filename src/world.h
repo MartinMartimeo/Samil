@@ -57,6 +57,9 @@ public:
     
     list<unsigned int> GetLivingEntities();
     
+    void IncrPlayerPoints(unsigned int iPlayer, unsigned int iPoints);
+    bool HasPlayerWon(unsigned int iPlayer);
+    
     WorldMapView GetViewPort();
     WorldMapView GetViewPort(unsigned int iEntity);
         
@@ -106,6 +109,8 @@ protected:
 
     WorldMapFields*                             m_pviStartingFields;
     WorldEntities*                              m_pviWorldEntities;
+    
+    map<unsigned int, unsigned int>*            m_pviPlayerPoints;
 
 };
 
