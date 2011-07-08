@@ -16,11 +16,11 @@ PlayerAction Test1KI::DoThink(WorldMapView const &vvView, WorldEntityInformation
     std::cout<<"[test1ki] DoThink called."<<std::endl;
     return Move_N;
 }
-/*
+
 extern "C" AiInterface* create() {
     return new Test1KI;
 }
 
 extern "C" void destroy(AiInterface* p) {
     delete p;
-}*/
+}
