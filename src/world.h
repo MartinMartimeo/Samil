@@ -50,7 +50,7 @@ public:
     unsigned int GetHeight();
     unsigned int GetWidth();
 
-    WorldFieldType GetCell(unsigned int x, unsigned int y);
+    WorldFieldType GetCell(unsigned int x, unsigned int y);    
     
     /**********************************************************************/
     // Game -> World Action
@@ -85,6 +85,7 @@ private:
     // private Getter
     
     WorldField& GetField(unsigned int x, unsigned int y);
+    WorldEntity& GetEntity(unsigned int iEntity);
     void GetNextCoords(int& iPosX, int& iPosY);
 
     /**********************************************************************/

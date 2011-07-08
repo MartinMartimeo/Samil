@@ -478,7 +478,7 @@ void World::DoWorldInitalisation()
         while(viFieldList.size() > 0)
         {
             //Suche kleinsten Knoten aus der Liste
-            std::cout<<"[world_dijkstra] "<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
+            //std::cout<<"[world_dijkstra] "<<"Search for smallest Element ("<<viFieldList.size()<<")"<<std::endl;
 
             int iMin = -1;
             for (WorldFieldList::iterator it = viFieldList.begin(); it != viFieldList.end(); ++it)
@@ -875,9 +875,11 @@ WorldMapView World::GetViewPort()
 
 WorldMapView World::GetViewPort(unsigned int iEntity)
 {    
-    unsigned int iViewRange = m_pviWorldEntities->at(iEntity).GetViewRange();
-    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
-    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    unsigned int iViewRange = pEntity.GetViewRange();
+    unsigned int iEntityX = pEntity.GetPosX();
+    unsigned int iEntityY = pEntity.GetPosY();
    
     WorldMapView mView;
     
@@ -938,7 +940,7 @@ WorldMapView World::GetViewPort(unsigned int iEntity)
             continue;
         }
         
-        if (iPlayer == m_pviWorldEntities->at(iEntity).GetPlayer())
+        if (iPlayer == pEntity.GetPlayer())
         {
             itViewElement->second = (WorldMapField) (itViewElement->second | FieldFriendFlag);
         } else {
@@ -953,20 +955,26 @@ WorldMapView World::GetViewPort(unsigned int iEntity)
 
 WorldEntityType World::GetEntityType(unsigned int iEntity)
 { 
-    return m_pviWorldEntities->at(iEntity).GetType();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    return pEntity.GetType();
 }
 
 WorldMapCoords World::GetEntityCoords(unsigned int iEntity)
 {
-    unsigned int iPosX = m_pviWorldEntities->at(iEntity).GetPosX();
-    unsigned int iPosY = m_pviWorldEntities->at(iEntity).GetPosY();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    unsigned int iPosX = pEntity.GetPosX();
+    unsigned int iPosY = pEntity.GetPosY();
    
     return WorldMapCoords(iPosX,iPosY);
 }
 
 unsigned int World::GetEntityPlayer(unsigned int iEntity)
 {
-    return m_pviWorldEntities->at(iEntity).GetPlayer();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    return pEntity.GetPlayer();
 }
 
 
@@ -1014,6 +1022,18 @@ WorldFieldType World::GetCell(unsigned int iPosX, unsigned int iPosY)
 WorldField& World::GetField(unsigned int iPosX, unsigned int iPosY)
 {
     return m_viiMap.at(iPosX).at(iPosY);
+}
+
+WorldEntity& World::GetEntity(unsigned int iEntity)
+{
+    for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
+    {
+        if (itEntity->GetId() == iEntity)
+        {
+            return *itEntity;
+        }
+    }
+    throw iEntity;
 }
 
 /**********************************************************************/
