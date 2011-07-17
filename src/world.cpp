@@ -918,7 +918,7 @@ WorldMapView World::GetViewPort(unsigned int iEntity)
                         
             itViewElement->second = (WorldMapField) (itViewElement->second | itEntity->GetType());
             
-            if (itEntity->GetPlayer() == m_pviWorldEntities->at(iEntity).GetPlayer())
+            if (itEntity->GetPlayer() == pEntity.GetPlayer())
             {
                 itViewElement->second = (WorldMapField) (itViewElement->second | FieldFriend);
             } else {
