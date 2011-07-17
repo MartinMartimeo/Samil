@@ -72,7 +72,7 @@ list<unsigned int> World::GetLivingEntities()
     {        
         if (itEntity->IsDead())
         {
-            m_pviWorldEntities->erase(itEntity);
+            //m_pviWorldEntities->erase(itEntity);
             continue;
         }
         viEntities.push_back(itEntity->GetId());        
