@@ -133,7 +133,7 @@ int Game::ProcessRound()
         }
         PlayerAction iAction = GetPlayerAction(m_pmAis->find(*it)->second, m_pWorld->GetViewPort(*it), m_pWorld->GetEntityInformation(*it));
         
-        ProcessPlayerAction(iAction, *it - 1);
+        ProcessPlayerAction(iAction, *it);
     }
     // render();
     return 0;

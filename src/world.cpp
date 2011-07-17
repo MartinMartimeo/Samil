@@ -86,8 +86,10 @@ list<unsigned int> World::GetLivingEntities()
 
 bool World::MoveEntity(unsigned int iEntity, int iTargetX, int iTargetY)
 {
-    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
-    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    unsigned int iEntityX = pEntity.GetPosX();
+    unsigned int iEntityY = pEntity.GetPosY();
     
     unsigned int iNewEntityX = iEntityX + iTargetX;
     unsigned int iNewEntityY = iEntityY + iTargetY;
@@ -114,29 +116,28 @@ bool World::MoveEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     }
     
     // Check if Entity has enough Bp
-    unsigned int iBp = m_pviWorldEntities->at(iEntity).GetBp();
+    unsigned int iBp = pEntity.GetBp();
     if (iBp < (unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY))
     {
         return false;
     }
-    m_pviWorldEntities->at(iEntity).DecrBp(iTargetX + iTargetY);
+    pEntity.DecrBp(iTargetX + iTargetY);
     
     // Set Position
-    m_pviWorldEntities->at(iEntity).SetPosX(iNewEntityX);
-    m_pviWorldEntities->at(iEntity).SetPosY(iNewEntityY);
+    pEntity.SetPosX(iNewEntityX);
+    pEntity.SetPosY(iNewEntityY);
     
     //Check if position of Flag
     for (unsigned int iPlayer = 0; iPlayer < m_iPlayer; iPlayer++)
     {
-        if (iPlayer == m_pviWorldEntities->at(iEntity).GetPlayer())
+        if (iPlayer == pEntity.GetPlayer())
         {
             continue;
         }
-        if (m_pviStartingFields->at(iPlayer).GetPosX() == iNewEntityX || 
-            m_pviStartingFields->at(iPlayer).GetPosY() == iNewEntityY)
+        if (pEntity.GetPosX() == iNewEntityX || pEntity.GetPosY() == iNewEntityY)
         {
             IncrPlayerPoints(iPlayer, 5);
-            m_pviWorldEntities->at(iEntity).InitTerroist();
+            pEntity.InitTerroist();
             ExplodeEntity(iEntity);
         }
     }
@@ -146,8 +147,10 @@ bool World::MoveEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     
 bool World::HealEntity(unsigned int iEntity, int iTargetX, int iTargetY)
 {
-    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
-    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    unsigned int iEntityX = pEntity.GetPosX();
+    unsigned int iEntityY = pEntity.GetPosY();
     
     int iTargetEntityX = iEntityX + iTargetX;
     int iTargetEntityY = iEntityY + iTargetY;
@@ -165,13 +168,13 @@ bool World::HealEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     }
     
     //Can Heal in the Range?
-    if ((unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY) > m_pviWorldEntities->at(iEntity).GetAttackRange())
+    if ((unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY) > pEntity.GetAttackRange())
     {
         return false;
     }
     
     //Can Heal?
-    if (!m_pviWorldEntities->at(iEntity).CanHeal() && m_pviWorldEntities->at(iEntity).GetBp() > 0)
+    if (!pEntity.CanHeal() && pEntity.GetBp() > 0)
     {
         return false;
     }
@@ -182,8 +185,8 @@ bool World::HealEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     {
         if ((itEntity->GetPosX() == (unsigned int) iTargetEntityX) && (itEntity->GetPosY() == (unsigned int) iTargetEntityY))
         {
-            itEntity->DecrHitpoints(m_pviWorldEntities->at(iEntity).GetHealRate());
-            m_pviWorldEntities->at(iEntity).SetBp(0);
+            itEntity->DecrHitpoints(pEntity.GetHealRate());
+            pEntity.SetBp(0);
             return true;
         }        
     }
@@ -193,8 +196,10 @@ bool World::HealEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     
 bool World::AttackEntity(unsigned int iEntity, int iTargetX, int iTargetY)
 {
-    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
-    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    unsigned int iEntityX = pEntity.GetPosX();
+    unsigned int iEntityY = pEntity.GetPosY();
     
     int iTargetEntityX = iEntityX + iTargetX;
     int iTargetEntityY = iEntityY + iTargetY;
@@ -212,13 +217,13 @@ bool World::AttackEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     }
     
     //Can Heal in the Range?
-    if ((unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY) > m_pviWorldEntities->at(iEntity).GetAttackRange())
+    if ((unsigned int) abs(iTargetX) + (unsigned int) abs(iTargetY) > pEntity.GetAttackRange())
     {
         return false;
     }
     
     //Can Attack?
-    if (!m_pviWorldEntities->at(iEntity).CanAttack() && m_pviWorldEntities->at(iEntity).GetBp() > 0)
+    if (!pEntity.CanAttack() && pEntity.GetBp() > 0)
     {
         return false;
     }
@@ -229,8 +234,8 @@ bool World::AttackEntity(unsigned int iEntity, int iTargetX, int iTargetY)
     {
         if ((itEntity->GetPosX() == (unsigned int) iTargetEntityX) && (itEntity->GetPosY() == (unsigned int) iTargetEntityY))
         {
-            itEntity->IncrHitpoints(m_pviWorldEntities->at(iEntity).GetDamage());
-            m_pviWorldEntities->at(iEntity).SetBp(0);
+            itEntity->IncrHitpoints(pEntity.GetDamage());
+            pEntity.SetBp(0);
             return true;
         }        
     }
@@ -240,22 +245,24 @@ bool World::AttackEntity(unsigned int iEntity, int iTargetX, int iTargetY)
 
 bool World::ExplodeEntity(unsigned int iEntity)
 {
-    unsigned int iEntityX = m_pviWorldEntities->at(iEntity).GetPosX();
-    unsigned int iEntityY = m_pviWorldEntities->at(iEntity).GetPosY();
+    WorldEntity& pEntity = GetEntity(iEntity);
+    
+    unsigned int iEntityX = pEntity.GetPosX();
+    unsigned int iEntityY = pEntity.GetPosY();
     
     //Can Explode?
-    if (!m_pviWorldEntities->at(iEntity).CanExplode() && m_pviWorldEntities->at(iEntity).GetBp() > 0)
+    if (!pEntity.CanExplode() && pEntity.GetBp() > 0)
     {
         return false;
     }
     
     // Don't Explode again
-    m_pviWorldEntities->at(iEntity).SetBp(0);
+    pEntity.SetBp(0);
     
     // Find Entity and Explode
     for (WorldEntities::iterator itEntity = m_pviWorldEntities->begin(); itEntity != m_pviWorldEntities->end(); ++itEntity)
     {
-        itEntity->IncrHitpoints(m_pviWorldEntities->at(iEntity).GetDamage() + itEntity->GetPosX() - iEntityX + itEntity->GetPosY() - iEntityY);
+        itEntity->IncrHitpoints(pEntity.GetDamage() + itEntity->GetPosX() - iEntityX + itEntity->GetPosY() - iEntityY);
     }
         
     return true;
