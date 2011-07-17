@@ -72,6 +72,8 @@ list<unsigned int> World::GetLivingEntities()
     {        
         if (itEntity->IsDead())
         {
+            itEntity->SetPosX(0);
+            itEntity->SetPosY(0);
             //m_pviWorldEntities->erase(itEntity);
             continue;
         }
